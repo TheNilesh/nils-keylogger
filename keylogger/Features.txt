@@ -1,4 +1,7 @@
 Keylogger2 
-undetectable, Me.hide and RunOnce key.
+undetectable, Me.hide and RunOnce key Update.
 All Keynames
+Append to logfile
 encryption
+Setting.ini support
+opt to choose sys Folder or defined folder
