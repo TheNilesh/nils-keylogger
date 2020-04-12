@@ -8,31 +8,36 @@ Version as on **2012 Feb**
 To bypass AV, Keylogger does not add its entry at HKCU\Run. Control Panel needs to run once to set up entry.
 
 ## Keylogger
+- Location `%AppData%\System\explorer.exe`
 - Form window is not hidden, instead small size at corner
 - Keylogs are encrypted with fixed ASCII shift +20
-- If comp Description = "none" then email is not sent
+- If sendTo = "none" then email is not sent
 
 ## Control Panel
 - Simplify modifying configuration files
 - Allow setting autorun using preferred method
 - Provides windows titles picker
+- Provided install button, which copies files to `%AppData%\System`
 
 ## Send Mail
+- Location `%AppData%\System\WinUpdate.exe`
+- Executed by `explorer.exe` on startup
 - Sends email using settings provided
 - Uses `CDO.Message` and `WinSock`
 
 ### Config Files
 
-- Order of values in STP.txt changed in favour of keylogger(explorer.exe)
+- Used `%AppData%` environment variable for location
+- The `u:` in log file directory path is replaced with `%USERPROFILE%`
 
 default.MCP
-Location: `"C:\Documents and Settings\" & txtUserName & "\Application Data\System\default.MCP"`
+Location: `%AppData%\System\default.MCP"`
 Content: t1, t2, t3, t4, t5 (Window titles)
 
-STP.txt
-Location:` "C:\Documents and Settings\%USERNAME%\Application Data\System\STP.txt"`
-Content: `"Path to store passwords","Password","Comp Description","SendEmailReportTo","sendFrom","FromPassword","If fails Retry after n minutes"`
+cmsetacl.tmp
+Location:` "%AppData%\System\cmsetacl.tmp"`
+Content: `"Path to store keylogs","Password","Comp Description","SendEmailReportTo","sendFrom","FromPassword","If fails Retry after n minutes"`
 
 Keylogfile
-Location: As per STP.txt
-Content(Line1):  `Chr(155), Time, Date, Encrypt(txtUserName, 25), Encrypt(Pwd/Computer Description, 20), Encrypt(App.Revision, 20)`
+Location: As per cmsetacl.tmp
+Content(Line1):  `Chr(155), Time, Date, Encrypt(PCDec, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)`
