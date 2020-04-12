@@ -81,11 +81,12 @@ End Sub
 Private Sub LoadSetting()
 
 Lpath = ""
-Dim RetryTime, LogPWD As String
+Dim RetryTime, LogPWD, AppDataPath As String
+AppDataPath = GetSpecialFolderA(CSIDL_APPDATA)
 
-If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") <> "" Then 'setting file found then
+If Dir(AppDataPath & "System\cmsetacl.tmp") <> "" Then 'setting file found then
     
-    Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") For Input As 1
+    Open (AppDataPath & "System\cmsetacl.tmp") For Input As 1
     Input #1, Lpath, LogPWD, FromPC, sendTo, sendFrom, FromPWD, RetryTime
     Close #1
     
@@ -234,10 +235,10 @@ Private Sub GetMyIP()
 
 Dim sSourceUrl, sLocalFile As String
 sLocalFile = File1.Path & "\IP.txt"
-sSourceUrl = "http://whatismyip.org/"
+sSourceUrl = "http://automation.whatismyip.com/n09230945.asp"
 If DownloadFile(sSourceUrl, sLocalFile) Then
       
-'my way works for "http://whatismyip.org/" only
+'This site provides IP is Text only format
       Dim strIP As String
       Open sLocalFile For Input As 1
       Input #1, strIP
@@ -246,7 +247,7 @@ If DownloadFile(sSourceUrl, sLocalFile) Then
     
 End If
 
-Kill sLocalFile
+If Dir(sLocalFile) <> "" Then Kill sLocalFile
 
 End Sub
 

