@@ -33,7 +33,7 @@ Update=U
 	4. titles.txt
 	5. 7zsd.zfx
 	6. config.txt
-4. Right click on 1 to 4 selection 7-zip > Add to Archive > Give password
+4. Right click on 1 to 4 selection 7-zip > Add to Archive >[ Give password]
 5. Open cmd here and type
 	copy /b NKLG.7z+config.txt+7zsd.sfx nklg.exe
 6. Open nklg.exe in Resource Hacker.

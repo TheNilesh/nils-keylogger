@@ -1,8 +1,8 @@
-Project : niLs Password Keylogger v
+Project : niLs Password Keylogger
 	Concept : Records Keylog only when certain windows are active. Say, login windows
 		Program identifies active window by its title.
-Revision 1.0.14
-Date : 13/02/2014
+Revision 1.0.20
+Date : 26/02/2014
 >Objectives:
 It should work with all Windows 7,8, XP 
 Admin user,limited user should run klg at startup(shared keylogger)

