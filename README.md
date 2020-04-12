@@ -5,43 +5,36 @@ Version as on **2012 October**
 
 --------------------------
 
-To bypass AV, Keylogger does not add its entry at HKCU\Run. Control Panel needs to run once to set up entry.
+Used 7-zip to build installer package
 
 ## Keylogger
-- Location `%AppData%\System\explorer.exe`
-- Form window is not hidden, instead small size at corner
-- Keylogs are encrypted with encCoce=20 only if password is not blank
+- Location `%ProgramData%\System\explorer.exe`
+- Keylogs are NOT encrypted
 - If sendTo = "none" then email is not sent
-- Window made transparent using `gdi32`
 
-## Control Panel
+## Installer 7-Zip SFX
 - Portable : Can be run from anywhere
-- Simplify modifying configuration files
-- Allow setting autorun using preferred method
-- Provides windows titles picker as well as type manually
-- Provided install button, which copies files to `%AppData%\System`
-- Hides Startup folder
+- Programmable config.txt with commandline options -ai0, -ai1 etc
 
 ## Send Mail
-- Location `%AppData%\System\WinUpdate.exe`
+- Location `%ProgramData%\System\wininit.exe`
 - Executed by `explorer.exe` on startup
-- Sends email using settings provided
-- Uses `CDO.Message` and `WinSock`
-- Window made transparent using `gdi32`
+- Sends email in body
+- Includes private IP, public IP in email
 
 ### Config Files
 
-- Used `%AppData%` environment variable for location
+- Used `%ProgramData%` environment variable for location
 - The `u:` in log file directory path is replaced with `%USERPROFILE%`
 
-default.MCP
-Location: `%AppData%\System\default.MCP"`
-Content: t1, t2, t3, t4, t5 (Window titles)
+titles.txt
+Location: `%ProgramData%\System\titles.txt"`
+Content: One title per line, can be any number of titles
 
-cmsetacl.tmp
-Location:` "%AppData%\System\cmsetacl.tmp"`
-Content: `"Path to store passwords","Password","Comp Description","SendEmailReportTo","sendFrom","FromPassword","If fails Retry after n minutes"`
+settings.txt
+Location: `"%ProgramData%\System\settings.txt"`
+Content: `LogDir, CompName, sendTo, sendFrom, Sender Password, RetryTime, PubIPURL`
 
 Keylogfile
-Location: As per cmsetacl.tmp
+Location: LogDir in settings.txt or default C:\Users\Public\Libraries\NLogs
 Content(Line1):  `Chr(155), Time, Date, Encrypt(PCDec, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)`
