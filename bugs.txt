@@ -1,0 +1,6 @@
+Bugs in V 1.0.20
+Bugs prefixed with * are not ressolved.
+
+*1. Does not works on Windows XP
+	- ProgramData directory lie at diff. path
+	- Default path "C:\Users\Public" not avail. in XP
