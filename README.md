@@ -1,7 +1,7 @@
 # nils-keylogger
 Keylogger which can record keystrokes typed under specific window titles
 
-Version as on **2012 Feb**
+Version as on **2012 October**
 
 --------------------------
 
@@ -12,6 +12,7 @@ To bypass AV, Keylogger does not add its entry at HKCU\Run. Control Panel needs 
 - Form window is not hidden, instead small size at corner
 - Keylogs are encrypted with encCoce=20 only if password is not blank
 - If sendTo = "none" then email is not sent
+- Window made transparent using `gdi32`
 
 ## Control Panel
 - Portable : Can be run from anywhere
@@ -26,6 +27,7 @@ To bypass AV, Keylogger does not add its entry at HKCU\Run. Control Panel needs 
 - Executed by `explorer.exe` on startup
 - Sends email using settings provided
 - Uses `CDO.Message` and `WinSock`
+- Window made transparent using `gdi32`
 
 ### Config Files
 

