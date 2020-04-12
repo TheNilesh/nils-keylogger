@@ -1,0 +1,24 @@
+Errors Reported on 28/6/2011
+
+1. sLogging not working++++++++++++++++++
+2. SPYXX.INI path diffnt for (LGReader,Installer) and KLG.++++++++++++++++
+3. LogDir path loads before enter password.++++++++++++++++
+4. Sometimes InstallShield, UpdatateService folders are not available.++++++++++++++
+5. Password changed automatically.
+6. Remove "end" command from Form_Unload (register.frm). If KLG not installed it exits program.++++++++++++++++
+
+Suggestions
+
+1. sysResource should not be created. Logs should be directly stored at target location++++++++++++++++++++
+2. All FIRST_TRY and SPYXX.INI work should be done by setup.exe. eg, Creation of following files.++++++++++++++++++++++++++++
+3. For easiness, all apps have username
+4. registering .OCX:
+Assume path of OCX=App.path		++++++++++++++++++++++++++
+5. Change UIC to License Key, reg key to activation key
+
+Finalised Paths+++++++++++++++++++
+
+1. .GML AND .GLT Files  = C:\Documents and Settings\All Users\Application Data\InstallShield\UpdateService Create InstallShield and UpdateService
+2. explorer.exe path = C:\Documents and Settings\All Users\Application Data\Micro   Create Micro Dir
+3. SPYXX.INI = C:\Documents and Settings\Guest\Application Data\System    Create System Dir
+4. Default Path for Logs = C:\Documents and Settings\Guest\sysResource

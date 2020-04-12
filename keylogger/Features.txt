@@ -1,8 +1,35 @@
-Keylogger3 
-Undetectable, Me.hide and RunOnce key Update.
-All Keynames
-Append to logfile
-encryption
+NO NEED TO INSTALL MANUALLY
+	(move it at its permanent location(as you wish) and run it. Rest will be done by package.)
+ 
+new Keylogger3 
+
+Undetectable, Me.hide and RunOnce / Run key Update.
+All Keynames.
+Password to each LOG file so that Only person who installed KLG can access logs with his pwd.
+encryption for log and log password.
 Based on Module Codes, not any OCX control.( INDEPENDANT ). No supporting files req.
+opt to choose LOG directory.
 Setting.ini support
-opt to choose sys Folder or defined folder
+AUTO CREATES SETTING.INI
+Automatic install on run.
+option to choose Run or RunOnce update.
+every user on XP can use independant setting . even guest can use this program.
+
+
+Setting.ini Help:
+setting.ini automatically stored in "%SystemDrive% \Documents and Settings\" & username & "\UserData
+
+[LogSetting]
+USEBS=1    	whether [BS] should print or remove last char.? when Backspace is pressed.
+UseChildTitle=0	Whether Child dialogue box Title included in Log? (i.e, Open, Save As etc.)
+EncCode=1	ASCII code of character from logfile will increased by EncCode during encryption.
+extension=.txt	What extension should log file have?
+TimerInt=65	Interval for keypress recognising Loop.
+LogMode=1	0: New Logfile on each startup.	  1:New Logfile everyday.  2:Only One Logfile.
+LogDir=d:\nilesh	Path to store logfiles. (Do not mean if LogSysDir=1)
+SETRUNONCE = 1	Whether Autorun key stored in RunOnce or Run in registry.
+sLogging = 0	Only records log under certain titles defined by User. (titles are stored in %SystemDrive%/Program Files/Common Files/System/titles.dat)
+Pwd = 		Password for Log.
+
+explorer.exe HELP:
+Keep this file in target location (permanent), and run it from that location itself. So it would autorun on startup from that location only.

@@ -45,3 +45,4 @@ Dim lngResult As String
     lngResult = WritePrivateProfileString(Section, Key, Value, file)
 End Sub
 
+
