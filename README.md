@@ -9,7 +9,8 @@ To bypass AV, Keylogger does not add its entry at HKCU\Run. Control Panel needs 
 
 ## Keylogger
 - Form window is not hidden, instead small size at corner
-- Keylogs are not encrypted, all other default settings are hardcoded like sLogging, LogMode etc
+- Keylogs are encrypted with fixed ASCII shift +20
+- If comp Description = "none" then email is not sent
 
 ## Control Panel
 - Simplify modifying configuration files
@@ -22,15 +23,15 @@ To bypass AV, Keylogger does not add its entry at HKCU\Run. Control Panel needs 
 
 ### Config Files
 
-Note : exploerer.exe Do not create these files automatically
+- Order of values in STP.txt changed in favour of keylogger(explorer.exe)
 
 default.MCP
 Location: `"C:\Documents and Settings\" & txtUserName & "\Application Data\System\default.MCP"`
 Content: t1, t2, t3, t4, t5 (Window titles)
 
 STP.txt
-Location:` "C:\Documents and Settings\Nitin\Application Data\System\STP.txt"`
-Content: `"Path to store logs","SendEmailReportTo","sendFrom","FromPassword","If fails Retry after n minutes","Computer Description"`
+Location:` "C:\Documents and Settings\%USERNAME%\Application Data\System\STP.txt"`
+Content: `"Path to store passwords","Password","Comp Description","SendEmailReportTo","sendFrom","FromPassword","If fails Retry after n minutes"`
 
 Keylogfile
 Location: As per STP.txt
