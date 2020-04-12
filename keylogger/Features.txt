@@ -12,8 +12,9 @@ encryption for log and log password.(user Defined)
 Based on Module Codes, not any OCX control. No supporting files req.
 opt to choose LOG directory.
 Setting.ini support
-AUTO CREATES SETTING.INI
+AUTO CREATES SETTING.INI - SPYXX.ini
 every user on XP can use independant setting . even guest can use this program.
+Log file format - Chr(155), Time, encCode, Date, txtUserName, Pwd, App.Revision
 
 LogReader help:
 Attractive Look: Left Task pane, Log Details, Calendar Access.

