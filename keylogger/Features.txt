@@ -1,7 +1,8 @@
-Keylogger2 
-undetectable, Me.hide and RunOnce key Update.
+Keylogger3 
+Undetectable, Me.hide and RunOnce key Update.
 All Keynames
 Append to logfile
 encryption
+Based on Module Codes, not any OCX control.( INDEPENDANT ). No supporting files req.
 Setting.ini support
 opt to choose sys Folder or defined folder
