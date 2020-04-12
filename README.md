@@ -1,6 +1,6 @@
 # nils-keylogger
-Keylogger which can record keystrokes typed under specific window titles and send captured keystrokes in email.
---------------------------
+Records keystrokes typed under specific window titles and sends them in an email.
+
 ## Features
 - Can run under limited privileged user accounts
 - Possible to deploy on remote machines using `psexec`
