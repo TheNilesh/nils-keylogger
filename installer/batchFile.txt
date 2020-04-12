@@ -1,0 +1,6 @@
+@echo off
+;run this file after setup to hide Startup shortcut
+pause
+ATTRIB +H +S C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup
+del %0
+EXIT

