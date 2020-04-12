@@ -34,13 +34,16 @@ Version as on **2014 March**
 - The `u:` in log file directory path is replaced with `%USERPROFILE%`
 
 *titles.txt*
-Location: `%ProgramData%\System\titles.txt"`
-Content: One window title per line, can be any number of titles
+
+	Location : %ProgramData%\System\titles.txt
+	Content  : One window title per line, can be any number of titles
 
 *settings.txt*
-Location: `"%ProgramData%\System\settings.txt"`
-Content: `LogDir, TenantID, sendTo, sendFrom, Sender Password, RetryTime, PubIPURL`
+
+	Location : %ProgramData%\System\settings.txt
+	Content  : LogDir, TenantID, sendTo, sendFrom, Sender Password, RetryTime, PubIPURL
 
 *Keylogfile*
-Location: LogDir in settings.txt or default C:\Users\Public\Libraries\NLogs
-Content(Line1):  `Chr(155), Time, Date, TenantID, App.Revision`
+
+	Location       : LogDir in settings.txt or default C:\Users\Public\Libraries\NLogs
+	Content(Line1) : Chr(155), Time, Date, TenantID, App.Revision
