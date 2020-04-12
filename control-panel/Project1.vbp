@@ -1,14 +1,10 @@
 Type=Exe
+Form=Form1.frm
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
-Module=Module2; Module2.bas
-Form=Config.frm
-IconForm="frmInstKLG"
-Startup="frmInstKLG"
-HelpFile=""
-Title="nKLG_Installer"
-ExeName32="KLG_Manager.exe"
+IconForm="Form1"
+Startup="Form1"
 Command32=""
-Name="nKLG_Installer"
+Name="Project1"
 HelpContextID="0"
 CompatibleMode="0"
 MajorVer=1
@@ -16,8 +12,7 @@ MinorVer=0
 RevisionVer=0
 AutoIncrementVer=0
 ServerSupportFiles=0
-VersionCompanyName="http://niLsKeyLogger.blogspot.com"
-VersionProductName="nKLG Manager"
+VersionCompanyName="Akhade"
 CompilationType=0
 OptimizationType=0
 FavorPentiumPro(tm)=0
@@ -33,7 +28,6 @@ Unattended=0
 Retained=0
 ThreadPerObject=0
 MaxNumberOfThreads=1
-DebugStartupOption=0
 
 [MS Transaction Server]
 AutoRefresh=1
