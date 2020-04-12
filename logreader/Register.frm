@@ -104,7 +104,7 @@ Begin VB.Form Form1
       Begin VB.Image Image2 
          Height          =   810
          Left            =   960
-         Picture         =   "Register.frx":127D
+         Picture         =   "Register.frx":57E2
          Stretch         =   -1  'True
          Top             =   120
          Width           =   4155
@@ -112,7 +112,7 @@ Begin VB.Form Form1
       Begin VB.Image Image1 
          Height          =   840
          Left            =   120
-         Picture         =   "Register.frx":24AE
+         Picture         =   "Register.frx":6A13
          Stretch         =   -1  'True
          Top             =   120
          Width           =   795

@@ -1,11 +1,11 @@
 # nils-keylogger
 Keylogger which can record keystrokes typed under specific window titles
 
-Version as on **2011 July 06**
+Version as on **2011 July 07**
 
 --------------------------
 
-TRIAL/EVALUATION Version
+TRIAL/EVALUATION Version - Minor UX changes
 
 ### Keylogger
 - Installs at locaton from where its run first time, means it just adds RunOnce entry for the current path

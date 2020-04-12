@@ -321,7 +321,7 @@ Begin VB.Form frmMain
          CalendarTitleForeColor=   16777215
          CalendarTrailingForeColor=   4210752
          CustomFormat    =   "dd/mm/yyyy"
-         Format          =   20709377
+         Format          =   20578305
          CurrentDate     =   40653
       End
       Begin VB.Label lblLoadAll 
@@ -1042,12 +1042,21 @@ Begin VB.Form frmMain
       Visible         =   0   'False
       Width           =   8295
    End
-   Begin VB.Image Image1 
-      Height          =   1800
-      Left            =   720
+   Begin VB.Image Image3 
+      BorderStyle     =   1  'Fixed Single
+      Height          =   2310
+      Left            =   240
       Picture         =   "textfind.frx":8F8A
+      Top             =   8040
+      Visible         =   0   'False
+      Width           =   3015
+   End
+   Begin VB.Image Image1 
+      Height          =   1215
+      Left            =   960
+      Picture         =   "textfind.frx":A2F8
       Top             =   6840
-      Width           =   1800
+      Width           =   1335
    End
    Begin VB.Label Label7 
       Alignment       =   2  'Center
@@ -1066,7 +1075,7 @@ Begin VB.Form frmMain
       Height          =   735
       Left            =   0
       TabIndex        =   65
-      Top             =   8880
+      Top             =   8160
       Width           =   3615
    End
    Begin VB.Label Label10 
@@ -1271,6 +1280,16 @@ Private Sub Form_Load()
 
 DTPicker1.Value = Format$(Now, "m/d/yyyy")
 Call LoadUsername
+End Sub
+
+Private Sub Image1_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Image3.Visible = True
+
+End Sub
+
+Private Sub Image3_Click()
+Image3.Visible = False
+
 End Sub
 
 Private Sub lblLoadAll_Click()

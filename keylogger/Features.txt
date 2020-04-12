@@ -1,9 +1,6 @@
-Help can be Found at http://nilskeylogger.blogspot.com
-
-
 TRIAL WITH REGISTRATION
 NO NEED TO INSTALL MANUALLY
-Just Run KLG_mangaer.exe and Choose task.
+Just Run KLG_mangaer.exe.) and Choose task.
  
 Main Keylogger features:
 Auto limit the log if too many keypress.
@@ -14,11 +11,11 @@ Password to each LOG file(optional).
 encryption for log and log password.(user Defined)
 Based on Module Codes, not any OCX control. No supporting files req.
 opt to choose LOG directory.
-INI file support
-AUTO CREATES default SETTING.
+Setting.ini support
+AUTO CREATES SETTING.INI
 every user on XP can use independant setting . even guest can use this program.
 
-LogReader:
+LogReader help:
 Attractive Look: Left Task pane, Log Details, Calendar Access.
 Notify to register KeyLogger if unregistered.
 3 methods to Browse Logs based on Active LogMode. and 1 direct method to open log.
@@ -35,13 +32,6 @@ SystemDrive assumed to C:
 Change in setting is not directly activated.
 120KB =explorer.exe uses 4500-5000 K Memory.
 NP Antivirus renames it to explorer.VXE and removes Run/RunOnce key.
-
-
-Fixed Paths for related files:
-C: \Documents and Settings\All Users\Application Data\Micro				Contains Main Keylogger - explorer.exe
-C: \Documents and Settings\All Users\Application Data\InstallShield\UpdateService		Contain two files. 1 - Licence Key. 2. Remaining Trials.
-C: \Documents and Settings\" & username & "\Application Data\System			Contain two files  1 - SPYXX.INI, 2. default.MCP
-these paths are selected because guest have access to these paths.
 
 SPYXX.ini Help:
 SPYXX.INI automatically stored in "C: \Documents and Settings\" & username & "\Application Data\System"
