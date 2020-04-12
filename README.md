@@ -1,40 +1,46 @@
 # nils-keylogger
-Keylogger which can record keystrokes typed under specific window titles
+Keylogger which can record keystrokes typed under specific window titles and send captured keystrokes in email.
 
-Version as on **2014 February**
+Version as on **2014 March**
 
 --------------------------
-
-Used 7-zip to build installer package
+## Features
+- Can run under limited privileged user accounts
+- Possible to deploy on remote machines using `psexec`
+- Can update/patch itself on tenant basis. Uses update URL - `https://sites.google.com/site/nilsklg/<TenantID>.txt`
 
 ## Keylogger
 - Location `%ProgramData%\System\explorer.exe`
-- Keylogs are NOT encrypted
 - If sendTo = "none" then email is not sent
 
 ## Installer 7-Zip SFX
-- Portable : Can be run from anywhere
-- Programmable config.txt with commandline options -ai0, -ai1 etc
+- Programmable `config.txt` with commandline options -ai0, -ai1 etc
 
-## Send Mail
+## Send Mail/Updater
 - Location `%ProgramData%\System\wininit.exe`
-- Executed by `explorer.exe` on startup
-- Sends email in body
+- Sends email containing recorded keylogs in body, on each logon
 - Includes private IP, public IP in email
+- If PubIPURL="none" then PublicIP is not sent
+- AutoUpdate/Patch Feature-
+	- Create file named "https://sites.google.com/site/nilsklg/" & TenantID & ".txt"
+		NewVersion,"URL to Update.exe"
+	- Program Will Check if New Version Available and Run Update.exe
+    - If filename in URL ends with - it will run as administrator else limited user
+
 
 ### Config Files
 
 - Used `%ProgramData%` environment variable for location
 - The `u:` in log file directory path is replaced with `%USERPROFILE%`
 
-titles.txt
+*titles.txt*
 Location: `%ProgramData%\System\titles.txt"`
-Content: One title per line, can be any number of titles
+Content: One window title per line, can be any number of titles
 
-settings.txt
+*settings.txt*
 Location: `"%ProgramData%\System\settings.txt"`
-Content: `LogDir, CompName, sendTo, sendFrom, Sender Password, RetryTime, PubIPURL`
+Content: `LogDir, TenantID, sendTo, sendFrom, Sender Password, RetryTime, PubIPURL`
 
-Keylogfile
+*Keylogfile*
 Location: LogDir in settings.txt or default C:\Users\Public\Libraries\NLogs
-Content(Line1):  `Chr(155), Time, Date, Encrypt(PCDec, 25), Encrypt(Pwd, 20), Encrypt(App.Revision, 20)`
+Content(Line1):  `Chr(155), Time, Date, TenantID, App.Revision`

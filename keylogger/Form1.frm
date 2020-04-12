@@ -109,8 +109,8 @@ If Dir(SettingsPath & "settings.txt") <> "" Then 'setting file found then
     LPath = LPath & "\"
 Else    'setting not found
     'Use default settings
-    'LPath = GetSpecialFolderA(CSIDL_PROGDATA) & "NLogs\"
-    LPath = "C:\Users\Public\Libraries\NLogs\"      'Because All users can access this folder
+    LPath = SettingsPath & "NLogs\"
+    'LPath = "C:\Users\Public\Libraries\NLogs\"      'Because All users can access this folder
     CompName = "SYSTEM"
 End If
 

