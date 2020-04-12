@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "ComDlg32.OCX"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form frmMain 
@@ -25,12 +25,25 @@ Begin VB.Form frmMain
    ScaleWidth      =   20235
    StartUpPosition =   3  'Windows Default
    WindowState     =   2  'Maximized
+   Begin VB.TextBox txtRegDet 
+      Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      BackColor       =   &H00000000&
+      ForeColor       =   &H00C0C0C0&
+      Height          =   600
+      Left            =   120
+      MultiLine       =   -1  'True
+      TabIndex        =   64
+      Text            =   "textfind.frx":57E2
+      Top             =   6240
+      Width           =   3135
+   End
    Begin VB.Frame fraTitles 
       BackColor       =   &H80000007&
       ForeColor       =   &H00FFFFFF&
       Height          =   2655
-      Left            =   12000
-      TabIndex        =   52
+      Left            =   13920
+      TabIndex        =   49
       Top             =   2160
       Visible         =   0   'False
       Width           =   5535
@@ -39,7 +52,7 @@ Begin VB.Form frmMain
          Caption         =   "&Save"
          Height          =   375
          Left            =   4200
-         TabIndex        =   59
+         TabIndex        =   58
          Top             =   600
          Width           =   1215
       End
@@ -47,7 +60,7 @@ Begin VB.Form frmMain
          Caption         =   "&Cancel"
          Height          =   375
          Left            =   4200
-         TabIndex        =   58
+         TabIndex        =   60
          Top             =   1080
          Width           =   1215
       End
@@ -58,7 +71,7 @@ Begin VB.Form frmMain
          Height          =   285
          Left            =   1200
          MaxLength       =   25
-         TabIndex        =   57
+         TabIndex        =   50
          Top             =   600
          Width           =   2895
       End
@@ -68,7 +81,7 @@ Begin VB.Form frmMain
          Height          =   285
          Left            =   1200
          MaxLength       =   25
-         TabIndex        =   56
+         TabIndex        =   51
          Top             =   960
          Width           =   2895
       End
@@ -78,7 +91,7 @@ Begin VB.Form frmMain
          Height          =   285
          Left            =   1200
          MaxLength       =   25
-         TabIndex        =   55
+         TabIndex        =   52
          Top             =   1320
          Width           =   2895
       End
@@ -98,7 +111,7 @@ Begin VB.Form frmMain
          Height          =   285
          Left            =   1200
          MaxLength       =   25
-         TabIndex        =   53
+         TabIndex        =   56
          Top             =   2040
          Width           =   2895
       End
@@ -117,7 +130,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00808080&
          Height          =   255
          Left            =   840
-         TabIndex        =   66
+         TabIndex        =   63
          Top             =   2400
          Width           =   4815
       End
@@ -128,7 +141,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   65
+         TabIndex        =   62
          Top             =   240
          Width           =   5055
       End
@@ -138,7 +151,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   64
+         TabIndex        =   61
          Top             =   600
          Width           =   855
       End
@@ -148,7 +161,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   63
+         TabIndex        =   59
          Top             =   960
          Width           =   855
       End
@@ -158,7 +171,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   62
+         TabIndex        =   57
          Top             =   1320
          Width           =   855
       End
@@ -168,7 +181,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   61
+         TabIndex        =   55
          Top             =   1680
          Width           =   855
       End
@@ -178,7 +191,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   240
-         TabIndex        =   60
+         TabIndex        =   53
          Top             =   2040
          Width           =   855
       End
@@ -186,7 +199,7 @@ Begin VB.Form frmMain
    Begin VB.TextBox txtUsername 
       Height          =   360
       Left            =   3720
-      TabIndex        =   51
+      TabIndex        =   48
       Text            =   "txtUsername"
       Top             =   0
       Visible         =   0   'False
@@ -194,11 +207,10 @@ Begin VB.Form frmMain
    End
    Begin VB.Frame Frame5 
       BackColor       =   &H00000000&
-      ForeColor       =   &H00FFFFFF&
-      Height          =   1815
+      Height          =   1695
       Left            =   120
-      TabIndex        =   50
-      Top             =   4680
+      TabIndex        =   47
+      Top             =   4440
       Width           =   3135
       Begin VB.CheckBox optApply 
          Caption         =   "&Apply"
@@ -211,7 +223,7 @@ Begin VB.Form frmMain
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   375
+         Height          =   255
          Left            =   960
          Style           =   1  'Graphical
          TabIndex        =   17
@@ -256,7 +268,7 @@ Begin VB.Form frmMain
       BackColor       =   &H00000000&
       Height          =   1215
       Left            =   120
-      TabIndex        =   49
+      TabIndex        =   46
       Top             =   1080
       Width           =   3135
       Begin VB.CommandButton cmdLoad 
@@ -296,20 +308,20 @@ Begin VB.Form frmMain
          _Version        =   393216
          BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
             Name            =   "Arial"
-            Size            =   15.75
+            Size            =   14.25
             Charset         =   0
             Weight          =   700
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         CalendarBackColor=   4210752
+         CalendarBackColor=   0
          CalendarForeColor=   16777215
          CalendarTitleBackColor=   12632256
          CalendarTitleForeColor=   16777215
-         CalendarTrailingForeColor=   8421504
+         CalendarTrailingForeColor=   4210752
          CustomFormat    =   "dd/mm/yyyy"
-         Format          =   20774913
+         Format          =   20709377
          CurrentDate     =   40653
       End
       Begin VB.Label lblLoadAll 
@@ -346,53 +358,17 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   6015
-      Left            =   7440
-      TabIndex        =   42
+      Left            =   6720
+      TabIndex        =   41
       Top             =   3360
       Visible         =   0   'False
       Width           =   3975
       Begin VB.ListBox List2 
-         Height          =   1020
-         Left            =   4680
-         TabIndex        =   48
-         Top             =   3480
-         Width           =   1815
-      End
-      Begin VB.TextBox Text2 
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   285
-         Left            =   5040
-         TabIndex        =   47
-         Text            =   "Text2"
-         Top             =   240
-         Visible         =   0   'False
-         Width           =   1455
-      End
-      Begin VB.TextBox Text3 
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   285
-         Left            =   4920
-         TabIndex        =   46
-         Text            =   "Text3"
-         Top             =   360
-         Visible         =   0   'False
-         Width           =   1335
+         Height          =   1500
+         Left            =   4080
+         TabIndex        =   45
+         Top             =   4200
+         Width           =   1935
       End
       Begin VB.FileListBox File1 
          BeginProperty Font 
@@ -405,10 +381,10 @@ Begin VB.Form frmMain
             Strikethrough   =   0   'False
          EndProperty
          Height          =   3210
-         Left            =   4680
-         TabIndex        =   45
+         Left            =   4080
+         TabIndex        =   44
          Top             =   840
-         Width           =   1815
+         Width           =   2415
       End
       Begin VB.ListBox List1 
          BackColor       =   &H00C0C0C0&
@@ -432,8 +408,8 @@ Begin VB.Form frmMain
          EndProperty
          ForeColor       =   &H00FFFFFF&
          Height          =   375
-         Left            =   240
-         TabIndex        =   44
+         Left            =   120
+         TabIndex        =   43
          Top             =   240
          Width           =   3375
       End
@@ -452,7 +428,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   3720
-         TabIndex        =   43
+         TabIndex        =   42
          Top             =   120
          Width           =   255
       End
@@ -470,7 +446,7 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   615
       Left            =   2280
-      Picture         =   "textfind.frx":57E2
+      Picture         =   "textfind.frx":57ED
       Style           =   1  'Graphical
       TabIndex        =   4
       ToolTipText     =   "Log In"
@@ -492,7 +468,7 @@ Begin VB.Form frmMain
       ForeColor       =   &H00FFFFFF&
       Height          =   1455
       Left            =   9000
-      TabIndex        =   37
+      TabIndex        =   36
       Top             =   4560
       Width           =   3855
       Begin VB.CommandButton cmdOK 
@@ -538,7 +514,7 @@ Begin VB.Form frmMain
       Begin VB.Image Image2 
          Height          =   480
          Left            =   120
-         Picture         =   "textfind.frx":5AED
+         Picture         =   "textfind.frx":5AF8
          Top             =   120
          Width           =   480
       End
@@ -557,7 +533,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   3600
-         TabIndex        =   39
+         TabIndex        =   38
          Top             =   120
          Width           =   255
       End
@@ -576,7 +552,7 @@ Begin VB.Form frmMain
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   360
-         TabIndex        =   38
+         TabIndex        =   37
          Top             =   600
          Width           =   1215
       End
@@ -593,22 +569,22 @@ Begin VB.Form frmMain
       EndProperty
       Height          =   855
       HideSelection   =   0   'False
-      Left            =   4320
+      Left            =   3600
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       ScrollBars      =   3  'Both
-      TabIndex        =   36
-      Top             =   9600
+      TabIndex        =   35
+      Top             =   10560
       Visible         =   0   'False
       Width           =   1095
    End
    Begin VB.Timer Timer1 
-      Interval        =   200
+      Interval        =   300
       Left            =   0
       Top             =   8400
    End
    Begin MSComDlg.CommonDialog dlg 
-      Left            =   360
+      Left            =   960
       Top             =   0
       _ExtentX        =   847
       _ExtentY        =   847
@@ -626,7 +602,7 @@ Begin VB.Form frmMain
       _Version        =   393216
       BorderStyle     =   1
       Appearance      =   0
-      MouseIcon       =   "textfind.frx":5F31
+      MouseIcon       =   "textfind.frx":5F3C
       Scrolling       =   1
    End
    Begin VB.CommandButton cmdUpdate 
@@ -641,8 +617,8 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   615
-      Left            =   1200
-      Picture         =   "textfind.frx":608C
+      Left            =   1320
+      Picture         =   "textfind.frx":6097
       Style           =   1  'Graphical
       TabIndex        =   3
       ToolTipText     =   "Setting"
@@ -661,8 +637,8 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       Height          =   615
-      Left            =   120
-      Picture         =   "textfind.frx":D58A
+      Left            =   360
+      Picture         =   "textfind.frx":730D
       Style           =   1  'Graphical
       TabIndex        =   2
       ToolTipText     =   "Open Log"
@@ -683,7 +659,7 @@ Begin VB.Form frmMain
       EndProperty
       ForeColor       =   &H00FFFFFF&
       Height          =   1335
-      Left            =   15600
+      Left            =   15360
       TabIndex        =   27
       Top             =   720
       Visible         =   0   'False
@@ -917,7 +893,7 @@ Begin VB.Form frmMain
          Strikethrough   =   0   'False
       EndProperty
       ForeColor       =   &H00FFFFFF&
-      Height          =   2295
+      Height          =   2175
       Left            =   120
       TabIndex        =   25
       Top             =   2280
@@ -929,23 +905,6 @@ Begin VB.Form frmMain
          TabIndex        =   12
          Top             =   1320
          Width           =   735
-      End
-      Begin VB.CommandButton cmdNextSession 
-         Caption         =   "Next Session"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   375
-         Left            =   120
-         TabIndex        =   13
-         Top             =   1800
-         Width           =   2895
       End
       Begin VB.ComboBox txtFind 
          BeginProperty Font 
@@ -1023,13 +982,34 @@ Begin VB.Form frmMain
          Top             =   1320
          Width           =   495
       End
+      Begin VB.Label cmdNextSession 
+         Alignment       =   2  'Center
+         Appearance      =   0  'Flat
+         BackColor       =   &H00808080&
+         Caption         =   "Next Session"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H80000008&
+         Height          =   255
+         Left            =   120
+         TabIndex        =   13
+         Top             =   1800
+         Width           =   2895
+      End
       Begin VB.Label Label11 
          BackStyle       =   0  'Transparent
          Caption         =   "Track Time hh:mm :"
          ForeColor       =   &H00FFFFFF&
          Height          =   255
          Left            =   120
-         TabIndex        =   41
+         TabIndex        =   40
          Top             =   1080
          Width           =   1815
       End
@@ -1063,12 +1043,31 @@ Begin VB.Form frmMain
       Width           =   8295
    End
    Begin VB.Image Image1 
-      Height          =   2160
+      Height          =   1800
+      Left            =   720
+      Picture         =   "textfind.frx":8F8A
+      Top             =   6840
+      Width           =   1800
+   End
+   Begin VB.Label Label7 
+      Alignment       =   2  'Center
+      BackStyle       =   0  'Transparent
+      Caption         =   "http://niLsKeyLogger.blogspot.com niLsKeyLogger@gmail.com"
+      BeginProperty Font 
+         Name            =   "Arial"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H00008000&
+      Height          =   735
       Left            =   0
-      Picture         =   "textfind.frx":D895
-      Stretch         =   -1  'True
-      Top             =   6480
-      Width           =   3795
+      TabIndex        =   65
+      Top             =   8880
+      Width           =   3615
    End
    Begin VB.Label Label10 
       Alignment       =   2  'Center
@@ -1086,29 +1085,9 @@ Begin VB.Form frmMain
       ForeColor       =   &H00E0E0E0&
       Height          =   495
       Left            =   3360
-      TabIndex        =   40
+      TabIndex        =   39
       Top             =   240
       Width           =   13335
-   End
-   Begin VB.Label Label7 
-      Alignment       =   2  'Center
-      BackStyle       =   0  'Transparent
-      Caption         =   "www.niLsKeyLogger.blogspot.com"
-      BeginProperty Font 
-         Name            =   "Tahoma"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00008000&
-      Height          =   615
-      Left            =   0
-      TabIndex        =   35
-      Top             =   8640
-      Width           =   3375
    End
 End
 Attribute VB_Name = "frmMain"
@@ -1117,10 +1096,10 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'username import function
-Private Declare Function GetUserName Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
+Private Declare Function getusername Lib "advapi32.dll" Alias "GetUserNameA" (ByVal lpBuffer As String, nSize As Long) As Long
 
 'Get system directory part
-Private Declare Function GetSystemDirectory Lib "kernel32" Alias _
+Private Declare Function GetSystemDirectory Lib "Kernel32" Alias _
 "GetSystemDirectoryA" (ByVal lpBuffer As String, _
 ByVal nSize As Long) As Long
 Dim sDr As String
@@ -1128,36 +1107,36 @@ Dim sDr As String
 Dim unipath As String
 Dim i As Integer
 Option Explicit
-Private Sub openlog(logname As String)
+Private Sub OpenLog(LogName As String)
 
 Close
 
-If logname = "" Then Exit Sub
+If LogName = "" Then Exit Sub
 'get encCode, password
-Dim ltime, luname, ldate, version, enccode, noneed, pwd As String
-If Dir(logname) <> "" Then
+Dim ltime, luname, ldate, version, encCode, noneed, pwd As String
+If Dir(LogName) <> "" Then
     On Error GoTo err
-    Open logname For Input As #1
-    Input #1, noneed, ltime, enccode, ldate, luname, pwd, version
+    Open LogName For Input As #1
+    Input #1, noneed, ltime, encCode, ldate, luname, pwd, version
     Close #1
 Else
     MsgBox "Log not available", vbInformation: Exit Sub
 End If
 
-If IsNumeric(version) = False Or IsNumeric(enccode) = False Then MsgBox "This is not Valid log File!", vbCritical: Close #1: Exit Sub
+If IsNumeric(version) = False Or IsNumeric(encCode) = False Then MsgBox "This is not Valid log File!", vbCritical: Close #1: Exit Sub
 txtUser = luname
 txtstart = ldate & "  " & ltime
-txtencr = enccode
+txtencr = encCode
 txtVersion = version
-txtShut = FileDateTime(logname)
+txtShut = FileDateTime(LogName)
 Label10.Caption = txtstart
 
 If decrypt(pwd, 10) = upwd.Text Or Trim(pwd) = "" Then    'Password is blank or matches
-    Call ReadLog(logname)
+    Call ReadLog(LogName)
 Else
     MsgBox "Password Incorrect!", vbCritical
     Frame2.Visible = True
-    unipath = logname
+    unipath = LogName
     upwd.SetFocus
     frmChooseLog.Visible = False
 End If
@@ -1204,27 +1183,28 @@ Close
 End Sub
 
 Private Sub CancelButton_Click()
+frmOptions.Check3.Value = vbUnchecked
 fraTitles.Visible = False
 End Sub
 
 Private Sub cmdLoad_Click()
 
-Call loadUnamesysDir
-If Dir(sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini") <> "" Then
+If Dir("C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI") <> "" Then
     Dim logmode As Integer
-    logmode = INIRead("LogSetting", "LogMode", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini")
+    logmode = INIRead("LogSetting", "LogMode", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
     
     Select Case logmode
     Case 0
-        Call viewlogs
+     '   Call ViewLogsOn(DTPicker1.Month & "/" & DTPicker1.Day & "/" & DTPicker1.Year)
+        Call ViewLogsOn(DTPicker1.Value)
     Case 1
-        txtLogname.Text = INIRead("LogSetting", "LogDir", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini")
-        txtLogname.Text = txtLogname.Text & "\sysResource\browse" & Format$(DTPicker1.Value, "ddMMyy") & "z" & INIRead("LogSetting", "extension", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini")
-        Call openlog(txtLogname.Text)
+        txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+        txtLogname.Text = txtLogname.Text & "\browse" & Format$(DTPicker1.Value, "ddmmyy") & "z" & INIRead("LogSetting", "extension", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+        Call OpenLog(txtLogname.Text)
     Case 2
-        txtLogname.Text = INIRead("LogSetting", "LogDir", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini")
-        txtLogname.Text = txtLogname.Text & "\sysResource\browse" & INIRead("LogSetting", "extension", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini")
-        Call openlog(txtLogname.Text)
+        txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+        txtLogname.Text = txtLogname.Text & "\browse" & INIRead("LogSetting", "extension", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+        Call OpenLog(txtLogname.Text)
     End Select
 Else
     MsgBox "niL's KeyLogger have not been configured !", vbCritical
@@ -1232,21 +1212,14 @@ Else
     lblLoadAll.Enabled = False
 End If
 End Sub
-Private Sub loadUnamesysDir()
-'Get sysDirectory
-
-Dim SysDir As String
-SysDir = String(80, 0)
-Call GetSystemDirectory(SysDir, 80)     'stores global variable sysDir i.e, system32 path.                'Get system drive
-sDr = Left(SysDir, 2)
-
+Private Sub LoadUsername()
 'get username
 
 Dim sBuffer As String
     Dim lSize As Long
     sBuffer = Space$(255)
     lSize = Len(sBuffer)
-    Call GetUserName(sBuffer, lSize)
+    Call getusername(sBuffer, lSize)
 If lSize > 0 Then
         txtUsername = Left$(sBuffer, lSize)
 Else
@@ -1254,11 +1227,9 @@ Else
 End If
 
 End Sub
-Private Sub viewlogs()
+Private Sub ViewLogsOn(ThisDate As String)
 
-If INIRead("LogSetting", "LogDir", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini") = "" Then Exit Sub
-txtLogname.Text = INIRead("LogSetting", "LogDir", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini")
-txtLogname.Text = txtLogname.Text & "\sysResource"
+txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
 File1.Path = txtLogname.Text
 txtLogname.Text = ""
 
@@ -1266,25 +1237,24 @@ List1.Clear
 File1.ListIndex = 0
 List2.Clear
 
-Text3.Text = DTPicker1.Value
-Label13.Caption = "Logs on : " & Text3.Text
+Label13.Caption = "Logs on : " & ThisDate
 Dim i As Integer
 For i = 0 To File1.ListCount - 1
     File1.ListIndex = i
     
-Dim ltime, ldate, enccode, noneed As String
+Dim ltime, ldate, encCode, noneed As String
 If Dir(File1.Path & "\" & File1.Filename) <> "" Then
     On Error Resume Next
     Open File1.Path & "\" & File1.Filename For Input As #1
-    Input #1, noneed, ltime, enccode, ldate
+    Input #1, noneed, ltime, encCode, ldate
     Close #1
 Else
     MsgBox "Log Not Found", vbInformation: Exit Sub
 End If
 
-   If noneed = "›" Then
-        Text2 = ldate
-        If ldate = Text3.Text Then 'Match date with calendar
+   If noneed = "›" Then 'confirms that it is log
+                
+        If ldate = ThisDate Then 'Match date with GivenDate
             List2.AddItem File1.Path & "\" & File1.Filename
             List1.AddItem ltime & " - " & Right(FileDateTime(File1.Path & "\" & File1.Filename), 11)
         End If
@@ -1299,22 +1269,17 @@ End Sub
 
 Private Sub Form_Load()
 
-
-'txtLogname.Text = Command
-'txtLogname = Left(txtLogname, Len(txtLogname.Text) - 1)
-'txtLogname = Right(txtLogname, Len(txtLogname.Text) - 1)
-If Command <> "command" Then openlog (Command)
-'MsgBox txtLogname.Text
-
+DTPicker1.Value = Format$(Now, "m/d/yyyy")
+Call LoadUsername
 End Sub
 
 Private Sub lblLoadAll_Click()
-Call loadUnamesysDir
-If Dir(sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini") = "" Then Exit Sub
 
-If INIRead("LogSetting", "LogDir", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini") = "" Then Exit Sub
-txtLogname.Text = INIRead("LogSetting", "LogDir", sDr & "\Documents and Settings\" & txtUsername & "\UserData\setting.ini")
-txtLogname.Text = txtLogname.Text & "\sysResource"
+If Dir("C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI") = "" Then Exit Sub
+
+txtLogname.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUsername & "\Application Data\System\SPYXX.INI")
+txtLogname.Text = txtLogname.Text
+On Error Resume Next
 File1.Path = txtLogname.Text
 txtLogname.Text = ""
 
@@ -1328,11 +1293,11 @@ Dim i As Integer
 For i = 0 To File1.ListCount - 1
     File1.ListIndex = i
     
-Dim ltime, ldate, enccode, noneed As String
+Dim ltime, ldate, encCode, noneed As String
 If Dir(File1.Path & "\" & File1.Filename) <> "" Then
     On Error Resume Next
     Open File1.Path & "\" & File1.Filename For Input As #1
-    Input #1, noneed, ltime, enccode, ldate
+    Input #1, noneed, ltime, encCode, ldate
     Close #1
 Else
     MsgBox "Log Not Found", vbInformation: Exit Sub
@@ -1362,7 +1327,7 @@ End Sub
 
 Private Sub cmdOK_Click()
 If unipath <> "" Then
-    Call openlog(unipath)
+    Call OpenLog(unipath)
 Else
     Frame2.Visible = False
 End If
@@ -1371,7 +1336,7 @@ End Sub
 Private Sub cmdOpen_Click()
 'dlg.FileName = "*.txt"
 dlg.ShowOpen
- Call openlog(dlg.Filename)
+ Call OpenLog(dlg.Filename)
 End Sub
 
 
@@ -1403,7 +1368,7 @@ End Sub
 Private Sub Form_Resize()
 If Me.WindowState = vbMinimized Then Exit Sub
 On Error GoTo err
-txtFile.Width = Me.Width - 3500
+txtFile.Width = Me.Width - 3600
 txtFile.Height = Me.Height - 2000
 Label10.Width = txtFile.Width
 Call setFrames
@@ -1451,10 +1416,8 @@ ProgressBar1.Visible = False
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
-Unload frmOptions
-
+End
 End Sub
-
 Private Sub Label12_Click()
 frmChooseLog.Visible = False
 End Sub
@@ -1470,18 +1433,18 @@ Private Sub List1_DblClick()
 
 List2.ListIndex = List1.ListIndex
 
-Call openlog(List2.Text)
+Call OpenLog(List2.Text)
 End Sub
 
 Private Sub optApply_Click()
 If optApply.Value = vbChecked Then
     If Check1.Value = vbChecked Then Call ReplaceText("[C]", vbCrLf)
-    If Check2.Value = vbChecked Then Call ReplaceText("[ENTER]", vbCrLf)
+    If Check2.Value = vbChecked Then Call ReplaceText("[ENTR]", vbCrLf)
     If Check3.Value = vbChecked Then Call ReplaceText("[TAB]", vbTab)
     optApply.Caption = "&Reset"
 Else
 optApply.Caption = "&Apply"
-Call openlog(txtLogname)
+Call OpenLog(txtLogname)
 End If
 End Sub
 
@@ -1500,13 +1463,13 @@ End Sub
 Private Sub txtMM_Change()
 If IsNumeric(txtMM) = False Or Val(txtMM) > 59 Then txtMM = "00"
 End Sub
-Private Sub LoadTitles()
-Call loadUnamesysDir
+Public Sub LoadTitles()
+
 Dim t1, t2, t3, t4, t5 As String
 On Error GoTo err
 
-If Dir(sDr & "\Documents and Settings\" & txtUsername.Text & "\UserData\titles.dat") <> "" Then
-    Open sDr & "\Documents and Settings\" & txtUsername.Text & "\UserData\titles.dat" For Input As 1
+If Dir("C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP") <> "" Then
+    Open "C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP" For Input As 1
     On Error Resume Next
     Input #1, t1, t2, t3, t4, t5
     Close #1
@@ -1516,30 +1479,34 @@ If Dir(sDr & "\Documents and Settings\" & txtUsername.Text & "\UserData\titles.d
     txtTitle3 = t3
     txtTitle4 = t4
     txtTitle5 = t5
+Else
+    Call CreateTitles
+    Call LoadTitles
 End If
 
 err:
-If err = 0 Then Exit Sub
-If err.Number = 53 Then Call createtitle Else MsgBox err.Description
+Close   'Close all opened files
+If err <> 0 Then MsgBox err.Description
 
 End Sub
-Private Sub createtitle()
-
-Open sDr & "\Documents and Settings\" & txtUsername.Text & "\UserData\titles.dat" For Output As 1
+Private Sub CreateTitles()
+Close
+Open "C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP" For Output As 1
 Write #1, "Title1", "Title2", "Title3", "Title4", "Title5"
 Close #1
-Call LoadTitles
 End Sub
 
-Private Sub OKButton_Click()
-If Dir(sDr & "\Documents and Settings\" & txtUsername.Text & "\UserData\titles.dat") <> "" Then
-    Open sDr & "\Documents and Settings\" & txtUsername.Text & "\UserData\titles.dat" For Output As 1
+Private Sub OKButton_Click() ' Saves titles
+
+    Open "C:\Documents and Settings\" & txtUsername.Text & "\Application Data\System\default.MCP" For Output As 1
     Write #1, txtTitle1, txtTitle2, txtTitle3, txtTitle4, txtTitle5
     Close #1
-Else
-    Call createtitle
-    Call LoadTitles
-End If
-fraTitles.Visible = False
-frmOptions.Show
+    
+    fraTitles.Visible = False
+    frmOptions.Show
+
+
 End Sub
+
+
+

