@@ -1,7 +1,7 @@
 # nils-keylogger
 Keylogger which can record keystrokes typed under specific window titles
 
-Version as on **2012 October**
+Version as on **2014 February**
 
 --------------------------
 
